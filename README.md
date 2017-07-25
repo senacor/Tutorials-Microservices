@@ -53,7 +53,7 @@ The cloud config requires another spring-boot project that represents the cloud 
 
 ### Stage 02 - Flyway (database migration)
 
-### Goal
+#### Goal
 Create a database with dummy-data for your service using flyway migration scripts.
 
 #### Project Setup
@@ -67,7 +67,7 @@ Create a database with dummy-data for your service using flyway migration script
 
 ### Stage 03 - Spring Data
 
-### Goal
+#### Goal
 Create domain objects and fill them with data from the previously created database using Spring Data.
 
 Note: include Lombok
@@ -77,7 +77,7 @@ Note: include Lombok
 
 ### Stage 04 - Create a second service
 
-### Goal
+#### Goal
 You create a second service that can communicate with the first service (demo-service).
 
 
@@ -87,7 +87,7 @@ You create a second service that can communicate with the first service (demo-se
 
 ### Stage 05 - Eureka (service discovery)
 
-### Goal
+#### Goal
 You add a service discovery so the services can find each other through the discovery server.
 
 #### Tasks
@@ -96,7 +96,7 @@ You add a service discovery so the services can find each other through the disc
 
 ### Stage 06 - Docker (containerize)
 
-### Goal
+#### Goal
 You pack your services into containers for deployment.
 
 #### Tasks
@@ -104,7 +104,7 @@ You pack your services into containers for deployment.
 
 ### Stage 07 - Messaging and Event Sourcing
 
-### Goal
+#### Goal
 You add endpoints that emit events, so your two services don't directly communicate with each other but one service emits an event that the other service consumes.
 
 #### Tasks
