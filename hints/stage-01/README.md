@@ -87,9 +87,40 @@ Once you are done with the local setup you can reconfigure the config server to 
         config:
           server:
             git:
-              uri: [remote url]
+              uri: [PATH_TO_REMOTE_REPOSITORY]
+              searchPaths: [FOLDER_IN_REMOTE_REPOSITORY]
     server:
       port: 8888
     ```
 
-You might also have to add user credentials.
+Example configuration with the BankingInTheCloud-Tutorials repository:
+
+**application.yml** (config project)
+
+    ```
+    spring:
+      cloud:
+        config:
+          server:
+            git:
+              uri: https://github.com/senacor/BankingInTheCloud-Tutorials
+              searchPaths: config-repo
+    server:
+      port: 8888
+    ```
+
+Since the ```config-repo``` folder is on a specific branch within the BankingInTheCloud-Tutorials repository you have to specify the branch as ```label``` in the ```bootstrap.yml``` of the demo application to make the setup work:
+
+** bootstrap.yml** (demo project)
+
+    ```
+    spring:
+      application:
+        name: demo
+      profiles:
+        active: dev
+      cloud:
+        config:
+          uri: http://localhost:8888
+          label: Stage-01-SpringCloudConfig
+    ```
