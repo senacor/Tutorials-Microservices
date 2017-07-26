@@ -16,7 +16,7 @@ Steps:
 3. Create file ```application.yml``` in the resources folder (you can remove existing ```.properties``` files)
 4. Configure the config-server in the config server's application.yml you just created:
 
-    ```
+    ```YAML
     spring:
       cloud:
         config:
@@ -34,7 +34,7 @@ Steps:
 7. Add the file ```demo-dev.yml``` to the folder. This will be the configuration file that the client application (the demo application) pulls upon startup.
 8. Add the configuration for the new port to the ```demo-dev.yml``` file (instead of running the demo application on default port 8080 we run it on port 8081):
 
-    ```
+    ```YAML
     server:
       port: 8081
     ```
@@ -64,7 +64,7 @@ Steps:
 12. Create file ```bootstrap.yml``` in the resources folder (you can remove existing ```.properties``` files)
 13. Configure the client to find the config-server by in the ```bootstrap.yml```:
 
-    ```
+    ```YAML
     spring:
       application:
         name: demo
@@ -81,7 +81,7 @@ Steps:
 
 Once you are done with the local setup you can reconfigure the config server to use a remote config-repository instead of your local repository. To do so you will have to adapt the config server's ```application.yml```:
 
-    ```
+    ```YAML
     spring:
       cloud:
         config:
@@ -97,7 +97,7 @@ Example configuration with the BankingInTheCloud-Tutorials repository:
 
 **application.yml** (config project)
 
-    ```
+    ```YAML
     spring:
       cloud:
         config:
@@ -113,7 +113,7 @@ Since the ```config-repo``` folder is on a specific branch within the BankingInT
 
 ** bootstrap.yml** (demo project)
 
-    ```
+    ```YAML
     spring:
       application:
         name: demo
