@@ -81,17 +81,17 @@ Steps:
 
 Once you are done with the local setup you can reconfigure the config server to use a remote config-repository instead of your local repository. To do so you will have to adapt the config server's ```application.yml```:
 
-    ```YAML
-    spring:
-      cloud:
-        config:
-          server:
-            git:
-              uri: [PATH_TO_REMOTE_REPOSITORY]
-              searchPaths: [FOLDER_IN_REMOTE_REPOSITORY]
-    server:
-      port: 8888
-    ```
+```YAML
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: [PATH_TO_REMOTE_REPOSITORY]
+          searchPaths: [FOLDER_IN_REMOTE_REPOSITORY]
+server:
+  port: 8888
+```
 
 Example configuration with the BankingInTheCloud-Tutorials repository:
 
@@ -111,7 +111,7 @@ Example configuration with the BankingInTheCloud-Tutorials repository:
 
 Since the ```config-repo``` folder is on a specific branch within the BankingInTheCloud-Tutorials repository you have to specify the branch as ```label``` in the ```bootstrap.yml``` of the demo application to make the setup work:
 
-** bootstrap.yml** (demo project)
+**bootstrap.yml** (demo project)
 
     ```YAML
     spring:
