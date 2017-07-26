@@ -97,30 +97,30 @@ Example configuration with the BankingInTheCloud-Tutorials repository:
 
 **application.yml** (config project)
 
-    ```YAML
-    spring:
-      cloud:
-        config:
-          server:
-            git:
-              uri: https://github.com/senacor/BankingInTheCloud-Tutorials
-              searchPaths: config-repo
-    server:
-      port: 8888
-    ```
+```YAML
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/senacor/BankingInTheCloud-Tutorials
+          searchPaths: config-repo
+server:
+  port: 8888
+```
 
 Since the ```config-repo``` folder is on a specific branch within the BankingInTheCloud-Tutorials repository you have to specify the branch as ```label``` in the ```bootstrap.yml``` of the demo application to make the setup work:
 
 **bootstrap.yml** (demo project)
 
-    ```YAML
-    spring:
-      application:
-        name: demo
-      profiles:
-        active: dev
-      cloud:
-        config:
-          uri: http://localhost:8888
-          label: Stage-01-SpringCloudConfig
-    ```
+```YAML
+spring:
+  application:
+    name: demo
+  profiles:
+    active: dev
+  cloud:
+    config:
+      uri: http://localhost:8888
+      label: Stage-01-SpringCloudConfig
+```
