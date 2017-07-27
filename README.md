@@ -1,23 +1,20 @@
 # BankingInTheCloud-Tutorials
 This repo provides tutorials for the BankingInTheCloud workshop. 
 
-## Project Setup
+## Stage 00 - Basic Setup
 
-The master-branch contains the basic project setup. It contains a Rest-controller that returns the IP address of the server (first device interface).
+After finishing stage 00 you should have one Spring Boot Project called ```demo``` that contains one Rest-Controller that offers a GET service method to receive the IP addresee of the server.
 
-The basic project setup is based on the demo-project one can generate using the [SpringBoot Initializr](). We used the following settings:
+## Stage 01 - Spring Cloud Config
 
-* Generate a ```Gradle Project``` with ```Java``` and Spring Boot ```1.5.4```
-* Group: ```com.senacor.bitc```
-* Artifact: ```demo```
-* Dependencies: ```web```
+After finishing stage 01 you have two projects:
 
-You can open the ```demo``` project using IntelliJ IDEA.
+1. **demo**: the demo project created in stage 00
+2. **config**: the spring cloud config server created in stage 01
 
-## Tutorial stages
+Additionally you have the folder **config-repo** which contains the remote-configuration for the demo application.
 
-The tutorials are done in steps that are based on each other. 
-Participants are supposed to solve each tutorial stage by themselfes. A recerence solution can be found in branches.
+The config server is configured through ```application.yml``` in the config project. The config server starts at ```localhost:8888``` and serves the files in the ```config-repo``` folder. 
 
-### Spring Cloud 
-
+The demo application is configured through ```bootstrap.yml``` in the demo project. It loads the configuration according to application-name, profile and label. The application-name (```demo```) and profile (```dev```) define which configuration file to fetch from the config server (```demo-dev.yml```). The label specifies the branch (```Stage-01-SpringCloudConfig```) within the config server repository.
+The configuration (```demo-dev.yml```) defines the startup port of the demo application. It is set to 8081, so the demo service is now available at port 8081 instead of 8080 (stage 00).
