@@ -33,7 +33,7 @@ vagrant@ethdev:~$ sudo mysql_secure_installation
 
 Securing the MySQL server deployment.
 
-Enter password for user root: 
+Enter password for user root: mysql
 
 VALIDATE PASSWORD PLUGIN can be used to test passwords
 and improve security. It checks the strength of password
@@ -89,7 +89,7 @@ All done!
 You have to add the following things to your gradle build file in the demo project:
 
 1. dependency for mysql
-2. Flyway plugin
+2. flyway plugin
 3. flyway configuration
 
 Long story short, here is the configured ```build.gradle``` file:
