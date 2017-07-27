@@ -1,4 +1,4 @@
-# Hints for Tutorial stage 01
+# Hints for Tutorial stage 02
 
 ## MySQL configuration and database creation
 
