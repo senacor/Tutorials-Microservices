@@ -27,7 +27,7 @@ mysql -h localhost -u root -p
 
 You will have to enter the root password; for the tutorial we use ```mysql``` as root password.
 
-### MySQL installation dump:
+#### MySQL installation dump:
 ```
 vagrant@ethdev:~$ sudo mysql_secure_installation
 
