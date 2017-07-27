@@ -8,7 +8,19 @@ buildscript {
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath('io.spring.gradle:dependency-management-plugin:0.5.4.RELEASE')
+		classpath('mysql:mysql-connector-java:5.1.13')
 	}
+}
+
+plugins {
+	id "org.flywaydb.flyway" version "4.2.0"
+}
+
+flyway {
+	url = 'jdbc:mysql://localhost:3306'
+	user = 'root'
+	password = 'mysql'
+	schemas = ['demodb']
 }
 
 apply plugin: 'java'
