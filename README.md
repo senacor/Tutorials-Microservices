@@ -59,16 +59,18 @@ We recommend that you use yaml (```.yml```) instead of properties files because 
 ### Stage 02 - Flyway (database migration)
 
 #### Goal
-Create a database with dummy-data for your service using flyway migration scripts.
+Create a database with a customer table that contains dummy-data for your service using flyway migration scripts.
 
 #### Project Setup
 
-1. Create a XXX database 
-2. (...)
+1. [Install MySQL](https://dev.mysql.com/downloads/mysql/) (you can also [install it through apt-get](https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-16-04))
+2. Create a MySQL database through the mysql command line
 
 #### Tasks
 
-
+1. Configure the demo project for mysql and flyway
+2. Write flyway migration scripts to create a table ```customer``` with fields ```id```, ```first_name```, ```last_name``` and ```birth_date```.
+3. Fill some data into your ```customer``` table by writing and executing more flyway migration script(s).
 
 ### Stage 03 - Spring Data
 
