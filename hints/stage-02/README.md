@@ -211,7 +211,7 @@ More information on mysql (SQL) commands can be found in the [mysql documentatio
 
 The table ```schema_versions``` is create by flyway in the database. It contains information on the migrations that were already executed. 
 ```SQL
-select * from schema_version`;
+select * from schema_version;
 ```
 
 You should see 2 entries: The (automatic) creation of the schema and the migration script entry that created the customer table.
