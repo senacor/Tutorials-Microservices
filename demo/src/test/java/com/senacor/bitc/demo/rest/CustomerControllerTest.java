@@ -78,7 +78,7 @@ public class CustomerControllerTest {
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/customer");
         request.contentType(TestUtil.APPLICATION_JSON_UTF8);
-        
+
         request.content("{ " +
                         "\"firstName\": \"First\", " +
                         "\"lastName\": \"Last\", " +
