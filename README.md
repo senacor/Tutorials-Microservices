@@ -24,3 +24,7 @@ The configuration (```demo-dev.yml```) defines the startup port of the demo appl
 After finishing stage 02 you have a MySQL database that contains a ```customer``` table and dummy data.
 
 The demo project is configured to use this database. It uses Flyway migration to create the ```customer``` table and the dummy data.
+
+## Stage 03 - Spring Data
+
+After finishing stage 03 you have a service that accesses the customer data created in stage 02 through spring data. You can quey for customers by id and last name and you can create customers through post requests in postman.
