@@ -9,13 +9,15 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Data
-@NoArgsConstructor
+@Builder
+@NoArgsConstructor // needed for JPA
+@AllArgsConstructor // needed for builder (because of NoArgsConstructor)
 @Entity
 @Table(name = "customer")
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
     @Column(name = "first_name", nullable = false)
     public String firstName;
