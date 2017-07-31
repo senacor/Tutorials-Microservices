@@ -201,7 +201,7 @@ Note that it is important to mark the Service with ```@Component``` so Spring ca
 Similarly to stage 00 we have to provide a REST endpoint (controller) to be able to communicate with the customer service.
 
 The customer endpoint can look something like this:
-```
+```Java
 @RestController
 @RequestMapping(value = "/customer", produces = "application/json")
 public class CustomerController {
