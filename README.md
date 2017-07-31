@@ -75,12 +75,18 @@ Create a database with a customer table that contains dummy-data for your servic
 ### Stage 03 - Spring Data
 
 #### Goal
-Create domain objects and fill them with data from the previously created database using Spring Data.
+Be able to access customer data from the database through a new REST endpoint (without writing boilerplate code).
 
-Note: include Lombok
+#### Setup
+
+Since we are working with entities now and we want to avoid unnecessary boiler-code-writing we recommend to add *Lombok* to the demo project.
+You can follow the instructions on how to [add Lombok to IntelliJ IDEA as plugin](https://projectlombok.org/setup/intellij) and how to [integrate Lombok into your project with gradle](https://projectlombok.org/setup/gradle). Note that you will also have to [turn on annotation processing in IntelliJ IDEA](https://stackoverflow.com/questions/41161076/adding-lombok-plugin-to-intellij-project) for Lombok to work.
 
 #### Tasks
 
+1. Use Spring Data to retrieve customer data from the database (entity and repository).
+2. Offer a new REST endpoint that provides customer data (at least: customer by id and customer by last name).
+3. Test the new REST endpoint (with MockMVC and MockBean).
 
 ### Stage 04 - Create a second service
 
