@@ -9,7 +9,7 @@ public interface CustomerService {
 
     Customer loadCustomerById(Long customerId);
 
-    void saveCustomer(Customer customer);
+    Customer saveCustomer(Customer customer);
 
     List<Customer> findCustomersByLastName(String lastName);
 

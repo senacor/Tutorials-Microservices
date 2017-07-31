@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -49,10 +49,10 @@ public class CustomerControllerTest {
         mockMvc.perform(get("/customer/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.id", is(getCustomer().getId().intValue())))
+                .andExpect(jsonPath("$.id", is(getCustomer().getId())))
                 .andExpect(jsonPath("$.firstName", is(getCustomer().getFirstName())))
                 .andExpect(jsonPath("$.lastName", is(getCustomer().getLastName())))
-                .andExpect(jsonPath("$.birthDate", is(getCustomer().getBirthDate().getTime())))
+                .andExpect(jsonPath("$.birthDate", is(getCustomer().getBirthDate().toString())))
                 .andExpect(jsonPath("$.comment", is(getCustomer().getComment())));
     }
 
@@ -65,16 +65,19 @@ public class CustomerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", is(getCustomer().getId().intValue())))
+                .andExpect(jsonPath("$[0].id", is(getCustomer().getId())))
                 .andExpect(jsonPath("$[0].firstName", is(getCustomer().getFirstName())))
                 .andExpect(jsonPath("$[0].lastName", is(getCustomer().getLastName())))
-                .andExpect(jsonPath("$[0].birthDate", is(getCustomer().getBirthDate().getTime())))
+                .andExpect(jsonPath("$[0].birthDate", is(getCustomer().getBirthDate().toString())))
                 .andExpect(jsonPath("$[0].comment", is(getCustomer().getComment())));
 
     }
 
     @Test
     public void createCustomer() throws Exception {
+
+        given(this.customerService.saveCustomer(any(Customer.class)))
+                .willReturn(getCustomer());
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/customer");
         request.contentType(TestUtil.APPLICATION_JSON_UTF8);
@@ -87,16 +90,22 @@ public class CustomerControllerTest {
                         "}");
 
         mockMvc.perform(request)
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.id", is(getCustomer().getId())))
+                .andExpect(jsonPath("$.firstName", is(getCustomer().getFirstName())))
+                .andExpect(jsonPath("$.lastName", is(getCustomer().getLastName())))
+                .andExpect(jsonPath("$.birthDate", is(getCustomer().getBirthDate().toString())))
+                .andExpect(jsonPath("$.comment", is(getCustomer().getComment())));
     }
 
     private Customer getCustomer() {
 
         return Customer.builder()
-                .id(1L)
+                .id(1)
                 .firstName("First")
                 .lastName("Last")
-                .birthDate(new GregorianCalendar(2000,1,1).getTime())
+                .birthDate(LocalDate.of(2000,1,1))
                 .comment("comment")
                 .build();
     }

@@ -12,17 +12,6 @@ buildscript {
 	}
 }
 
-plugins {
-	id "org.flywaydb.flyway" version "4.2.0"
-}
-
-flyway {
-	url = 'jdbc:mysql://localhost:3306'
-	user = 'root'
-	password = 'mysql'
-	schemas = ['demodb']
-}
-
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
@@ -39,6 +28,11 @@ dependencies {
 	compile('org.springframework.cloud:spring-cloud-starter-config')
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.yaml:snakeyaml')
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.hibernate:hibernate-java8:5.1.0.Final')
+	compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
+	compile('org.flywaydb:flyway-core')
+	compile("mysql:mysql-connector-java:5.1.13")
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	compileOnly('org.projectlombok:lombok:1.16.18')
 }
@@ -50,21 +44,3 @@ dependencyManagement {
 	}
 }
 
-jar {
-	baseName = 'gs-accessing-data-jpa'
-	version =  '0.1.0'
-}
-
-repositories {
-	mavenCentral()
-	maven { url "https://repository.jboss.org/nexus/content/repositories/releases" }
-}
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-dependencies {
-	compile("org.springframework.boot:spring-boot-starter-data-jpa")
-	compile("mysql:mysql-connector-java:5.1.13")
-	testCompile("junit:junit")
-}

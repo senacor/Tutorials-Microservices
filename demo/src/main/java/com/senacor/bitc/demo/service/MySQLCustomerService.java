@@ -24,8 +24,8 @@ public class MySQLCustomerService implements CustomerService {
     }
 
     @Override
-    public void saveCustomer(Customer customer) {
-        customerRepository.save(customer);
+    public Customer saveCustomer(Customer customer) {
+        return customerRepository.save(customer);
     }
 
     @Override

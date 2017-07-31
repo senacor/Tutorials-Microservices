@@ -35,8 +35,9 @@ public class CustomerController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void createCustomer(@RequestBody Customer customer) {
-        customerService.saveCustomer(customer);
+    @ResponseBody
+    public Customer createCustomer(@RequestBody Customer customer) {
+        return customerService.saveCustomer(customer);
     }
 
     // Note: It is arguable if the search for customers should be in the customer endpoint
