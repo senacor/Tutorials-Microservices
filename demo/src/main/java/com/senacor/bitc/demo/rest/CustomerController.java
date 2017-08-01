@@ -22,7 +22,7 @@ public class CustomerController {
 
     @RequestMapping(value = "/{customerId}", method = RequestMethod.GET)
     @ResponseBody
-    public Customer getCustomerById(@PathVariable Long customerId) {
+    public Customer getCustomerById(@PathVariable Integer customerId) {
         return customerService.loadCustomerById(customerId);
     }
 

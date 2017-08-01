@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CustomerService {
 
-    Customer loadCustomerById(Long customerId);
+    Customer loadCustomerById(Integer customerId);
 
     Customer saveCustomer(Customer customer);
 

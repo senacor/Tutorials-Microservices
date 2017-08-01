@@ -19,7 +19,7 @@ public class MySQLCustomerService implements CustomerService {
 
 
     @Override
-    public Customer loadCustomerById(Long customerId) {
+    public Customer loadCustomerById(Integer customerId) {
         return customerRepository.findOne(customerId);
     }
 
