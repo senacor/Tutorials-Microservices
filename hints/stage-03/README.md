@@ -29,7 +29,8 @@ com.senacor.bitc
 You have to add dependencies for:
 
 * Lombok (also add the plugin to IntelliJ)
-* Spring Data JPA
+* Newest version of hibernate (Java 8)
+* Jackson (for clean mapping)
 
 The complete ```build.gradle``` file for stage 03:
 ```
@@ -43,19 +44,7 @@ buildscript {
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath('io.spring.gradle:dependency-management-plugin:0.5.4.RELEASE')
-		classpath('mysql:mysql-connector-java:5.1.13')
 	}
-}
-
-plugins {
-	id "org.flywaydb.flyway" version "4.2.0"
-}
-
-flyway {
-	url = 'jdbc:mysql://localhost:3306'
-	user = 'root'
-	password = 'mysql'
-	schemas = ['demodb']
 }
 
 apply plugin: 'java'
@@ -74,8 +63,13 @@ dependencies {
 	compile('org.springframework.cloud:spring-cloud-starter-config')
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.yaml:snakeyaml')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+	compile('org.flywaydb:flyway-core')
+	compile("mysql:mysql-connector-java:5.1.13")
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.hibernate:hibernate-java8:5.1.0.Final')
+	compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
 	compileOnly('org.projectlombok:lombok:1.16.18')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
 
@@ -85,29 +79,12 @@ dependencyManagement {
 	}
 }
 
-jar {
-	baseName = 'gs-accessing-data-jpa'
-	version =  '0.1.0'
-}
 
-repositories {
-	mavenCentral()
-	maven { url "https://repository.jboss.org/nexus/content/repositories/releases" }
-}
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-dependencies {
-	compile("org.springframework.boot:spring-boot-starter-data-jpa")
-	compile("mysql:mysql-connector-java:5.1.13")
-	testCompile("junit:junit")
-}
 ```
 
 ## Configure the database
 
-At some point the application has to know where to find the database and how to connect to it. This is done in the ```application.yml``` file. 
+For stage 03 our ```application.yml``` file looks pretty much the same as in stage 02; we just added some jackson configuration (for the mapping in the tests): 
 
 ```YAML
 spring:
@@ -116,6 +93,10 @@ spring:
     username: 'root'
     password: 'mysql'
     driver-class-name: 'com.mysql.jdbc.Driver'
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+    default-property-inclusion: non_null
 ```
 
 Note that you could also put this configuration into the service's ```demo-dev.yml``` configuration file on the config server. For this tutorial we put it in the project for now, but it is of course valid to let the config server hold this information.
@@ -135,13 +116,14 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    public Integer id;
     @Column(name = "first_name", nullable = false)
     public String firstName;
     @Column(name = "last_name", nullable = false)
     public String lastName;
+    @JsonSerialize(using = LocalDateSerializer.class)
     @Column(name = "birth_date", nullable = false)
-    public Date birthDate;
+    public LocalDate birthDate;
     public String comment;
 
 }
@@ -151,7 +133,7 @@ Additionally we define a *repository* for the customer entity. Repository in Spr
 The repository is configured by marking the repository interface with another interface that defines the underlying entity. The customer repository might look something like this:
 
 ```Java
-public interface CustomerRepository extends CrudRepository<Customer, Long> {
+public interface CustomerRepository extends CrudRepository<Customer, Integer> {
 
     List<Customer> findByLastName(String lastName);
 
@@ -165,7 +147,7 @@ Services abstract logic - logic should not be placed directly into the endpoint.
 The customer service can look something like this:
 
 ```Java
-@Component
+@Service
 public class MySQLCustomerService implements CustomerService {
 
     private final CustomerRepository customerRepository;
@@ -177,13 +159,13 @@ public class MySQLCustomerService implements CustomerService {
 
 
     @Override
-    public Customer loadCustomerById(Long customerId) {
+    public Customer loadCustomerById(Integer customerId) {
         return customerRepository.findOne(customerId);
     }
 
     @Override
-    public void saveCustomer(Customer customer) {
-        customerRepository.save(customer);
+    public Customer saveCustomer(Customer customer) {
+        return customerRepository.save(customer);
     }
 
     @Override
@@ -194,7 +176,7 @@ public class MySQLCustomerService implements CustomerService {
 
 ```
 
-Note that it is important to mark the Service with ```@Component``` so Spring can find it (for injection with ```@Autowired```).
+Note that it is important to mark the Service as Spring component so Spring can find it (for injection with ```@Autowired```); you can use ```@Component``` or the more specific stereotype ```@Service```.
 
 ## Add customer endpoint
 
@@ -215,7 +197,7 @@ public class CustomerController {
 
     @RequestMapping(value = "/{customerId}", method = RequestMethod.GET)
     @ResponseBody
-    public Customer getCustomerById(@PathVariable Long customerId) {
+    public Customer getCustomerById(@PathVariable Integer customerId) {
         return customerService.loadCustomerById(customerId);
     }
 
@@ -228,14 +210,10 @@ public class CustomerController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void createCustomer(@RequestBody Customer customer) {
-        customerService.saveCustomer(customer);
+    @ResponseBody
+    public Customer createCustomer(@RequestBody Customer customer) {
+        return customerService.saveCustomer(customer);
     }
-
-    // Note: It is arguable if the search for customers should be in the customer endpoint
-    //      If there are several search implementations (lastName, firstName, ...) it would
-    //      be better to add a customer-search endpoint ;)
-
 }
 ```
 
@@ -244,7 +222,6 @@ Notes:
 * The service is injected by constructor-injection. This is the best practice because it offers more flexibility when writing tests.
 * ```getCustomerById``` was implemented to accept variables as part of the url-path. To receive the 1st customer you will have to send a GET request like this: ```[host:port]/customer/1```
 * ```getCustomerByName``` was implemented to accept the last name of a customer as url-parameter. To retrieve the customer with last name "Hill" you will have to send a GET request like this: ```[host:port]/customer?lastName=Hill```
-
 
 ## Write Tests :)
 
@@ -256,3 +233,47 @@ We use two features in our tests:
 2. MockBean: Can be used to mock services directly (through mockito)
 
 Try to write your own tests. You can refer to the reference solution for details.
+
+## Send requests to the service
+
+Start the project and retrieve customer data by ID or by last name in your browser:
+
+```
+[host:port]/customer/{CustomerId}
+[host:port]/customer?lastName={CustomerLastName}
+```
+
+In the reference solution the following command has the following output.
+```
+http://localhost:8081/customer/1
+
+>> {"id":1,"firstName":"Bud","lastName":"Spencer","birthDate":"1929-10-31","comment":"cool guy"}
+```
+http://localhost:8081/customer?lastName=Hill
+
+>> [{"id":2,"firstName":"Terence","lastName":"Hill","birthDate":"1939-03-29","comment":"cool guy"}]
+```
+
+You can use the postman environment provided in the ```postman``` folder to send a POST requests that creates a customer.
+The customer to be created is to be defined in the request-body:
+```
+{
+	"firstName": "Other",
+	"lastName": "Guy",
+	"birthDate": "2000-01-01",
+	"comment": "nothing"
+}
+```
+
+The response should contain the created customer with an ID:
+```
+{
+    "id": 3,
+    "firstName": "Other",
+    "lastName": "Guy",
+    "birthDate": "2000-01-01",
+    "comment": "nothing"
+}
+```
+
+Note: Don't forget to run the config server as well, otherwise your demo service will be available at port 8080 not port 8081!

@@ -40,7 +40,7 @@ and improve security. It checks the strength of password
 and allows the users to set only those passwords which are
 secure enough. Would you like to setup VALIDATE PASSWORD plugin?
 
-Press y|Y for Yes, any other key for No: a
+Press y|Y for Yes, any other key for No: n
 Using existing password for root.
 Change the password for root ? ((Press y|Y for Yes, any other key for No) : n
 
@@ -82,17 +82,26 @@ Success.
 All done!
 ```
 
+### Create the demodb database
+
+In the mysql console run:
+```SQL
+CREATE SCHEMA demodb;
+```
+
 ## Flyway configuration and scripting
 
 ### Configure the demo project for Flyway
 
-You have to add the following things to your gradle build file in the demo project:
+Add the following dependencies to your gradle build file in the demo project:
 
 1. dependency for mysql
-2. flyway plugin
-3. flyway configuration
+2. dependencies for flyway
+3. dependency for data-jpa  
 
-Long story short, here is the configured ```build.gradle``` file:
+Note that the dependency for data-jpa can be omitted if you configure gradle to use the flyway-plugin and you configure the flyway database in the dependencies instead of the application.yml file. If you want to configure flyway with the plugin you can take a look at the [flyway documentation for the setup in gradle](https://flywaydb.org/getstarted/firststeps/gradle). 
+
+The complete ```build.gradle``` file for stage 02:
 ```
 buildscript {
 	ext {
@@ -104,23 +113,11 @@ buildscript {
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath('io.spring.gradle:dependency-management-plugin:0.5.4.RELEASE')
-		classpath('mysql:mysql-connector-java:5.1.13')
 	}
 }
 
-plugins {
-	id "org.flywaydb.flyway" version "4.2.0"
-}
-
-flyway {
-	url = 'jdbc:mysql://localhost:3306'
-	user = 'root'
-	password = 'mysql'
-	schemas = ['demodb']
-}
-
 apply plugin: 'java'
-apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
 version = '0.0.1-SNAPSHOT'
@@ -136,6 +133,9 @@ dependencies {
 	compile('org.springframework.cloud:spring-cloud-starter-config')
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.yaml:snakeyaml')
+	compile('org.flywaydb:flyway-core')
+	compile("mysql:mysql-connector-java:5.1.13")
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
@@ -145,11 +145,27 @@ dependencyManagement {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:Camden.SR5"
 	}
 }
+
 ```
 
 Note: Be careful with the recent mysql-jdbc drivers, some have a problems with the server timezone so the migration fails (version ```8.0.7-dmr``` has that problem). With the above version (```5.1.13```) it should work.
 
 Don't forget to run a "refresh" in your gradle view (in IntelliJ IDEA).
+
+### Configure the database
+
+For stage 02 we add an ```application.yml``` file to the ```resources``` folder of the demo project, to define the connection to the database: 
+
+```YAML
+spring:
+  datasource:
+    url: 'jdbc:mysql://localhost:3306/demodb'
+    username: 'root'
+    password: 'mysql'
+    driver-class-name: 'com.mysql.jdbc.Driver'
+```
+
+Note that you could also put this configuration into the service's ```demo-dev.yml``` configuration file on the config server. For this tutorial we put it in the project for now, but it is of course valid to let the config server hold this information.
 
 ### Create your first migration
 
@@ -165,8 +181,8 @@ The first migration should create a customer table. The migration file is to be 
 
 SQL statement:
 ```SQL
-CREATE TABLE customer (
-    id INT NOT NULL PRIMARY KEY,
+CREATE TABLE demodb.customer (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     birth_date DATE NOT NULL
@@ -175,18 +191,22 @@ CREATE TABLE customer (
 
 ### Run the first migration
 
-Navigate to the demo project's base folder and run:
+To run the migration you can just startup the project. Flyway will automatically check if there are migrations that have to be applied to the database. If so it will run those migrations.
+
+#### Running a migration with the flyway plugin (optional)
+
+If you configure flyway using the flyway-plugin you can run migrations through gradle tasks without starting the project itself. Navigate to the demo project's base folder and run:
 ```
 ./gradlew flywayMigrate -i
 ```
 
 You should retrieve a ```BUILD SUCCESSFULL``` message at the end of the migration.
 
-Note: the schema "demodb" (as specified in the flyway configuration in the build.gradle) is automatically created for you upon the first migration. Usually you would use an already existing database/schema that you create *before* you run the first migration.
+Note: The mysql schema "demodb" (as specified in the flyway configuration in the build.gradle) can be automatically created for you upon the first migration. Usually you would use an already existing database/schema that you create *before* you run the first migration though. If you let flyway create the schema for you the first migration entry in the ```schema_version``` table that flyway automatically creates in the database for you will be a migration without a version number.
 
 #### If something goes wrong...
 
-If something goes wrong with executing your script you might have to take a look into the database and remove the migration entry in the ```schema_version``` table that flyway creates automatically after running the migration. Once a migration was recorded there you cannot apply the same migration to the database again. Unfortunately it is always recorded, even if an error occurs.  Take a look for the next section for accessing the database and checkout for migration entries.
+If something goes wrong with executing your script you might have to take a look into the database and remove the migration entry in the ```schema_version``` table that flyway creates automatically after running a migration. Once a migration was recorded there you cannot apply the same migration to the database again. Unfortunately it is always recorded, even if an error occurs.  Take a look for the next section for accessing the database and checkout for migration entries.
 
 You can also just drop the complete database. Connect to your mysql server through the command line like this:
 ```
@@ -214,8 +234,6 @@ The table ```schema_versions``` is create by flyway in the database. It contains
 select * from schema_version;
 ```
 
-You should see 2 entries: The (automatic) creation of the schema and the migration script entry that created the customer table.
-
 ### Create more migrations
 
 The second migration should add some data to the customer table. Add the migration file:
@@ -238,6 +256,8 @@ INSERT INTO demodb.customer
 );
 ```
 
-For every migration you add you will have to run ```./gradlew flywayMigrate -i``` again for the migration to take effect.
+For every migration you add you will have to start the project for the changes to take effect. Note that you can also add several migration files; flyway will apply all of them upon startup of the application. 
 
-Feel free to add more migrations. In the reference solution we added a third migration that adds another column to the customer table.
+If you run the migrations as gradle task you will have to run ```./gradlew flywayMigrate -i``` again for *every* migration to take effect.
+
+Feel free to add more migrations. In the reference solution we added a third migration that adds another column to the customer table. 

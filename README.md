@@ -63,12 +63,12 @@ Create a database with a customer table that contains dummy-data for your servic
 
 #### Project Setup
 
-1. [Install MySQL](https://dev.mysql.com/downloads/mysql/) (you can also [install it through apt-get](https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-16-04))
-2. Create a MySQL database through the mysql command line
+1. [Install MySQL](https://dev.mysql.com/downloads/mysql/) (you can also [install it through apt-get](https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-16-04)).
+2. Create a MySQL database through the mysql command line.
 
 #### Tasks
 
-1. Configure the demo project for mysql and flyway
+1. Configure the demo project for mysql and flyway (dependencies).
 2. Write flyway migration scripts to create a table ```customer``` with fields ```id```, ```first_name```, ```last_name``` and ```birth_date```.
 3. Fill some data into your ```customer``` table by writing and executing more flyway migration script(s).
 
@@ -91,11 +91,12 @@ You can follow the instructions on how to [add Lombok to IntelliJ IDEA as plugin
 ### Stage 04 - Create a second service
 
 #### Goal
-You create a second service that can communicate with the first service (demo-service).
-
+You recap step 00 till 03 again. You create a second service (accounting-service) that will communicate with the first service (demo-service) in the next step. The service should offer an "account" endpoint that that depends on the customer endpoint of the first service.
 
 #### Tasks
 
+1. Do stages 00 till stages 03 again by yourself, but create an accounting service instead of a customer service. When creating an account one has to provide a customer ID. 
+2. *Don't* implement the part where the accounting service validates if a customer exists through the customer service! We will do this in the next stage when we add the service discovery.
 
 
 ### Stage 05 - Eureka (service discovery)
