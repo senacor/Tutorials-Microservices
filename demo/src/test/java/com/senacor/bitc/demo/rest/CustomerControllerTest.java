@@ -43,7 +43,7 @@ public class CustomerControllerTest {
     @Test
     public void getCustomerById() throws Exception {
 
-        given(this.customerService.loadCustomerById(1L))
+        given(this.customerService.loadCustomerById(1))
                 .willReturn(getCustomer());
 
         mockMvc.perform(get("/customer/1"))
