@@ -258,10 +258,10 @@ You can use the postman environment provided in the ```postman``` folder to send
 The customer to be created is to be defined in the request-body:
 ```
 {
-	"firstName": "Other",
-	"lastName": "Guy",
-	"birthDate": "2000-01-01",
-	"comment": "nothing"
+    "firstName": "Other",
+    "lastName": "Guy",
+    "birthDate": "2000-01-01",
+    "comment": "nothing"
 }
 ```
 
