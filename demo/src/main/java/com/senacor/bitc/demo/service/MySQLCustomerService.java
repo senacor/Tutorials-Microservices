@@ -3,11 +3,11 @@ package com.senacor.bitc.demo.service;
 import com.senacor.bitc.demo.domain.Customer;
 import com.senacor.bitc.demo.domain.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
 public class MySQLCustomerService implements CustomerService {
 
     private final CustomerRepository customerRepository;
