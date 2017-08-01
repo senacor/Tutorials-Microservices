@@ -1,0 +1,31 @@
+{
+	"variables": [],
+	"info": {
+		"name": "tutorial-stage-04",
+		"_postman_id": "0c9f4a75-5135-7a6d-1079-959b5138e50a",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8082/account",
+			"request": {
+				"url": "http://localhost:8082/account",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"accountType\": \"CREDIT_CARD\",\n\t\"customerId\": \"1\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
