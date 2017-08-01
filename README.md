@@ -18,3 +18,9 @@ The config server is configured through ```application.yml``` in the config proj
 
 The demo application is configured through ```bootstrap.yml``` in the demo project. It loads the configuration according to application-name, profile and label. The application-name (```demo```) and profile (```dev```) define which configuration file to fetch from the config server (```demo-dev.yml```). The label specifies the branch (```Stage-01-SpringCloudConfig```) within the config server repository.
 The configuration (```demo-dev.yml```) defines the startup port of the demo application. It is set to 8081, so the demo service is now available at port 8081 instead of 8080 (stage 00).
+
+## Stage 02 - Flyway
+
+After finishing stage 02 you have a MySQL database that contains a ```customer``` table and dummy data.
+
+The demo project is configured to use this database. It uses Flyway migration to create the ```customer``` table and the dummy data.
