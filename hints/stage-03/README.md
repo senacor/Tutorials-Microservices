@@ -230,9 +230,52 @@ SpringBoot offers some powerful testing features - powerful but you have to know
 We use two features in our tests:
 
 1. MockMVC: Can be used to mock REST endpoints
-2. MockBean: Can be used to mock services directly (through mockito)
+2. MockBean: Can be used to mock services (through mockito) with the pattern ```given([service].[method_call]).willReturn([some_mocked_result]);```
 
-Try to write your own tests. You can refer to the reference solution for details.
+**Try to write test cases on your own.**
+You can refer to the reference solution for details.
+
+
+### Add a Builder to your entity
+
+Builders help you to create test data quickly. We can extend the customer entity to include a builder with fluent setters (through Lombok) like this:
+```Java
+@Data
+@Builder // Lombok: builder
+@NoArgsConstructor // needed for JPA
+@AllArgsConstructor // needed for builder (because of NoArgsConstructor)
+@Entity
+@Table(name = "customer")
+public class Customer {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Integer id;
+    @Column(name = "first_name", nullable = false)
+    public String firstName;
+    @Column(name = "last_name", nullable = false)
+    public String lastName;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @Column(name = "birth_date", nullable = false)
+    public LocalDate birthDate;
+    public String comment;
+
+}
+```
+
+Using the builder you can create mock-data like this:
+```Java
+private Customer getCustomer() {
+
+        return Customer.builder()
+                .id(1)
+                .firstName("First")
+                .lastName("Last")
+                .birthDate(LocalDate.of(2000,1,1))
+                .comment("comment")
+                .build();
+}
+```
 
 ## Send requests to the service
 
