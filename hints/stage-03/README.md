@@ -244,15 +244,15 @@ Start the project and retrieve customer data by ID or by last name in your brows
 ```
 
 In the reference solution the following command has the following output.
-```
+
 http://localhost:8081/customer/1
 
->> {"id":1,"firstName":"Bud","lastName":"Spencer","birthDate":"1929-10-31","comment":"cool guy"}
-```
+> {"id":1,"firstName":"Bud","lastName":"Spencer","birthDate":"1929-10-31","comment":"cool guy"}
+
 http://localhost:8081/customer?lastName=Hill
 
->> [{"id":2,"firstName":"Terence","lastName":"Hill","birthDate":"1939-03-29","comment":"cool guy"}]
-```
+> [{"id":2,"firstName":"Terence","lastName":"Hill","birthDate":"1939-03-29","comment":"cool guy"}]
+
 
 You can use the postman environment provided in the ```postman``` folder to send a POST requests that creates a customer.
 The customer to be created is to be defined in the request-body:
