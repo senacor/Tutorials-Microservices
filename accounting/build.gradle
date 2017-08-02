@@ -34,6 +34,9 @@ dependencies {
 	compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
 	compileOnly('org.projectlombok:lombok:1.16.18')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+	compile('org.springframework.cloud:spring-cloud-starter-eureka')
+	compile('org.springframework.cloud:spring-cloud-starter-feign')
+	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 }
 
 
