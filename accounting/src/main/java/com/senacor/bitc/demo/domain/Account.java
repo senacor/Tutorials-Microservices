@@ -24,9 +24,11 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "account_type", nullable = false)
     public AccountType accountType;
+    
     @Column(name = "customer_id", nullable = false)
     public Integer customerId;
 
