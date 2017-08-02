@@ -24,13 +24,17 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id;
+
     @Column(name = "first_name", nullable = false)
     public String firstName;
+
     @Column(name = "last_name", nullable = false)
     public String lastName;
+
     @JsonSerialize(using = LocalDateSerializer.class)
     @Column(name = "birth_date", nullable = false)
     public LocalDate birthDate;
+
     public String comment;
 
 }
