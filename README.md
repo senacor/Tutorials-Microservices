@@ -19,7 +19,7 @@ You have your first spring boot application up and running.
 #### Project Setup
 The basic project setup is based on the demo-project one can generate using the [SpringBoot Initializr](https://start.spring.io/). Use the following settings:
 
-* Generate a ```Gradle Project``` with ```Java``` and Spring Boot ```1.5.4```
+* Generate a ```Gradle Project``` with ```Java``` and Spring Boot ```1.5.x``` (latest stable version)
 * Group: ```com.senacor.bitc```
 * Artifact: ```demo```
 * Dependencies: ```Web```
@@ -39,7 +39,7 @@ Your spring boot application can be configured via a configuration server.
 
 The cloud config requires another spring-boot project that represents the cloud config server. Use [SpringBoot Initializr](https://start.spring.io/) to generate the project using the following settings:
 
-* Generate a ```Gradle Project``` with ```Java``` and Spring Boot ```1.5.4```
+* Generate a ```Gradle Project``` with ```Java``` and Spring Boot ```1.5.x``` (latest stable version)
 * Group: ```com.senacor.bitc```
 * Artifact: ```config```
 * Dependencies: ```Web``` ```Config Server```
@@ -102,7 +102,17 @@ You recap step 00 till 03 again. You create a second service (accounting-service
 ### Stage 05 - Eureka (service discovery)
 
 #### Goal
-You add a service discovery so the services can find each other through the discovery server.
+You add a service discovery so the services can find each other through the discovery server. The account endpoint retrieves information from the customer endpoint through a Feign client.
+
+#### Project Setup
+
+The discovery server requires another spring-boot project. Use [SpringBoot Initializr](https://start.spring.io/) to generate the project using the following settings:
+
+* Generate a ```Gradle Project``` with ```Java``` and Spring Boot ```1.5.x``` (latest stable version)
+* Group: ```com.senacor.bitc```
+* Artifact: ```config```
+* Dependencies: ```Web``` ```Config Server```
+
 
 #### Tasks
 
