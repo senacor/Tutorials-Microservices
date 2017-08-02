@@ -1,20 +1,23 @@
 package com.senacor.bitc.demo.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.senacor.bitc.demo.domain.Customer;
 import com.senacor.bitc.demo.service.CustomerService;
 import com.senacor.bitc.demo.util.TestUtil;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -39,75 +42,88 @@ public class CustomerControllerTest {
     @MockBean
     private CustomerService customerService;
 
+    @Autowired
+    private ObjectMapper mapper;
+
+    private JacksonTester<Customer> customerJsonTester;
+
+    @Before
+    public void setUp() throws Exception {
+        JacksonTester.initFields(this, mapper);
+    }
 
     @Test
     public void getCustomerById() throws Exception {
 
         given(this.customerService.loadCustomerById(1))
-                .willReturn(getCustomer());
+                .willReturn(getCustomerWithId());
 
         mockMvc.perform(get("/customer/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.id", is(getCustomer().getId())))
-                .andExpect(jsonPath("$.firstName", is(getCustomer().getFirstName())))
-                .andExpect(jsonPath("$.lastName", is(getCustomer().getLastName())))
-                .andExpect(jsonPath("$.birthDate", is(getCustomer().getBirthDate().toString())))
-                .andExpect(jsonPath("$.comment", is(getCustomer().getComment())));
+                .andExpect(content().json(customerJsonTester.write(getCustomerWithId()).getJson()));
+
     }
 
     @Test
     public void getCustomersByName() throws Exception {
         given(this.customerService.findCustomersByLastName("Last"))
-                .willReturn(Stream.of(getCustomer()).collect(Collectors.toList()));
+                .willReturn(Collections.singletonList(getCustomerWithId()));
 
         mockMvc.perform(get("/customer?lastName=Last"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", is(getCustomer().getId())))
-                .andExpect(jsonPath("$[0].firstName", is(getCustomer().getFirstName())))
-                .andExpect(jsonPath("$[0].lastName", is(getCustomer().getLastName())))
-                .andExpect(jsonPath("$[0].birthDate", is(getCustomer().getBirthDate().toString())))
-                .andExpect(jsonPath("$[0].comment", is(getCustomer().getComment())));
+                .andExpect(jsonPath("$[0].id", is(getCustomerWithId().getId())))
+                .andExpect(jsonPath("$[0].firstName", is(getCustomerWithId().getFirstName())))
+                .andExpect(jsonPath("$[0].lastName", is(getCustomerWithId().getLastName())))
+                .andExpect(jsonPath("$[0].birthDate", is(getCustomerWithId().getBirthDate().toString())))
+                .andExpect(jsonPath("$[0].comment", is(getCustomerWithId().getComment())));
 
     }
 
     @Test
     public void createCustomer() throws Exception {
 
-        given(this.customerService.saveCustomer(any(Customer.class)))
-                .willReturn(getCustomer());
+        given(this.customerService.saveCustomer(getCustomerWithoutId()))
+                .willReturn(getCustomerWithId());
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/customer");
         request.contentType(TestUtil.APPLICATION_JSON_UTF8);
 
-        request.content("{ " +
-                        "\"firstName\": \"First\", " +
-                        "\"lastName\": \"Last\", " +
-                        "\"birthDate\": \"2000-01-01\", " +
-                        "\"comment\": \"nothing\"" +
-                        "}");
+        request.content(mapper.writeValueAsString(getCustomerWithoutId()));
 
         mockMvc.perform(request)
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.id", is(getCustomer().getId())))
-                .andExpect(jsonPath("$.firstName", is(getCustomer().getFirstName())))
-                .andExpect(jsonPath("$.lastName", is(getCustomer().getLastName())))
-                .andExpect(jsonPath("$.birthDate", is(getCustomer().getBirthDate().toString())))
-                .andExpect(jsonPath("$.comment", is(getCustomer().getComment())));
+                .andExpect(jsonPath("$.id", is(getCustomerWithId().getId())))
+                .andExpect(jsonPath("$.firstName", is(getCustomerWithId().getFirstName())))
+                .andExpect(jsonPath("$.lastName", is(getCustomerWithId().getLastName())))
+                .andExpect(jsonPath("$.birthDate", is(getCustomerWithId().getBirthDate().toString())))
+                .andExpect(jsonPath("$.comment", is(getCustomerWithId().getComment())));
     }
 
-    private Customer getCustomer() {
+    private Customer getCustomerWithId() {
+        return getCustomer(1);
+    }
 
-        return Customer.builder()
-                .id(1)
-                .firstName("First")
+    private Customer getCustomerWithoutId() {
+        return getCustomer(null);
+    }
+
+    private Customer getCustomer(Integer id) {
+        Customer.CustomerBuilder builder = Customer.builder();
+
+        if (id != null) {
+            builder.id(id);
+        }
+
+        builder.firstName("First")
                 .lastName("Last")
-                .birthDate(LocalDate.of(2000,1,1))
-                .comment("comment")
-                .build();
+                .birthDate(LocalDate.of(2000, 1, 1))
+                .comment("comment");
+
+        return builder.build();
     }
 
 }
