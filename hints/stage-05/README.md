@@ -131,7 +131,7 @@ Now you are ready to check if your account creation with customer ID check works
 
 Note: Don't forget to start the config server as well, otherwise the demo and the accounting application will register with a random free port at Eureka.
 
-If you run into the problem, that *the first request you send via the feint client fails with a timeout* (when you create an account using the account endpoint) you can add this to the ```application.yml``` of the accounting project to avoid the timeout:
+If you run into the problem, that *the first request you send via the feign client fails with a timeout* (when you create an account using the account endpoint) you can add this to the ```application.yml``` of the accounting project to avoid the timeout:
 ```YAML
 hystrix:
   command:
