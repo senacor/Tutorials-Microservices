@@ -143,3 +143,19 @@ You add endpoints that emit events, so your two services don't directly communic
 Deploy the docker containers on amazon AWS
 
 #### Tasks
+
+
+### Stage 09 - Adding a load balancer on amazon AWS
+
+#### Goal
+Add a load balancer to the project setup on AWS
+
+#### Tasks
+
+
+### Stage 10 - Utilizing Cloud storage instead of a database on amazon AWS
+
+#### Goal
+Instead of running a database in a docker container you should utilize the simple storage service (S3) of amazon AWS.
+
+#### Tasks
