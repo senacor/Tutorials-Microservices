@@ -12,8 +12,8 @@ import java.time.LocalDate;
 
 @Data
 @Builder
-@NoArgsConstructor // needed for JPA
-@AllArgsConstructor // needed for builder (because of NoArgsConstructor)
+@NoArgsConstructor
+@AllArgsConstructor
 public class Customer {
 
     public Integer id;
