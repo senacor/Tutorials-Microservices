@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @FeignClient("demo")
+@RequestMapping(value = "/customer", produces = "application/json")
 public interface CustomerClient {
 
-    @RequestMapping(value = "/customer/{customerId}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/{customerId}", method = RequestMethod.GET)
     @ResponseBody
     Customer getCustomerById(@PathVariable(name = "customerId") Integer customerId);
 

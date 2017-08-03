@@ -8,8 +8,6 @@ spring:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
     default-property-inclusion: non_null
-  application:
-      name: accounting
 
 server:
   port: 0
@@ -18,11 +16,13 @@ eureka:
     serviceUrl:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
 
-# configuration for timeout and log-level
-#feign:
-#  client:
-#    config:
-#      default:
-#        connectTimeout: 5000
-#        readTimeout: 5000
-#        loggerLevel: basic
+# note: this configuration is needed to avoid timeout upon initial request
+#   somehow the initial request needs more time and runs in a timeout with the default settings
+# https://github.com/Netflix/Hystrix/wiki/configuration#execution.isolation.thread.timeoutInMilliseconds
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
