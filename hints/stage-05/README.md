@@ -31,7 +31,7 @@ eureka:
 
 ## Configuring the Eureka clients
 
-Both the demo and the accounting project have to register at the Eureka server upon startup; thus they have to be configured as Eureka clients.
+Both **the demo and the accounting project** have to register at the Eureka server upon startup; thus they have to be configured as Eureka clients.
 
 The following dependencies have to be added to ```build.gradle```:
 ```
@@ -64,7 +64,7 @@ Note: The application name is already configured in the ```bootstrap.yml```, thu
 
 ## Configuring the Feign client 
 
-The feign client is defined in the accounting project, to access the customer endpoint (in demo) from the account service (in accounting).
+The feign client is defined in the **accounting project**, to access the customer endpoint (in demo) from the account service (in accounting).
 
 First you have to add the necessary dependencies to the ```build.gradle``` of the accounting project:
 ```
@@ -72,10 +72,18 @@ compile('org.springframework.cloud:spring-cloud-starter-feign')
 compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 ```
 
-The following annotations have to be added to the application class:
+The ```@EnableFeignClients``` and ```@Configuration``` annotation have to be added to the application class:
 ```Java
+@SpringBootApplication
+@EnableEurekaClient
 @EnableFeignClients
 @Configuration
+public class AccountingApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(AccountingApplication.class, args);
+	}
+}
 ```
 
 Note that it is important to add the ```@configuration``` class, otherwise the Feign client will not be configured properly.
