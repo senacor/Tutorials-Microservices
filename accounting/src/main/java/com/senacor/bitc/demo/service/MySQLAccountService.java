@@ -26,7 +26,7 @@ public class MySQLAccountService implements AccountService {
     @Override
     public Account saveAccount(Account account) {
 
-        // TODO: Call the customer service and check it the customer with the given ID exists!
+        // TODO: Call the customer service and check if the customer with the given ID exists!
 
         return accountRepository.save(account);
     }
