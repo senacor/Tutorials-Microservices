@@ -116,6 +116,10 @@ The discovery server requires another spring-boot project. Use [SpringBoot Initi
 
 #### Tasks
 
+* Configure the registry project as Eureka server
+* Configure the demo project as Eureka client so it register with the Eureka server 
+* Configure the accounting project as Eureka client so it registers with the Eureka server
+* Configure a Feign client for the customer endpoint in the accounting project and verify the customer ID upon account creation
 
 
 ### Stage 06 - Docker (containerize)
@@ -126,10 +130,16 @@ You pack your services into containers for deployment.
 #### Tasks
 
 
-### Stage 07 - Messaging and Event Sourcing
+### Stage 07 (optional) - Messaging and Event Sourcing
 
 #### Goal
 You add endpoints that emit events, so your two services don't directly communicate with each other but one service emits an event that the other service consumes.
 
 #### Tasks
 
+### Stage 08 - Running the project on amazon AWS
+
+#### Goal
+Deploy the docker containers on amazon AWS
+
+#### Tasks

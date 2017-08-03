@@ -58,8 +58,10 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id;
+
     @Column(name = "account_type", nullable = false)
     public AccountType accountType;
+
     @Column(name = "customer_id", nullable = false)
     public Integer customerId;
 
@@ -67,3 +69,42 @@ public class Account {
 ```
 
 ## Account controller and service
+
+The account service and controller are to be implemented like the account controller and service in stage 03. 
+
+The account controller should offer the following request mappings:
+
+ | HTTP Verb | Request Mapping | Does what? |
+ | --------- | :-------------- | :--------- |
+ | GET       | /account/{accountId} | returns account with given account ID |
+ | GET       | /account?customerId={customerId} | returns the accounts assigned to the customer with the given ID |
+ | POST      | /account | creates a new account, the request body should contain the account formatted as JSON |
+
+The account service should offer at least the following functionality:
+
+```Java
+public interface AccountService {
+
+    Account loadAccountById(Integer accountId);
+
+    Account saveAccount(Account account);
+
+    List<Account> findAccountsByCustomerId(Integer customerId);
+}
+```
+
+For the saving an account the customer ID is provided. Note that you should not verify if the customer exists (using the customer endpoint of the demo project) yet. This will be done in the next stage. In the reference solution we defined a TODO for this:
+
+```Java
+@Override
+public Account saveAccount(Account account) {
+
+    // TODO: Call the customer service and check it the customer with the given ID exists!
+
+    return accountRepository.save(account);
+}
+```
+
+
+
+
