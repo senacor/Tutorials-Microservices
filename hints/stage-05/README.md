@@ -38,7 +38,7 @@ The following dependencies have to be added to ```build.gradle```:
 compile('org.springframework.cloud:spring-cloud-starter-eureka')
 ```
 
-The ```@EnableEurekaClient```` annotation has to be added to the application classes:
+The ```@EnableEurekaClient``` annotation has to be added to the application classes:
 ```Java
 @SpringBootApplication
 @EnableEurekaClient
