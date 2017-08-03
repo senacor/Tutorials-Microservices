@@ -4,5 +4,5 @@ public enum AccountType {
 
     GIRO,
     CREDIT_CARD,
-    LOAD
+    LOAN
 }
