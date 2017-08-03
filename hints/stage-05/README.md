@@ -42,7 +42,7 @@ The ```@EnableEurekaClient``` annotation has to be added to the application clas
 ```Java
 @SpringBootApplication
 @EnableEurekaClient
-public class [AcclicationName]Application {
+public class [ApplicationName]Application {
 	...
 }
 ```
