@@ -110,9 +110,10 @@ The discovery server requires another spring-boot project. Use [SpringBoot Initi
 
 * Generate a ```Gradle Project``` with ```Java``` and Spring Boot ```1.5.x``` (latest stable version)
 * Group: ```com.senacor.bitc```
-* Artifact: ```config```
-* Dependencies: ```Web``` ```Config Server```
+* Artifact: ```registry```
+* Dependencies: ```Web``` ```Eureka Server```
 
+Add the ```registry``` project as module in IntelliJ IDEA: ```File``` >> ``` New``` >> ``` Module from Existing Sources...``` >> select the extracted ```registry``` folder
 
 #### Tasks
 
