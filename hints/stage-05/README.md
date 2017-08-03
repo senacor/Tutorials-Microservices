@@ -5,7 +5,7 @@
 After adding the registry project you have 4 projects now:
 
 1. **demo**: The demo service (including the customer endpoint)
-2. ** config**: The config server
+2. **config**: The config server
 2. **accounting**: The accounting service (including the account endpoint)
 3. **registry**: The Eureka server
 

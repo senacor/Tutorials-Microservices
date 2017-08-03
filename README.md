@@ -1,10 +1,24 @@
 # BankingInTheCloud-Tutorials
-This repo provides tutorials for the BankingInTheCloud workshop. 
+This repo provides tutorials for the BankingInTheCloud workshop. The workshop is divided in stages that build on each other. Depending on the time constraints certain stages can be skipped. 
+
+Each stages has a two-digit number. There are optional stages which are not integrated into the build-on-each-other pattern, but are side branches of a certain stage. Optional stages are marked with the stage's number they build on and a letter (e.g. 06.A).
+
+Detailed hints for each stage can be found in the [hints folder](https://github.com/senacor/BankingInTheCloud-Tutorials/tree/master/hints). 
 
 ## Project Setup
 
-The master-branch contains the zip files needed for the stages. 
-Note: If you cannot 
+For the BankingInTheCloud-Tutorials you need the following tools:
+* Java 1.8.x
+* IntelliJ IDEA (community or ultimate edition)
+* MySQL Server
+* Chrome
+* Postman (Chrome extension)
+* docker
+
+For alternative stages you additionally need
+* docker-compose (for alternative stage 06.A)
+
+Note: The setup for the complete BankingInTheCloud workshop is described in the [BankingInTheCloud-WorkshopSetup repo](https://github.com/senacor/BankingInTheCloud-WorkshopSetup), a list of tools that we use in the workshop can be found [here](https://github.com/senacor/BankingInTheCloud-WorkshopSetup/tree/master/alternative-setup).
 
 ## Tutorial stages
 
@@ -117,10 +131,10 @@ Add the ```registry``` project as module in IntelliJ IDEA: ```File``` >> ``` New
 
 #### Tasks
 
-* Configure the registry project as Eureka server
-* Configure the demo project as Eureka client so it register with the Eureka server 
-* Configure the accounting project as Eureka client so it registers with the Eureka server
-* Configure a Feign client for the customer endpoint in the accounting project and verify the customer ID upon account creation
+* Configure the registry project as Eureka server.
+* Configure the demo project as Eureka client so it register with the Eureka server.
+* Configure the accounting project as Eureka client so it registers with the Eureka server.
+* Configure a feign client for the customer endpoint in the accounting project and verify the customer ID upon account creation.
 
 
 ### Stage 06 - Docker (containerize)
@@ -131,14 +145,22 @@ You pack your services into containers for deployment.
 #### Tasks
 
 
-### Stage 07 (optional) - Messaging and Event Sourcing
+### Stage 06.A (optional) - Docker Compose
+
+#### Goal
+You configure the docker containers of stage 06 through 
+
+#### Tasks
+
+
+### Stage 06.B (optional) - Messaging and Event Sourcing
 
 #### Goal
 You add endpoints that emit events, so your two services don't directly communicate with each other but one service emits an event that the other service consumes.
 
 #### Tasks
 
-### Stage 08 - Running the project on amazon AWS
+### Stage 07 - Running the project on amazon AWS
 
 #### Goal
 Deploy the docker containers on amazon AWS
@@ -146,7 +168,7 @@ Deploy the docker containers on amazon AWS
 #### Tasks
 
 
-### Stage 09 - Adding a load balancer on amazon AWS
+### Stage 08 - Adding a load balancer on amazon AWS
 
 #### Goal
 Add a load balancer to the project setup on AWS
@@ -154,7 +176,7 @@ Add a load balancer to the project setup on AWS
 #### Tasks
 
 
-### Stage 10 - Utilizing Cloud storage instead of a database on amazon AWS
+### Stage 09 - Utilizing Cloud storage instead of a database on amazon AWS
 
 #### Goal
 Instead of running a database in a docker container you should utilize the simple storage service (S3) of amazon AWS.
