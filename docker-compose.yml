@@ -1,0 +1,84 @@
+version: '3.2'
+
+services:
+  demodb: 
+    image: mysql
+    container_name: demodb
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_DATABASE=demodb
+    ports:
+      - "3306:3306"
+    networks:
+        - demonet
+
+  accountingdb: 
+    image: mysql
+    container_name: accountingdb
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_DATABASE=accountingdb
+    ports:
+      - "3305:3306"
+    networks:
+        - demonet
+
+  registry:
+    build:
+      context: ./registry
+    image: registry
+    container_name: registry
+    working_dir: /
+    ports:
+      - "8761:8761"
+    networks:
+        - demonet
+
+  config:
+    build:
+      context: ./config
+    image: config
+    container_name: config
+    working_dir: /
+    ports:
+      - "8888:8888"
+    networks:
+        - demonet
+
+
+  demo:
+    build:
+      context: ./demo
+    image: demo
+    container_name: demo
+    working_dir: /
+    ports:
+      - "8081:8081"
+      - "7081:7081"
+    depends_on:
+        - demodb
+        - registry
+        - config
+    networks:
+        - demonet
+    
+  accounting:
+    build:
+      context: ./accounting
+    image: accounting
+    container_name: accounting
+    working_dir: /
+    ports:
+      - "8082:8082"
+      - "7082:7082"
+    depends_on:
+        - accountingdb
+        - registry
+        - config
+        - demo
+    networks:
+        - demonet
+
+networks:
+  demonet:
+  
