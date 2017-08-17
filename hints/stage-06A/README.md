@@ -133,11 +133,7 @@ eureka:
 bootstrap.yml:
 ```YAML
 spring:
-  application:
-    name: accounting
-  profiles:
-    active: dev
-  cloud:
+(...)
     config:
       uri: http://config:8888
 (...)
