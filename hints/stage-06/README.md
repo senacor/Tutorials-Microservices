@@ -193,9 +193,9 @@ It should be enough to specify this on the server but somehow the client seems t
 
 If you want to build everything from scratch it is best to remove both image and container first: 
 
-1. stop container: ```docker stop [ContainerName]
-2. remove container:```docker rm [ContainerName]
-3. remove image: ```docker rmi [ImageName]
+1. stop container: ```docker stop [ContainerName]```
+2. remove container: ```docker rm [ContainerName]```
+3. remove image: ```docker rmi [ImageName]```
 
 Then build the project, image and container new:
 
@@ -225,7 +225,7 @@ EXPOSE 8081
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom", "-Xdebug", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=7081","-jar","/app.jar"]
 ```
 
-In IntelliJ IDEA 
+In IntelliJ IDEA:
 
 1. open the "Run/Debug Configurations"
 2. create a new "Remote" configuration 
