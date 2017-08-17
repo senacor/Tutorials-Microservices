@@ -1,4 +1,4 @@
-# Hints for Tutorial stage 06
+# Hints for Tutorial stage 06A
 
 ## Overview
 
