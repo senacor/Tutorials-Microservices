@@ -131,27 +131,41 @@ Add the ```registry``` project as module in IntelliJ IDEA: ```File``` >> ``` New
 
 #### Tasks
 
-* Configure the registry project as Eureka server.
-* Configure the demo project as Eureka client so it register with the Eureka server.
-* Configure the accounting project as Eureka client so it registers with the Eureka server.
-* Configure a feign client for the customer endpoint in the accounting project and verify the customer ID upon account creation.
+1. Configure the registry project as Eureka server.
+2. Configure the demo project as Eureka client so it register with the Eureka server.
+3. Configure the accounting project as Eureka client so it registers with the Eureka server.
+4. Configure a feign client for the customer endpoint in the accounting project and verify the customer ID upon account creation.
 
 
 ### Stage 06 - Docker (containerize)
 
 #### Goal
-You pack your services into containers for deployment.
+The complete application (databases, config server, registry and functional services) works as before but runs in docker containers. 
 
 #### Tasks
 
+1. Configure containers for the two MySQL databases by using MySQL images from Docker-Hub
+2. Configure container for the registry (through image from Docker-Hub or by adding a Dockerfile to the registry project)
+3. Configure container for the config server (through image from Docker-Hub or by adding a Dockerfile to the registry project)
+4. Configure container for the demo service by adding a Dockerfile to the demo project
+5. Configure container for the accounting service by adding a Dockerfile to the accounting project
+
+In is recommended that you test the new containers after each task by starting the newly created container as well as the other parts (locally, outside of container).
+
+Note: In this stage it is enough to link the containers on IP address level. In the docker-compose stage we will create a more generic setup.
 
 ### Stage 06.A (optional) - Docker Compose
 
 #### Goal
-You configure the docker containers of stage 06 through 
+You configure the docker containers of stage 06 through docker-compose so you don't have to link the containers using the specific IP addresses of the containers, but use a configuration by name through docker-compose.
 
 #### Tasks
 
+1. Add a docker-compose configuration file to the top folder of the repository.
+2. Configure all the services in the docker-compose configuration (add entry for all the different components and define the linkage).
+3. Startup the "backbone containers" (database, config server, registry) through docker-compose.
+4. Startup the "functional containers" (demo, accounting) through docker-compose.
+5. Test customer and account retrieval and account creation.
 
 ### Stage 06.B (optional) - Messaging and Event Sourcing
 

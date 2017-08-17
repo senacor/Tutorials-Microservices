@@ -6,7 +6,7 @@ In stage 06 we create/use docker containers for all the projects we have instead
 
 In stage 07 we will use docker-compose to make the setup more robust and easy to use.
 
-## Configures for the MySQL databases as docker containers
+## Containers for MySQL databases
 
 ### Startup the containers
 
