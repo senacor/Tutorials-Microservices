@@ -68,3 +68,7 @@ In this stage the linkage of the containers through the configuration files is d
 After finishing stage 07 you have the container management setup with docker-compose. You new control the build, start and stop of the containers through docker compose. 
 
 The linkabe between the containers is not managed through names by docker-compose, no fixed IP addresses are required.
+
+## Stage 07A - Config on Config Server
+
+After finishing stage 07A the configuration for the demo and the accounting service are completely managed by the config server. The ```bootstrap.yml``` of the services only contains the reference to the config server, the ```application.yml``` was completely moved to the config server and removed from the services.
