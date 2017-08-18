@@ -154,7 +154,7 @@ In is recommended that you test the new containers after each task by starting t
 
 Note: In this stage it is enough to link the containers on IP address level. In the docker-compose stage we will create a more generic setup.
 
-### Stage 06.A (optional) - Docker Compose
+### Stage 07 - Docker Compose
 
 #### Goal
 You configure the docker containers of stage 06 through docker-compose so you don't have to link the containers using the specific IP addresses of the containers, but use a configuration by name through docker-compose.
@@ -167,14 +167,25 @@ You configure the docker containers of stage 06 through docker-compose so you do
 4. Startup the "functional containers" (demo, accounting) through docker-compose.
 5. Test customer and account retrieval and account creation.
 
-### Stage 06.B (optional) - Messaging and Event Sourcing
+### Stage 07.A (optional) - Move all the configuration to the Config Server
+
+#### Goal
+Move all configurations that are applied at runtime (```application.yml```) but not at startup (```bootstrap.yml```) to the config server's configuration so all the configuration is at one place. The startup configuration should only contain the information how to reach the config server. 
+
+#### Tasks
+
+1. Move all the configuration entries from the demo and accounting projects' ```application.yml``` files to the respective configuration on the config server.
+2. Commit the configuration files and let the config server configuration (in ```bootstrap.yml```) point to the correct repo/branch. 
+3. Test the setup.
+
+### Stage 07.B (optional) - Messaging and Event Sourcing
 
 #### Goal
 You add endpoints that emit events, so your two services don't directly communicate with each other but one service emits an event that the other service consumes.
 
 #### Tasks
 
-### Stage 07 - Running the project on amazon AWS
+### Stage 08 - Running the project on amazon AWS
 
 #### Goal
 Deploy the docker containers on amazon AWS
@@ -182,7 +193,7 @@ Deploy the docker containers on amazon AWS
 #### Tasks
 
 
-### Stage 08 - Adding a load balancer on amazon AWS
+### Stage 09 - Adding a load balancer on amazon AWS
 
 #### Goal
 Add a load balancer to the project setup on AWS
@@ -190,7 +201,7 @@ Add a load balancer to the project setup on AWS
 #### Tasks
 
 
-### Stage 09 - Utilizing Cloud storage instead of a database on amazon AWS
+### Stage 10 - Utilizing Cloud storage instead of a database on amazon AWS
 
 #### Goal
 Instead of running a database in a docker container you should utilize the simple storage service (S3) of amazon AWS.
