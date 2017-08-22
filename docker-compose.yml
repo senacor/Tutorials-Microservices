@@ -1,16 +1,16 @@
 version: '2'
 
 services:
-  demodb: 
-    image: mysql
-    container_name: demodb
-    environment:
-      - MYSQL_ROOT_PASSWORD=mysql
-      - MYSQL_DATABASE=demodb
-    ports:
-      - "3306:3306"
-    networks:
-        - demonet
+#  demodb:
+#    image: mysql
+#    container_name: demodb
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=mysql
+#      - MYSQL_DATABASE=demodb
+#    ports:
+#      - "3306:3306"
+#    networks:
+#        - demonet
 
   accountingdb: 
     image: mysql
@@ -56,7 +56,7 @@ services:
       - "8081:8081"
       - "7081:7081"
     depends_on:
-        - demodb
+#        - demodb
         - registry
         - config
     networks:
