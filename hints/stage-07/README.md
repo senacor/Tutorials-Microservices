@@ -1,4 +1,4 @@
-# Hints for Tutorial stage 06A
+# Hints for Tutorial stage 07
 
 ## Overview
 
@@ -106,6 +106,7 @@ networks:
   demonet:
 ```
 
+Note: The port configuration within the docker compose configuration file depicts the ports that will be allocated on the machine it runs on! Thus you can access the demo and accounting service through ```localhost:[PORT]``` again. Note that for the container linkage (using names) this port configuration does not matter, because the containers communicate with each other on a docker-IP+port level.
 
 ## Adapt the configuration within the functional services
 

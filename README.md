@@ -5,7 +5,7 @@ Each stages has a two-digit number. There are optional stages which are not inte
 
 Detailed hints for each stage can be found in the [hints folder](https://github.com/senacor/BankingInTheCloud-Tutorials/tree/master/hints). 
 
-## Project Setup
+## Setup
 
 For the BankingInTheCloud-Tutorials you need the following tools:
 * Java 1.8.x
@@ -30,7 +30,7 @@ Participants are supposed to solve each tutorial stage by themselfes. A recerenc
 #### Goal
 You have your first spring boot application up and running.
 
-#### Project Setup
+#### Setup
 The basic project setup is based on the demo-project one can generate using the [SpringBoot Initializr](https://start.spring.io/). Use the following settings:
 
 * Generate a ```Gradle Project``` with ```Java``` and Spring Boot ```1.5.x``` (latest stable version)
@@ -49,7 +49,7 @@ Open the ```demo``` project using IntelliJ IDEA: ```File``` >> ``` Open...``` >>
 #### Goal
 Your spring boot application can be configured via a configuration server. 
 
-#### Project Setup 
+#### Setup 
 
 The cloud config requires another spring-boot project that represents the cloud config server. Use [SpringBoot Initializr](https://start.spring.io/) to generate the project using the following settings:
 
@@ -75,7 +75,7 @@ We recommend that you use yaml (```.yml```) instead of properties files because 
 #### Goal
 Create a database with a customer table that contains dummy-data for your service using flyway migration scripts.
 
-#### Project Setup
+#### Setup
 
 1. [Install MySQL](https://dev.mysql.com/downloads/mysql/) (you can also [install it through apt-get](https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-16-04)).
 2. Create a MySQL database through the mysql command line.
@@ -118,7 +118,7 @@ You recap step 00 till 03 again. You create a second service (accounting-service
 #### Goal
 You add a service discovery so the services can find each other through the discovery server. The account endpoint retrieves information from the customer endpoint through a Feign client.
 
-#### Project Setup
+#### Setup
 
 The discovery server requires another spring-boot project. Use [SpringBoot Initializr](https://start.spring.io/) to generate the project using the following settings:
 
@@ -176,24 +176,87 @@ Move all configurations that are applied at runtime (```application.yml```) but 
 
 1. Move all the configuration entries from the demo and accounting projects' ```application.yml``` files to the respective configuration on the config server.
 2. Commit the configuration files and let the config server configuration (in ```bootstrap.yml```) point to the correct repo/branch. 
-3. Test the setup.
+3. Build the accounting and demo projects and containers new.
+4. Run and test the setup by creating a new account through Postman.
 
 ### Stage 07.B (optional) - Messaging and Event Sourcing
+
+*Disclaimer: This stage is not implemented yet. It will be added at a later point once the AWS stages are complete.*
 
 #### Goal
 You add endpoints that emit events, so your two services don't directly communicate with each other but one service emits an event that the other service consumes.
 
 #### Tasks
 
-### Stage 08 - Running the project on amazon AWS
+### Stage 08 - First steps with amazon ECS
 
 #### Goal
-Deploy the docker containers on amazon AWS
+Instead of running the mysql databases (demodb and accountingdb) in local docker-containers you run docker containers in the AWS cloud using amazon ECS (EC2 Container Service).
+
+#### Setup
+
+1. Amazon AWS account is required.
+
+#### Tasks
+
+1. Create a Task Definition within the amazon ECS environment that defines the mysql containers.
+2. Define a cluster and service that use the task definition.
+3. Get the IP address of the instance where your containers run.
+4. Configure your local setup to use the containerized mysql databases from the cloud instance.
+
+Note: ECS already uses the Docker-Hub registry, so you don't need to upload any containers to the AWS container registry in this step! The "mysql" container you pull locally from Docker-Hub also works within the Task-Definition of ECS.
+
+Note: This setup goes against the idea of docker-compose because the mysql containers are not managed by docker-compose. You will have to configure the databases on the config-server rather then through docker-compose. You can remove the database container entries from docker-compose for this stage because you don't need them.
+
+
+### Stage 09 - Docker-Hub (container repository)
+
+#### Goal
+Instead of creating the containers locally you push them to Docker-Hub so that they are publicly available. For the local setup the containers are then pulled from the Docker-Hub repository.
+
+#### Tasks
+
+1. Decide which containers you can just reuse from Docker-Hub because they are standard containers and which containers are "self built" so you have to push to repositories in your Docker-Hub account.
+   Note: The self built containers are those containers that 
+2. Create a repository for each self-built container that will be pushed.
+3. Push the self build containers to their respective repositories on docker-hub.
+
+2. Push your self-built containers to docker-hub.
+3. Adapt the docker-compose configuration so you use the docker-hub containers and not the local Dockerfiles.
+
+### Stage 09.A - Using the amazon ECR (EC2 Container Registry)
+
+#### Goal
+You understand how the AWS container registry works and how you can upload docker containers to an AWS container repository.  
+
+#### Setup
+
+1. Amazon AWS account is required.
+2. The [AWS CLI](http://docs.aws.amazon.com/cli/latest/userguide/installing.html) is required on your local machine.
+3. Optionally you can [create an IAM user]((http://docs.aws.amazon.com/AmazonECR/latest/userguide/get-set-up-for-amazon-ecr.html)), if you operate within your own AWS account. If you create an IAM user you will have to [configure the CLI for that IAM user](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
+
+#### Tasks
+
+The ECR is an alternative to Docker-Hub. You can upload your container-images there so they are available in the cloud.
+
+Follow the instructions from the [ECR documentation on how to upload docker container images](http://docs.aws.amazon.com/AmazonECR/latest/userguide/ECR_GetStarted.html) and upload one of your containers.
+
+
+### Stage 10 - Amazon ECS-CLI compose
+
+#### Goal
+You automatically create a task-definition within amazon ECS out of your local docker-compose setup. You use this task-definition to run containers within a cluster without any further adaption.
+
+#### Setup
+
+1. It is required that all the containers that the application consist of are available on Docker-Hub.
 
 #### Tasks
 
 
-### Stage 09 - Adding a load balancer on amazon AWS
+
+
+### Stage 11 - Adding a load balancer on amazon AWS
 
 #### Goal
 Add a load balancer to the project setup on AWS
@@ -201,7 +264,7 @@ Add a load balancer to the project setup on AWS
 #### Tasks
 
 
-### Stage 10 - Utilizing Cloud storage instead of a database on amazon AWS
+### Stage 12 - Utilizing Cloud storage instead of a database on amazon AWS
 
 #### Goal
 Instead of running a database in a docker container you should utilize the simple storage service (S3) of amazon AWS.
