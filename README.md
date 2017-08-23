@@ -228,7 +228,7 @@ Instead of creating the containers locally you push them to Docker-Hub so that t
 ### Stage 09.A - Using the amazon ECR (EC2 Container Registry)
 
 #### Goal
-You understand how the AWS container registry works and how you can upload docker containers to an AWS container repository.  
+You understand how the AWS container registry works as an alternative to Docker-Hub. Your are able to upload docker containers to an AWS container repository.  
 
 #### Setup
 
@@ -259,7 +259,7 @@ You automatically generate a task-definition on amazon ECS out of your local doc
 
 1. Make sure that all services defined in your docker-compose file point to containers available in the cloud.
 2. Follow the ECS-CLI compose documentation for generating the task definition within your AWS account.
-3. Add the task-definition to a new service within a new cluster and run the cluster.
+3. Add the generated task-definition to a new service within a new cluster and run the cluster.
 4. Hope that the magic works :)
 
 
