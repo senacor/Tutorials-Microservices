@@ -68,3 +68,9 @@ In this stage the linkage of the containers through the configuration files is d
 After finishing stage 07 you have the container management setup with docker-compose. You new control the build, start and stop of the containers through docker compose. 
 
 The linkabe between the containers is not managed through names by docker-compose, no fixed IP addresses are required.
+
+## Stage 08 - First steps with amazon ECS
+
+After finishing stage 08 the two mysql database containers are running an amazon AWS, while the rest of the setup still runs locally. The containers are configured via an ECS (EC2 container service) task definition that automatically starts an instance when configuring a cluster and service for the task definition within the ECS console in AWS. The container image used for the databases is the standard mysql image from Docker-Hub (wich is available in ECS).
+
+The link to the database containers in the cloud is configured via the config-server - the databases are not part of docker-compose in this stage.
