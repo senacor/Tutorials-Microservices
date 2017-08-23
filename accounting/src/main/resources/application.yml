@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: 'jdbc:mysql://172.17.0.3:3306/accountingdb'
+    url: 'jdbc:mysql://accountingdb:3306/accountingdb'
     username: 'root'
     password: 'mysql'
     driver-class-name: 'com.mysql.jdbc.Driver'
@@ -14,7 +14,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:http://172.17.0.4:8761/eureka}
+      defaultZone: ${EUREKA_URI:http://registry:8761/eureka}
   instance:
     preferIpAddress: true
 

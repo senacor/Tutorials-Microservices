@@ -62,3 +62,9 @@ Additionally the accounting project includes a feign client, so the account serv
 After finishing stage 06 all the components of your application can run in docker containers. The databases (accountingdb, demodb), the config server, the registry as well as the functional services (demo, accounting) are containerized. 
 
 In this stage the linkage of the containers through the configuration files is done by fixed IP addresses. In the next stage docker-compose will be used to apply names instead of IP addresses to achieve a more robust setup.
+
+## Stage 07 - Docker Compose
+
+After finishing stage 07 you have the container management setup with docker-compose. You new control the build, start and stop of the containers through docker compose. 
+
+The linkabe between the containers is not managed through names by docker-compose, no fixed IP addresses are required.
