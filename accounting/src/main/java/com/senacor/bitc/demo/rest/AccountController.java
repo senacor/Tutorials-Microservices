@@ -1,6 +1,7 @@
 package com.senacor.bitc.demo.rest;
 
 import com.senacor.bitc.demo.domain.Account;
+import com.senacor.bitc.demo.feign.client.demo.exception.CustomerNotFoundException;
 import com.senacor.bitc.demo.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,7 +36,7 @@ public class AccountController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
     @ResponseBody
-    public Account createAccount(@RequestBody Account account) {
+    public Account createAccount(@RequestBody Account account) throws CustomerNotFoundException {
         return accountService.saveAccount(account);
     }
 

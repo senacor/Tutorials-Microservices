@@ -2,6 +2,8 @@ package com.senacor.bitc.demo.service;
 
 import com.senacor.bitc.demo.domain.Account;
 import com.senacor.bitc.demo.domain.AccountRepository;
+import com.senacor.bitc.demo.feign.client.demo.CustomerClient;
+import com.senacor.bitc.demo.feign.client.demo.exception.CustomerNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +12,15 @@ import java.util.List;
 @Service
 public class MySQLAccountService implements AccountService {
 
+    private final CustomerClient customerClient;
     private final AccountRepository accountRepository;
 
     @Autowired
-    public MySQLAccountService(AccountRepository accountRepository) {
+    public MySQLAccountService(
+            AccountRepository accountRepository,
+            CustomerClient customerClient) {
         this.accountRepository = accountRepository;
+        this.customerClient = customerClient;
     }
 
 
@@ -24,9 +30,15 @@ public class MySQLAccountService implements AccountService {
     }
 
     @Override
-    public Account saveAccount(Account account) {
+    public Account saveAccount(Account account) throws CustomerNotFoundException {
 
-        // TODO: Call the customer service and check if the customer with the given ID exists!
+        Integer customerId = account.customerId;
+
+        if (customerId == null ||
+                customerClient.getCustomerById(customerId) == null)
+        {
+            throw new CustomerNotFoundException();
+        }
 
         return accountRepository.save(account);
     }

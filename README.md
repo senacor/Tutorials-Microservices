@@ -43,3 +43,16 @@ The accounting project contains a REST endpoint for managing accounts for custom
 A configuration file (```accounting-dev.yml```) was added that defines port ```8082``` for the accounting application. 
 
 The verification of the customer ID through the customer service upon creation of an account is not implemented in this stage yet. There is a TODO defined in the ```AccountService```. The communication with the customer REST endpoint (demo project) is to be added in the next stage.
+
+## Stage 05 - Eureka
+
+After finishing stage 05 you have have Eureka as service registry so services can find each other. You now have four projects:
+
+1. **demo**: the demo project created in stage 00
+2. **config**: the spring cloud config server created in stage 01
+3. **accounting**: the accounting project created in stage 04
+4. **registry**: the Eureka service registry server
+
+Both the demo and the accounting project are configured as Eureka clients, meaning they register at the Eureka service upon startup. 
+
+Additionally the accounting project includes a feign client, so the account service (accounting project) can communicate with the customer endpoint (demo project) to verify if a customer exists upon account creation.

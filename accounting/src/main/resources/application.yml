@@ -8,3 +8,21 @@ spring:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
     default-property-inclusion: non_null
+
+server:
+  port: 0
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+
+# note: this configuration is needed to avoid timeout upon initial request
+#   somehow the initial request needs more time and runs in a timeout with the default settings
+# https://github.com/Netflix/Hystrix/wiki/configuration#execution.isolation.thread.timeoutInMilliseconds
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
