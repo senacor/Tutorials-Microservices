@@ -140,3 +140,23 @@ spring:
       uri: http://config:8888
 (...)
 ```
+
+## Starting the application
+
+Note that the demo and the accounting service depend on:
+
+1. Their respective databases.
+2. The config server (otherwise they will not be configured correctly upon startup).
+3. The registry (they have to register with Eureka upon startup).
+
+Docker compose does not "wait" until the other services are available by itself - even when listing the other services correctly in the ```depends_on``` section. The ```depends_on``` section just defines that if the service listed as dependency was not started yet, it will be started - but docker-compose will not wait until the service is available.
+
+Thus it is recommended to start the containers like this:
+
+1. Open a terminal and run: ```docker-compose up demodb accountingdb```
+2. Wait until demodb and accountingdb started successfully.
+3. Open another terminal and run: ```docker-compose up config registry```
+4. Wait until config and registry started successfully.
+5. Open another terminal and run: ```docker-compose up demo accounting```
+
+By running these tasks in separate windows its also easier to read the log information. If you start all containers at once in one terminal there will be six containers logging to the same terminal which is quite tough to read.
