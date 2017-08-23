@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: 'jdbc:mysql://54.187.228.253:3306/demodb'
+    url: 'jdbc:mysql://52.37.62.165:3306/demodb'
     username: 'root'
     password: 'mysql'
     driver-class-name: 'com.mysql.jdbc.Driver'

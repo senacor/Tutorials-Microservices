@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: 'jdbc:mysql://accountingdb:3306/accountingdb'
+    url: 'jdbc:mysql://52.37.62.165:3305/accountingdb'
     username: 'root'
     password: 'mysql'
     driver-class-name: 'com.mysql.jdbc.Driver'
