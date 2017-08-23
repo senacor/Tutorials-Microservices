@@ -214,15 +214,16 @@ Note: This setup goes against the idea of docker-compose because the mysql conta
 #### Goal
 Instead of creating the containers locally you push them to Docker-Hub so that they are publicly available. For the local setup the containers are then pulled from the Docker-Hub repository.
 
+#### Setup
+
+1. Docker-Hub account is required.
+
 #### Tasks
 
-1. Decide which containers you can just reuse from Docker-Hub because they are standard containers and which containers are "self built" so you have to push to repositories in your Docker-Hub account.
-   Note: The self built containers are those containers that 
+1. Decide which containers you can just reuse from Docker-Hub because they are standard containers and which containers are "self built" so you have to push to repositories in your Docker-Hub account. Note: The self built containers are those containers that 
 2. Create a repository for each self-built container that will be pushed.
 3. Push the self build containers to their respective repositories on docker-hub.
-
-2. Push your self-built containers to docker-hub.
-3. Adapt the docker-compose configuration so you use the docker-hub containers and not the local Dockerfiles.
+4. Adapt the docker-compose configuration so you use the docker-hub containers and not the local Dockerfiles.
 
 ### Stage 09.A - Using the amazon ECR (EC2 Container Registry)
 
@@ -237,23 +238,29 @@ You understand how the AWS container registry works and how you can upload docke
 
 #### Tasks
 
-The ECR is an alternative to Docker-Hub. You can upload your container-images there so they are available in the cloud.
+The ECR is an alternative to Docker-Hub. You can upload your container-images there so they are available in the AWS cloud.
 
-Follow the instructions from the [ECR documentation on how to upload docker container images](http://docs.aws.amazon.com/AmazonECR/latest/userguide/ECR_GetStarted.html) and upload one of your containers.
+1. Follow the instructions from the [ECR documentation on how to upload docker container images](http://docs.aws.amazon.com/AmazonECR/latest/userguide/ECR_GetStarted.html) and upload one of your container-images to the ECR.
+2. Alter the task definition and use the container you uploaded to the amazon ECR instead of the Docker-Hub container-image.
 
 
 ### Stage 10 - Amazon ECS-CLI compose
 
 #### Goal
-You automatically create a task-definition within amazon ECS out of your local docker-compose setup. You use this task-definition to run containers within a cluster without any further adaption.
+You automatically generate a task-definition on amazon ECS out of your local docker-compose setup using the CLI. You use this task-definition to run containers in a new ECS cluster and service without any further adaption.
 
 #### Setup
 
-1. It is required that all the containers that the application consist of are available on Docker-Hub.
+1. It is required that all the containers that the application consist of are available in the cloud (Docker-Hub or ECR).
+2. The [AWS CLI](http://docs.aws.amazon.com/cli/latest/userguide/installing.html) is required on your local machine.
+3. Optionally you can [create an IAM user]((http://docs.aws.amazon.com/AmazonECR/latest/userguide/get-set-up-for-amazon-ecr.html)), if you operate within your own AWS account. If you create an IAM user you will have to [configure the CLI for that IAM user](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
 
 #### Tasks
 
-
+1. Make sure that all services defined in your docker-compose file point to containers available in the cloud.
+2. Follow the ECS-CLI compose documentation for generating the task definition within your AWS account.
+3. Add the task-definition to a new service within a new cluster and run the cluster.
+4. Hope that the magic works :)
 
 
 ### Stage 11 - Adding a load balancer on amazon AWS
