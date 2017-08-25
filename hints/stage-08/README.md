@@ -111,4 +111,8 @@ Run and Test the environment:
 4. You can access your mysql databases in the cloud like this to check if the initial migrations were applied: ```mysql -uroot -pmysql -h [INSTANCE_IP_ADDR] -P [INSTANCE_PORT_THAT_MAPS_TO_DB_CONTAINER]```
 5. You should be able to access and create customer/account data like in stage 07.
 
+## Cleanup
+
+After you finished this stage make sure to delete the cluster on amazon ASW again, so you don't run into payments!
+
 

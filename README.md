@@ -220,10 +220,12 @@ Instead of creating the containers locally you push them to Docker-Hub so that t
 
 #### Tasks
 
-1. Decide which containers you can just reuse from Docker-Hub because they are standard containers and which containers are "self built" so you have to push to repositories in your Docker-Hub account. Note: The self built containers are those containers that 
+1. Decide which containers you can just reuse from Docker-Hub because they are standard containers and which containers are "self built" so you have to push to repositories in your Docker-Hub account. 
 2. Create a repository for each self-built container that will be pushed.
 3. Push the self build containers to their respective repositories on docker-hub.
 4. Adapt the docker-compose configuration so you use the docker-hub containers and not the local Dockerfiles.
+
+Note: The self built containers are those containers that have a "context" defined in docker-compose. They are built and run using Dockerfiles.
 
 ### Stage 09.A - Using the amazon ECR (EC2 Container Registry)
 
