@@ -57,6 +57,8 @@ Then you can push the container like this:
 docker push [YOUR_DOCKERHUB_UNAME]/demo:[TAG_YOU_CHOOSE]
 ```
 
+The senacor container-images (created from the stage-09 tutorial code) can be found [here](https://hub.docker.com/u/senacortutorials/).
+
 ## Running the project locally with cloud container-images
 
 You will have to configure your ```docker-compose.yml``` to use cloud container-images only.
