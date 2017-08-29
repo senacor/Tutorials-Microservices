@@ -6,8 +6,6 @@ spring:
   cloud:
     discovery:
       enabled: false
-  config:
-    enabled: false
   datasource:
     url: 'jdbc:mysql://localhost:3306/demodb'
     username: 'root'
