@@ -264,7 +264,7 @@ You automatically generate a task-definition on amazon ECS out of your local doc
 3. Add the generated task-definition (in your AWS account) to a new service within a new cluster and run the cluster.
 4. Hope that the magic works :)
 
-Note: Most likely it will not work just like that: Think about what could be the problem - if you can't solve it you can take a look at the hints.
+Note: Most likely it will not work just like that: Think about what could be the problem - if you can't solve it you can take a look at the [hints for stage 10](https://github.com/senacor/BankingInTheCloud-Tutorials/tree/master/hints/stage-10).
 
 ### Stage 10.A - Thinking about the architecture of your application
 
