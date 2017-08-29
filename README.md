@@ -236,7 +236,7 @@ You understand how the AWS container registry works as an alternative to Docker-
 
 1. Amazon AWS account is required.
 2. The [AWS CLI](http://docs.aws.amazon.com/cli/latest/userguide/installing.html) is required on your local machine.
-3. Optionally you can [create an IAM user]((http://docs.aws.amazon.com/AmazonECR/latest/userguide/get-set-up-for-amazon-ecr.html)), if you operate within your own AWS account. If you create an IAM user you will have to [configure the CLI for that IAM user](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
+3. Optionally you can [create an IAM user](http://docs.aws.amazon.com/AmazonECR/latest/userguide/get-set-up-for-amazon-ecr.html), if you operate within your own AWS account. If you create an IAM user you will have to [configure the CLI for that IAM user](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
 
 #### Tasks
 
@@ -254,15 +254,27 @@ You automatically generate a task-definition on amazon ECS out of your local doc
 #### Setup
 
 1. It is required that all the containers that the application consist of are available in the cloud (Docker-Hub or ECR).
-2. The [AWS CLI](http://docs.aws.amazon.com/cli/latest/userguide/installing.html) is required on your local machine.
-3. Optionally you can [create an IAM user]((http://docs.aws.amazon.com/AmazonECR/latest/userguide/get-set-up-for-amazon-ecr.html)), if you operate within your own AWS account. If you create an IAM user you will have to [configure the CLI for that IAM user](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
+2. The [ECS CLI](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_installation.html) is required on your local machine.
+3. You will have to [configure the ECS CLI](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_Configuration.html) similar as to configuring the AWS CLI; for that purpose you might want to [create an IAM user](http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) if you are operating within your private AWS account.
 
 #### Tasks
 
-1. Make sure that all services defined in your docker-compose file point to containers available in the cloud.
-2. Follow the ECS-CLI compose documentation for generating the task definition within your AWS account.
-3. Add the generated task-definition to a new service within a new cluster and run the cluster.
+1. Adapt the docker-compose file so it is compatible to the [ecl-cli compose features](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html) (only certain options are available).
+2. Generate a task definition through [ecl-cli compose](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html).
+3. Add the generated task-definition (in your AWS account) to a new service within a new cluster and run the cluster.
 4. Hope that the magic works :)
+
+Note: Most likely it will not work just like that: Think about what could be the problem - if you can't solve it you can take a look at the hints.
+
+### Stage 10.A - Thinking about the architecture of your application
+
+#### Goal
+You reached a stage where you can think about the structure of your application. Which services will have to scale-up? Which services don't have to scale-up? 
+
+#### Tasks
+
+1. Think about instances and containers - how would you structure your application? What would be a nice design?
+2. Think about our current setup - what could be done different? What could be done better?
 
 
 ### Stage 11 - Adding a load balancer on amazon AWS
