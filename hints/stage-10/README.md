@@ -104,12 +104,13 @@ Remember, so far we always started certain services at first (databases, config,
 
 Now that we want to operate in a cloud-environment it gets overly complicated to do that. Sure, we could still try to start our services in a specified order by adding some [startup-script logic to docker-compose](https://docs.docker.com/compose/startup-order/) - but is that the right way to go? 
 
-As the docker documentation tells us the better way is to make our application more resilient towards connection problems. If e.g. the config server is not available the application should not just fail, but it should try to connect to the server until it is available (at startup). If the database is not available at some point the application should show us an error, but it should not just die (at runtime).
+As the docker documentation tells us, the better way is to make our application more resilient towards connection problems. If e.g. the config server is not available the application should not just fail, but it should try to connect to the server until it is available (at startup). If the database is not available at some point the application should show us an error, but it should not just die (at runtime).
 
-So, how to we achieve this? Yes, you guessed it: By adding some more (rather difficult to find) configuration entries to our startup bootstrap and application configuration files.
+So, how do we achieve this? Yes, you guessed it: By adding some more (rather difficult to find) configuration entries to our startup bootstrap and application configuration files.
+
 For the spring cloud configuration client you can [define retries](https://cloud.spring.io/spring-cloud-config/multi/multi__spring_cloud_config_client.html#config-client-retry), so the application will try to retry contacting the config server upon startup if it is not available yet. You have to at least activate the ```failFast``` option in your demo's and the accounting's ```bootstrap.yml```; furthermore you can refine the options by specifying specific ```retry``` options:
 
-```
+```YAML
 (...)
 spring:
   (...)
@@ -129,7 +130,7 @@ With this configuration the server will try to contact the config server for 12 
 
 The options for the database are more complicated - and for just starting the application you will actually not need them (because the database will most likely start faster than the spring-boot applications). However, here are [some options](https://stackoverflow.com/questions/23850585/how-to-start-spring-boot-app-without-depending-on-database) you might find helpful:
 
-```
+```YAML
 (...)
 spring:
   datasource:
@@ -177,7 +178,7 @@ ecs-cli compose --project-name demo-app --file docker-compose.yml create
 
 Note: "demo-app" is just a name that you can choose.
 
-Note: The ecs-cli might give you some warning like "Skipping unsupported YAML option ..." - if such a warning concerns an option that is actually in use in your docker-compose file and it is important then you should either remove it or find a way that is compatible to the ecl-cli compose. If the ecl-cli compose warns you about an option that is not in use in your docker-compose file you can just ignore the warnings.
+Note: The ecs-cli might give you some warnings like "Skipping unsupported YAML option ..." - if such a warning concerns an option that is actually in use in your docker-compose file then you should either remove it or find a way that is compatible to the ecl-cli compose. If the ecl-cli compose warns you about an option that is not in use in your docker-compose file you can simply ignore the warnings.
 
 ## Run a cluster from the task definition
 
@@ -185,18 +186,18 @@ Note: The ecs-cli might give you some warning like "Skipping unsupported YAML op
 
 Once you successfully generated the task definition your can have a look at it in your ECS console (you already know it from stage 08).
 
-Create a cluster with a relatively strong machine - remember the services need quite a lot of resources to startup on your local machine as well. The instance "m4.large" proposed as default for the cluster will definitely do, you can also go for something a little smaller if you want. Make you configure the right ports (or port range) so you can access your services. At least port 8081 (demo) and 8082 (accounting) should be open.
+Create a cluster with a relatively strong machine - remember the services need quite a lot of resources to startup on your local machine as well. The instance "m4.large" proposed as default for the cluster will definitely do, you can also go for something a little smaller if you want. Make sure you configure the right ports (or port range) so you can access your services. At least port 8081 (demo) and 8082 (accounting) should be open on your instance.
 
-Note: At this point you might run into costs, since those instance are not part of the free tier. If you only run them for a short time the costs will be a few cents, but don't forget to delete the cluster in the end...
+Note: At this point you might run into costs, since instance stronger then t2.micro are not part of the free tier. If you only run them for a short time the costs will be a few cents, but don't forget to delete the cluster in the end...
 
 Once the cluster was create you create a service and attach the generated task definition to it. Take a look at the service and the task that it tries to run. Most likely the task will fail after a while. 
-Once you have a closet look at a failed task (in the "Stopped" tab) you will most likely notice that the spring-boot services (usually config and/or registry fail first) don't have enough memory. The default memory-limit set by the task-definition generator kicks in here.
+Once you have a closer look at a failed task (in the "Stopped" tab) you will most likely notice that the spring-boot services (usually config and/or registry fail first) don't have enough memory. The default memory-limit set by the task-definition generator (512MB) kicks in here.
 
-### How to solve "out of memory" issues?
+### How to solve the "out of memory" issues?
 
-Well, give those services more memory. The quick-and-dirty way to do it is to just alter the generated task definition right in ECS (online).
+Well, give those services more memory. The quick-and-dirty way to do it is to just alter the generated task definition right in your ECS console (online).
 
-The more sustainable way is to add the memory settings to the docker-compose file (locally) and generate a new task definition using ecs-cli compose. Your ```docker-compose-yml``` file should look something like this now:
+The more sustainable way is to add the memory settings to the docker-compose file (locally) and generate a new task definition using ecs-cli compose. Your ```docker-compose.yml``` file should look something like this now:
 
 ```YAML
 version: '2'
@@ -270,9 +271,17 @@ Note that you can also use the "Public DNS" instead of the IP address.
 
 ### Security group settings for more insight
 
-At the end of the day the "cluster" created for you by ECS is just an instance that starts docker containers. There is a lot of configuration around it, but in the end it is just a virtual machine running on an AWS server. You can have a look at this instance in your EC2 console online - and of course you can also inspect and alter the security group that was created for that instance. 
+At the end of the day the "cluster" created for you by ECS is just an instance that runs docker containers. There is a lot of configuration around it, but in the end it is just a virtual machine running on an AWS server. You can have a look at this instance in your EC2 console online - and of course you can also inspect and alter the security group that was created for that instance. 
 
-If you navigate to the security groups in your EC2 console and select the right (generated) security group you will be able to inspect and alter its port settings. This can be interesting if you want to e.g. take a look at your Eureka container's front-page offered at port 8761 - if you allow access to that port in the security group you will be able to see the registration of the demo and accounting services at Eureka.
+If you navigate to the security groups in your EC2 console and select the right (generated) security group you will be able to inspect and alter its port settings. This can be interesting if you want to e.g. take a look at your Eureka container's front-page offered at port 8761 - if you allow access to that port in the security group you will be able to see the registration of the demo and accounting services at Eureka. Inbound-rule changes will apply instantly.
 
-Of course you can go even further and allow to SSH into the instance.
+Of course you can go even further and allow to [SSH into the instance](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/instance-connect.html). Make sure your SSH port (22) is open in the security group of the instance. Once you are connected to the instance you can run commands like [docker ps](https://docs.docker.com/engine/reference/commandline/ps/) to see the status of your containers: 
+```
+docker ps -a
+```
+
+You can then retrieve the log output of a container using [docker logs](https://docs.docker.com/engine/reference/commandline/logs/):
+```
+docker logs [CONTAINER_ID]
+```
 
