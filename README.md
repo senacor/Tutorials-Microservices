@@ -269,20 +269,28 @@ Note: Most likely it will not work just like that: Think about what could be the
 ### Stage 10.A - Thinking about the architecture of your application
 
 #### Goal
-You reached a stage where you can think about the structure of your application. Which services will have to scale-up? Which services don't have to scale-up? 
+You reach a stage where you can think about the architecture of your application running in the cloud. You understand the basic principles of load balancing at an application level, database clusters/replication techniques and deployment strategies for microservices.  
 
 #### Tasks
 
-1. Think about instances and containers - how would you structure your application? What would be a nice design?
-2. Think about our current setup - what could be done different? What could be done better?
+1. Read the [AWS introduction to load balancing](http://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/what-is-load-balancing.html) and reflect on it.
+2. Think about instances and containers - Which services will have to scale-up? Which services don't have to scale-up? What would be a good setup when it comes to scalability and fault-tolerance?
+3. Read the [mysql introduction to data replication](https://dev.mysql.com/doc/refman/5.7/en/replication.html) and reflect on it.
+4. Think about your data - How can you keep the data persistent between service instances when doing load balancing at application level?
+5. Read about [microservices architectures](http://microservices.io/patterns/microservices.html) and dive into deployment patterns like [Single Service Instance per Host](http://microservices.io/patterns/deployment/single-service-per-host.html) and [Multiple Service Instances per Host](http://microservices.io/patterns/deployment/multiple-services-per-host.html) - reflect on them. 
+6. Think about our current microservices architecture and out deployment setup - What could be done different and what would be the advantages and disadvantages? How would you apply load balancing?
 
 
-### Stage 11 - Adding a load balancer on amazon AWS
+### Stage 11 - Load Balancing on amazon AWS
 
 #### Goal
-Add a load balancer to the project setup on AWS
+You add an elastic load balancer to the project setup on AWS. You understand application level load balancing.
 
 #### Tasks
+
+1. Define a load balancing strategy for the project. You will most likely have to adapt the database setup.
+2. Create a new task definition that that defines a container deployment that makes it possible to apply your load balancing strategy. 
+3. Create an ECS cluster and Service and add a load balancer.
 
 
 ### Stage 12 - Utilizing Cloud storage instead of a database on amazon AWS
