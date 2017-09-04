@@ -30,7 +30,7 @@ Recommended workflow (exmple for demo-container and image):
 2. Navigate to the demo folder and run: ```docker build -t [YOUR_DOCKERHUB_UNAME]/demo:[TAG_YOU_CHOOSE] .```
 3. You should get a success message once the container-image was built.
 
-Note: We use ```local``` as tag, because we mark the containers for local environment ```[TAG_YOU_CHOOSE]``` - basically you can choose any tag. Typically one would use versioning-schemas for tags.
+Note: We use ```stage-09``` as tag - basically you can choose any tag. Typically one would use versioning-schemas for tags.
 
 Note: You can also just re-tag your existing containers (given that they contain the right configuration) and push them, see the [Docker documentation on pushing repository-images (container images) to docker-hub](https://docs.docker.com/docker-hub/repos/#pushing-a-repository-image-to-docker-hub) for details.
 

@@ -266,14 +266,14 @@ You automatically generate a task-definition on amazon ECS out of your local doc
 
 Note: Most likely it will not work just like that: Think about what could be the problem - if you can't solve it you can take a look at the [hints for stage 10](https://github.com/senacor/BankingInTheCloud-Tutorials/tree/master/hints/stage-10).
 
-### Stage 10.A - Thinking about the architecture of your application
+### Stage 10.A - Architecture Considerations
 
 #### Goal
-You reach a stage where you can think about the architecture of your application running in the cloud. You understand the basic principles of load balancing at an application level, database clusters/replication techniques and deployment strategies for microservices.  
+You reach a stage where you can discuss the architecture of your application running in the cloud. You understand the basic principles of load balancing at an application level, database clusters/replication techniques and deployment strategies for microservices.  
 
 #### Tasks
 
-1. Read the [AWS introduction to load balancing](http://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/what-is-load-balancing.html) and reflect on it.
+1. Read the [AWS introduction to elastic load balancing](http://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html) and [service load balancing](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-load-balancing.html) and reflect on it.
 2. Think about instances and containers - Which services will have to scale-up? Which services don't have to scale-up? What would be a good setup when it comes to scalability and fault-tolerance?
 3. Read the [mysql introduction to data replication](https://dev.mysql.com/doc/refman/5.7/en/replication.html) and reflect on it.
 4. Think about your data - How can you keep the data persistent between service instances when doing load balancing at application level?
@@ -281,7 +281,21 @@ You reach a stage where you can think about the architecture of your application
 6. Think about our current microservices architecture and out deployment setup - What could be done different and what would be the advantages and disadvantages? How would you apply load balancing?
 
 
-### Stage 11 - Load Balancing on amazon AWS
+### Stage 11 - MySQL database with amazon RDS
+
+#### Goal
+Instead of providing your own database container you manage your database through amazon RDS (Relational Database Service). 
+
+#### Tasks
+
+1. Think about the security of your application - what should be accessible and how? Read into amazon [VPC (Virtual Private Cloud)](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-vpc.html).
+2. Launch MySQL instances managed by RDS for the databases of your services.
+3. Make sure that your databases are not publicly accessible.
+4. Remove the databases from the ECS task definition (by altering the docker-compose configuration and generating a new task definition).
+5. Configure the database connection for your services through the config server.
+6. Create an ECS cluster and service - make sure to configure them for the VPC you created.
+
+### Stage 12 - Load Balancing on amazon AWS
 
 #### Goal
 You add an elastic load balancer to the project setup on AWS. You understand application level load balancing.
@@ -293,9 +307,11 @@ You add an elastic load balancer to the project setup on AWS. You understand app
 3. Create an ECS cluster and Service and add a load balancer.
 
 
-### Stage 12 - Utilizing Cloud storage instead of a database on amazon AWS
+### Stage 13 - Cloud Storage
 
 #### Goal
 Instead of running a database in a docker container you should utilize the simple storage service (S3) of amazon AWS.
 
 #### Tasks
+
+For utilizing SimpleDB: https://aws.amazon.com/articles/Amazon-S3/7417221025670024

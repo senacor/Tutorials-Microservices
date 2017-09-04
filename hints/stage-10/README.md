@@ -63,17 +63,17 @@ services:
       - "3305:3306"
 
   registry:
-    image: senacortutorials/registry:local
+    image: senacortutorials/registry:stage-09
     ports:
       - "8761:8761"
 
   config:
-    image: senacortutorials/config:local
+    image: senacortutorials/config:stage-09
     ports:
       - "8888:8888"
 
   demo:
-    image: senacortutorials/demo:local
+    image: senacortutorials/demo:stage-09
     ports:
       - "8081:8081"
       - "7081:7081"
@@ -83,7 +83,7 @@ services:
         - config
 
   accounting:
-    image: senacortutorials/accounting:local
+    image: senacortutorials/accounting:stage-09
     ports:
       - "8082:8082"
       - "7082:7082"
@@ -167,6 +167,20 @@ spring:
 
 Make sure that you build your projects newly so they include the new configuration settings. Once the project builds are up to date you should rebuild your container-images and push them to docker-hub so they are available in the cloud.
 
+Note: Since we use the stages for tagging the containers in the tutorial, the tags will change to "stage-10" for the demo and the accounting container in the docker-compose configuration, as those containers were newly built and pushed for stage-10:
+
+```YAML
+(...)
+
+  demo:
+    image: senacortutorials/demo:stage-10
+    (...)
+
+  accounting:
+    image: senacortutorials/accounting:stage-10
+    (...)
+```
+
 ## Generate the task definition using the ecs-cli
 
 The ecs-cli (EC2 Container Service Command Line Interface) is a command line tool offered by Amazon. After [installing](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_installation.html) and [configuring](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_Configuration.html) the ecs-cli it is fairly simple to use it to generate task definition, create services and clusters and to start, stop or destroy them.
@@ -220,20 +234,20 @@ services:
       - "3305:3306"
 
   registry:
-    image: senacortutorials/registry:local
+    image: senacortutorials/registry:stage-09
     ports:
       - "8761:8761"
     mem_limit: 1073741824
 
   config:
-    image: senacortutorials/config:local
+    image: senacortutorials/config:stage-09
     ports:
       - "8888:8888"
     mem_limit: 1073741824
 
 
   demo:
-    image: senacortutorials/demo:local
+    image: senacortutorials/demo:stage-10
     ports:
       - "8081:8081"
       - "7081:7081"
@@ -244,7 +258,7 @@ services:
     mem_limit: 1073741824
 
   accounting:
-    image: senacortutorials/accounting:local
+    image: senacortutorials/accounting:stage-10
     ports:
       - "8082:8082"
       - "7082:7082"
