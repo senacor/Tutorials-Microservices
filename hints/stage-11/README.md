@@ -24,7 +24,7 @@ Setup a [VPC (Virtual Private Cloud)](http://docs.aws.amazon.com/AWSEC2/latest/U
 
 For details on how to create and configure the VPC please refer to step 1 - 3 of the ["Working with Amazon RDS DB Instances in a VPC"](http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_VPC.WorkingWithRDSInstanceinaVPC.html) tutorial.
 
-## Creating MySQL databases managed by RDS
+## Creating MySQL databases managed by RDS and VCS
 
 1. Navigate to the RDS console by selecting "RDS" in the "Database" section of your AWS account.
 2. Launch a "MySQL" instance; select the "Community Edition" and run it as "Dev/Test".
@@ -72,9 +72,16 @@ Note: More information and screenshots can be found in the [Bitnami tutorial on 
 
 ### Troubleshooting
 
-If you do not configure the ECS cluster in the same VPC the container will not be able to resolve the connection string for the database correctly.
+If you do not configure the ECS cluster in the same VPC the container will not be able to resolve the connection string for the database correctly. One way to check if it is working is to access the container logs on your instance.
+
+#### Access the container logs
+
+You have to adapt the security group of the cluster's instance to allow SSH (port 22). The cluster has to be configured to allow access through an SSH key. You can then SSH into the cluster and check the container logs as described in stage 10.
+
+#### Access the database
+
 If you have problems accessing the demo service's data (or accounting service) make sure the tables were created in the database.
-You can access the MySQL databases like this to check if it is configured correctly:
+You can change the database to be accessed publicly and then access the MySQL databases like this to check if the tables were configured correctly correctly:
 ```
 mysql -u[USER_NAME] -p[PASSWORD] -h [CONNECTION_STRING_RDS_INSTANCE] -P 3306
 ```
