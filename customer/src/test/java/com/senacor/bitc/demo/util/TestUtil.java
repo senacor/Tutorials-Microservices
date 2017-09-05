@@ -1,4 +1,4 @@
-package com.senacor.bitc.customer.util;
+package com.senacor.bitc.demo.util;
 
 import org.springframework.http.MediaType;
 
