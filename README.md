@@ -23,4 +23,4 @@ The configuration (```customer-dev.yml```) defines the startup port of the custo
 
 After finishing stage 02 you have a MySQL database that contains a ```customer``` table and dummy data.
 
-The demo project is configured to use this database. It uses Flyway migration to create the ```customer``` table and the dummy data.
+The customer project is configured to use this database. It uses Flyway migration to create the ```customer``` table and the dummy data.
