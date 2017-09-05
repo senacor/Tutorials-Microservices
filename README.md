@@ -1,13 +1,13 @@
 # Microservices & Cloud - Tutorials
-This repo provides tutorials for the BankingInTheCloud workshop. The workshop is divided in stages that build on each other. Depending on the time constraints certain stages can be skipped. 
+This repo provides tutorials for the Microservices & Cloud workshop. The workshop is divided in stages that build on each other. Depending on the time constraints certain stages can be skipped. 
 
 Each stages has a two-digit number. There are optional stages which are not integrated into the build-on-each-other pattern, but are side branches of a certain stage. Optional stages are marked with the stage's number they build on and a letter (e.g. 06.A).
 
-Detailed hints for each stage can be found in the [hints folder](https://github.com/senacor/BankingInTheCloud-Tutorials/tree/master/hints). 
+Detailed hints for each stage can be found in the [hints folder](https://github.com/senacor/MicroservicesAndCloud-Tutorials/tree/master/hints). 
 
 ## Setup
 
-For the BankingInTheCloud-Tutorials you need the following tools:
+For the Microservices & Cloud Tutorials you need the following tools:
 * Java 1.8.x
 * IntelliJ IDEA (community or ultimate edition)
 * MySQL Server
@@ -18,7 +18,7 @@ For the BankingInTheCloud-Tutorials you need the following tools:
 For alternative stages you additionally need
 * docker-compose (for alternative stage 06.A)
 
-Note: The setup for the complete BankingInTheCloud workshop is described in the [BankingInTheCloud-WorkshopSetup repo](https://github.com/senacor/BankingInTheCloud-WorkshopSetup), a list of tools that we use in the workshop can be found [here](https://github.com/senacor/BankingInTheCloud-WorkshopSetup/tree/master/alternative-setup).
+Note: The VM setup for the Microservices & Cloud workshop is described in the [BankingInTheCloud-WorkshopSetup repo](https://github.com/senacor/BankingInTheCloud-WorkshopSetup), a list of tools that we use in the workshop can be found [here](https://github.com/senacor/BankingInTheCloud-WorkshopSetup/tree/master/alternative-setup). 
 
 ## Tutorial stages
 
@@ -267,7 +267,7 @@ You automatically generate a task-definition on amazon ECS out of your local doc
 3. Add the generated task-definition (in your AWS account) to a new service within a new cluster and run the cluster.
 4. Hope that the magic works :)
 
-Note: Most likely it will not work just like that: Think about what could be the problem - if you can't solve it you can take a look at the [hints for stage 10](https://github.com/senacor/BankingInTheCloud-Tutorials/tree/master/hints/stage-10).
+Note: Most likely it will not work just like that: Think about what could be the problem - if you can't solve it you can take a look at the [hints for stage 10](https://github.com/senacor/MicroservicesAndCloud-Tutorials/tree/master/hints/stage-10).
 
 ### Stage 10.A - Architecture Considerations
 
