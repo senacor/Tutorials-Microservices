@@ -16,7 +16,7 @@ MySQL command to run the customer service's database:
 docker run --detach --name customerdb -e MYSQL_ROOT_PASSWORD=mysql -e MYSQL_DATABASE=customerdb -d mysql
 ```
 
-MySQL command to run the customer service's database:
+MySQL command to run the accounting service's database:
 
 ```sh
 docker run --detach --name accountingdb -e MYSQL_ROOT_PASSWORD=mysql -e MYSQL_DATABASE=accountingdb -d mysql
