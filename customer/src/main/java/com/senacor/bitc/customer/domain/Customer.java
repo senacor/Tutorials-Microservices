@@ -1,4 +1,4 @@
-package com.senacor.bitc.demo.domain;
+package com.senacor.bitc.customer.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

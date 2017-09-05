@@ -1,9 +1,9 @@
-package com.senacor.bitc.demo.rest;
+package com.senacor.bitc.customer.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.senacor.bitc.demo.domain.Customer;
-import com.senacor.bitc.demo.service.CustomerService;
-import com.senacor.bitc.demo.util.TestUtil;
+import com.senacor.bitc.customer.domain.Customer;
+import com.senacor.bitc.customer.service.CustomerService;
+import com.senacor.bitc.customer.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
