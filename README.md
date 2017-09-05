@@ -23,7 +23,7 @@ Note: The setup for the complete BankingInTheCloud workshop is described in the 
 ## Tutorial stages
 
 The tutorials are done in steps that are based on each other. 
-Participants are supposed to solve each tutorial stage by themselfes. A recerence solution can be found in branches.
+Participants are supposed to solve each tutorial stage by themselves. A reference solution can be found in branches.
 
 ### Stage 00 - Basic Setup
 
@@ -34,8 +34,10 @@ You have your first spring boot application up and running.
 The basic project setup is based on the customer project one can generate using the [SpringBoot Initializr](https://start.spring.io/). Use the following settings:
 
 * Generate a ```Gradle Project``` with ```Java``` and Spring Boot ```1.5.x``` (latest stable version)
-* Group: ```com.senacor.bitc.demo```
+* Group: ```com.senacor.bitc```
 * Artifact: ```customer```
+* Name: ```customer```
+* Package Name: ```com.senacor.bitc.demo```
 * Dependencies: ```Web```
 
 Open the ```customer``` project using IntelliJ IDEA: ```File``` >> ``` Open...``` >> `select the ```customer``` folder
