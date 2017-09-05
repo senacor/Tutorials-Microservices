@@ -34,7 +34,7 @@ After finishing stage 03 you have a service that accesses the customer data crea
 After finishing stage 04 you have a second service called "accounting"; you now have three projects:
 
 
-1. **demo**: the demo project created in stage 00
+1. **customer**: the customer project created in stage 00
 2. **config**: the spring cloud config server created in stage 01
 3. **accounting**: the accounting project created in stage 04
 
@@ -42,4 +42,4 @@ The accounting project contains a REST endpoint for managing accounts for custom
 
 A configuration file (```accounting-dev.yml```) was added that defines port ```8082``` for the accounting application. 
 
-The verification of the customer ID through the customer service upon creation of an account is not implemented in this stage yet. There is a TODO defined in the ```AccountService```. The communication with the customer REST endpoint (demo project) is to be added in the next stage.
+The verification of the customer ID through the customer service upon creation of an account is not implemented in this stage yet. There is a TODO defined in the ```AccountService```. The communication with the customer REST endpoint (customer project) is to be added in the next stage.
