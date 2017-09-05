@@ -1,4 +1,4 @@
-package com.senacor.bitc.customer.domain;
+package com.senacor.bitc.demo.domain;
 
 import org.springframework.data.repository.CrudRepository;
 
