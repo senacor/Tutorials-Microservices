@@ -1,6 +1,6 @@
-package com.senacor.bitc.demo.rest;
+package com.senacor.bitc.customer.rest;
 
-import com.senacor.bitc.demo.domain.IpAddress;
+import com.senacor.bitc.customer.domain.IpAddress;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
