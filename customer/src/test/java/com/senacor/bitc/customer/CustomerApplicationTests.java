@@ -1,4 +1,4 @@
-package com.senacor.bitc.demo;
+package com.senacor.bitc.customer;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,7 +1,7 @@
-package com.senacor.bitc.demo.service;
+package com.senacor.bitc.customer.service;
 
 
-import com.senacor.bitc.demo.domain.Customer;
+import com.senacor.bitc.customer.domain.Customer;
 
 import java.util.List;
 

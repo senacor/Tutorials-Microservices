@@ -1,4 +1,4 @@
-package com.senacor.bitc.demo;
+package com.senacor.bitc.customer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

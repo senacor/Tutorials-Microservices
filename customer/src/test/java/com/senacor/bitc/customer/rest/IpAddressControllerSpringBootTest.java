@@ -1,6 +1,6 @@
-package com.senacor.bitc.demo.rest;
+package com.senacor.bitc.customer.rest;
 
-import com.senacor.bitc.demo.util.TestUtil;
+import com.senacor.bitc.customer.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
