@@ -1,12 +1,12 @@
 version: '2'
 
 services:
-  demodb: 
+  customerdb: 
     image: mysql
-    container_name: demodb
+    container_name: customerdb
     environment:
       - MYSQL_ROOT_PASSWORD=mysql
-      - MYSQL_DATABASE=demodb
+      - MYSQL_DATABASE=customerdb
     ports:
       - "3306:3306"
     networks:
@@ -46,17 +46,17 @@ services:
         - demonet
 
 
-  demo:
+  customer:
     build:
-      context: ./demo
-    image: demo
-    container_name: demo
+      context: ./customer
+    image: customer
+    container_name: customer
     working_dir: /
     ports:
       - "8081:8081"
       - "7081:7081"
     depends_on:
-        - demodb
+        - customerdb
         - registry
         - config
     networks:
@@ -75,7 +75,7 @@ services:
         - accountingdb
         - registry
         - config
-        - demo
+        - customer
     networks:
         - demonet
 
