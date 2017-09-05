@@ -1,9 +1,10 @@
-package com.senacor.bitc.customer.rest;
+package com.senacor.bitc.demo.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.senacor.bitc.customer.domain.Customer;
-import com.senacor.bitc.customer.service.CustomerService;
-import com.senacor.bitc.customer.util.TestUtil;
+import com.senacor.bitc.demo.domain.Customer;
+import com.senacor.bitc.demo.service.CustomerService;
+import com.senacor.bitc.demo.util.TestUtil;
+import com.senacor.bitc.demo.rest.CustomerController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,8 +19,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 import java.util.Collections;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
