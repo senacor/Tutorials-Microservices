@@ -1,6 +1,6 @@
 spring:
   application:
-    name: demo
+    name: customer
   profiles:
     active: dev
   cloud:
