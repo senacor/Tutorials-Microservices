@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: customer
+  profiles:
+    active: dev
+  cloud:
+    config:
+      uri: http://172.17.0.5:8888
+      # the label defines the branch within the config-server repo
+      # (for local setup you don't need a label because you are not on a specific branch)
+      label: Stage-01-SpringCloudConfig

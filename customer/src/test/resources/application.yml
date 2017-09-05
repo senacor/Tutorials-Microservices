@@ -7,7 +7,7 @@ spring:
     discovery:
       enabled: false
   datasource:
-    url: 'jdbc:mysql://localhost:3306/accountingdb'
+    url: 'jdbc:mysql://localhost:3306/customerdb'
     username: 'root'
     password: 'mysql'
     driver-class-name: 'com.mysql.jdbc.Driver'
