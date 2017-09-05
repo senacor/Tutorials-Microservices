@@ -31,9 +31,9 @@ For details on how to create and configure the VPC please refer to step 1 - 3 of
 3. Choose the smallest instance, and leave the default values.
 4. Assign the instance to the default VPC of your account or the VPC you created.
 5. Don't allow public access to the instance.
-6. Configure the database settings according to the service (demo or accounting).
+6. Configure the database settings according to the service (customer or accounting).
 
-Note: You will have to do this for both the demo and the accounting service. Don't forget to fill in the database name (demodb and accountingdb). 
+Note: You will have to do this for both the customer and the accounting service. Don't forget to fill in the database name (customerdb and accountingdb). 
 
 Note: You will have to use a password with at least eight characters - don't forget to change that in the configuration later if you have a different one set there.
 
@@ -42,14 +42,14 @@ Note: Instead of a MySQL instance you could also create an Aurora instance, but 
 ## Configure docker-compose and generate new task definition
 
 1. Remove the database services from your ```docker-compose.yml```.
-2. Alter the configuration file for accounting and demo on the config-server (config-server repo) so they point to the MySQL databases managed by RDS. You will have to put the endpoint of the RDS database in the connection string and configure the correct credentials to sign into the database server.
+2. Alter the configuration file for accounting and customer on the config-server (config-server repo) so they point to the MySQL databases managed by RDS. You will have to put the endpoint of the RDS database in the connection string and configure the correct credentials to sign into the database server.
 3. Generate a new task definition:
 
 ```
 ecs-cli compose --project-name demo-app --file docker-compose.yml create
 ```
 
-Note: If the path (branch) to your config-repo changes you will have to alter the path configuration in the bootstrap configuration, rebuild the project, rebuild the demo and accounting container and provide the containers with the right bootstrap configuration on docker-hub. 
+Note: If the path (branch) to your config-repo changes you will have to alter the path configuration in the bootstrap configuration, rebuild the project, rebuild the customer and accounting container and provide the containers with the right bootstrap configuration on docker-hub. 
 
 ## Configure and run a cluster
 
@@ -80,13 +80,13 @@ You have to adapt the security group of the cluster's instance to allow SSH (por
 
 #### Access the database
 
-If you have problems accessing the demo service's data (or accounting service) make sure the tables were created in the database.
+If you have problems accessing the customer service's data (or accounting service) make sure the tables were created in the database.
 You can change the database to be accessed publicly and then access the MySQL databases like this to check if the tables were configured correctly correctly:
 ```
 mysql -u[USER_NAME] -p[PASSWORD] -h [CONNECTION_STRING_RDS_INSTANCE] -P 3306
 ```
 
-If the tables were not created upon startup this most likely means that the connection string to the database was not resolved correctly. You can check the log output of the containers upon startup by allowing the SSH into the containers (make sure to open port 22 in the security group of your cluster's EC2 instance). If the demo/accounting service hangs at the Flyway initialization step that means the database cannot be resolved. Check your clusters VPC settings then and make sure everything is configured correctly.
+If the tables were not created upon startup this most likely means that the connection string to the database was not resolved correctly. You can check the log output of the containers upon startup by allowing the SSH into the containers (make sure to open port 22 in the security group of your cluster's EC2 instance). If the customer/accounting service hangs at the Flyway initialization step that means the database cannot be resolved. Check your clusters VPC settings then and make sure everything is configured correctly.
 
 Note: Of course you can also allow all traffic (0.0.0.0/0) to the DB instances. Then you don't have to care about VPC and security group linking but your setup is not secure!
 

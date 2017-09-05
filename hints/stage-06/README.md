@@ -2,7 +2,7 @@
 
 ## Overview
 
-In stage 06 we create/use docker containers for all the projects we have instead of running the projects locally. Note that the images are not linked together yet, but we just use the IP addresses of the containers to reference them (e.g. reference the config server in the demo and accounting service configuration).
+In stage 06 we create/use docker containers for all the projects we have instead of running the projects locally. Note that the images are not linked together yet, but we just use the IP addresses of the containers to reference them (e.g. reference the config server in the customer and accounting service configuration).
 
 In stage 07 we will use docker-compose to make the setup more robust and easy to use.
 
@@ -10,13 +10,13 @@ In stage 07 we will use docker-compose to make the setup more robust and easy to
 
 ### Startup the containers
 
-MySQL command to run the demo service's database:
+MySQL command to run the customer service's database:
 
 ```sh
-docker run --detach --name demodb -e MYSQL_ROOT_PASSWORD=mysql -e MYSQL_DATABASE=demodb -d mysql
+docker run --detach --name customerdb -e MYSQL_ROOT_PASSWORD=mysql -e MYSQL_DATABASE=customerdb -d mysql
 ```
 
-MySQL command to run the demo service's database:
+MySQL command to run the customer service's database:
 
 ```sh
 docker run --detach --name accountingdb -e MYSQL_ROOT_PASSWORD=mysql -e MYSQL_DATABASE=accountingdb -d mysql
@@ -34,12 +34,12 @@ docker run
 ```
 
 
-### Configure the demo and accounting project
+### Configure the customer and accounting project
 
 In order to be able to connect to the database the IP has to be defined correctly. To retrieve the IP address of the container you can run:
 
 ```sh
-docker inspect demodb | grep IPAddress
+docker inspect customerdb | grep IPAddress
 ```
 
 and
@@ -53,7 +53,7 @@ Note: To get the MySQL console within one of the MySQL docker containers you can
 mysql -uroot -pmysql -h 172.17.0.2 -P 3306
 ```
 
-Configure the database connection string in the ```application.yml``` of the demo and the accounting project; instead of ```localhost``` you should put the IP of the container:
+Configure the database connection string in the ```application.yml``` of the customer and the accounting project; instead of ```localhost``` you should put the IP of the container:
 
 ```YAML
 spring:
@@ -103,9 +103,9 @@ docker run --detach --name registry registry
 
 Note: You will have to build the registry project in order to create the JAR file that is added to the container. Run ```./gradlew build``` in the registry project directory.
 
-### Configure the IP address of eureka in the demo and the accounting project
+### Configure the IP address of eureka in the customer and the accounting project
 
-Use ```docker inspect registry | grep IPAddress``` to retrieve the IP address of the eureka server container. Then configure the IP address in the demo and the accounting service:
+Use ```docker inspect registry | grep IPAddress``` to retrieve the IP address of the eureka server container. Then configure the IP address in the customer and the accounting service:
 ```YAML
 server:
   port: 0
@@ -140,7 +140,7 @@ Run the container:
 docker run --detach --name config config
 ```
 
-Use ```docker inspect config | grep IPAddress``` to retrieve the IP address of the config server container. Then configure the IP address in the demo and the accounting service:
+Use ```docker inspect config | grep IPAddress``` to retrieve the IP address of the config server container. Then configure the IP address in the customer and the accounting service:
 ```YAML
 (...)
   cloud:
@@ -150,15 +150,15 @@ Use ```docker inspect config | grep IPAddress``` to retrieve the IP address of t
 ```
 
 
-## Containers for the demo and accounting service
+## Containers for the customer and accounting service
 
 Same procedure as for the config server: 
 
-1. Add a Dockerfile to the both the demo and the accounting project directory.
+1. Add a Dockerfile to the both the customer and the accounting project directory.
 2. Build the docker container by executing ```docker build -t [NAME] .```
 3. Run the container by executing ```docker run --detach --name [NAME] [NAME]```
 
-Once you all the containers are running your can retrieve the IP addresses of the demo and the accounting service through ```docker inspect``` - then you should be able to access the endpoints like this:
+Once you all the containers are running your can retrieve the IP addresses of the customer and the accounting service through ```docker inspect``` - then you should be able to access the endpoints like this:
 ```
 http://172.17.0.6:8081/customer/1
 ```
@@ -173,7 +173,7 @@ If you want to test the POST request against the accounting endpoint you will ha
 http://172.17.0.7:8082/account
 ```
 
-Note: If you encounter a problem with the Feign client in the accounting project (Error 500 when POSTing a new account) you can extend the Eureka configuration in the application.yml file of both the demo and the accounting project:
+Note: If you encounter a problem with the Feign client in the accounting project (Error 500 when POSTing a new account) you can extend the Eureka configuration in the application.yml file of both the customer and the accounting project:
 
 ```YAML
 (...)
@@ -218,7 +218,7 @@ You can enable debugging for a container by adding debug parameters to the ENTRY
 ```
 FROM openjdk:8-jre-alpine
 VOLUME /tmp
-ADD build/libs/demo-0.0.1-SNAPSHOT.jar app.jar
+ADD build/libs/customer-0.0.1-SNAPSHOT.jar app.jar
 RUN /bin/sh -c 'touch /app.jar\'
 ENV JAVA_OPTS=""
 EXPOSE 8081
@@ -229,8 +229,8 @@ In IntelliJ IDEA:
 
 1. open the "Run/Debug Configurations"
 2. create a new "Remote" configuration 
-3. fill in the IP address of the container you want to debug (e.g. 172.17.0.6 for the demo application in our setup)
-4. fill in the debug port as specified in the Dockerfile of the application you want to debug (e.g. 7081 as defined above for the demo application)
+3. fill in the IP address of the container you want to debug (e.g. 172.17.0.6 for the customer application in our setup)
+4. fill in the debug port as specified in the Dockerfile of the application you want to debug (e.g. 7081 as defined above for the customer project)
 
 Run the Debug configuration; you should see:
 ```

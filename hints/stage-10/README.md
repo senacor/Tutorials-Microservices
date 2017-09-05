@@ -9,7 +9,7 @@ Amazon EC2 VM instance
 ------------------------------
 |                            |
 |  ------------------------  |
-|  | demo container       |  | >> instance port 8081 maps to demo container port 8081
+|  | customer container       |  | >> instance port 8081 maps to customer container port 8081
 |  ------------------------  |
 |                            |
 |  ------------------------  |
@@ -25,7 +25,7 @@ Amazon EC2 VM instance
 |  ------------------------  |
 |                            |
 |  ------------------------  |
-|  | demodb container     |  | 
+|  | customerdb container     |  | 
 |  ------------------------  |
 |                            |
 |  ------------------------  |
@@ -46,11 +46,11 @@ Instead of ```networks``` we will fall back on the old ```links``` option. Other
 version: '2'
 
 services:
-  demodb:
+  customerdb:
     image: mysql
     environment:
       - MYSQL_ROOT_PASSWORD=mysql
-      - MYSQL_DATABASE=demodb
+      - MYSQL_DATABASE=customerdb
     ports:
       - "3306:3306"
 
@@ -72,13 +72,13 @@ services:
     ports:
       - "8888:8888"
 
-  demo:
-    image: senacortutorials/demo:stage-09
+  customer:
+    image: senacortutorials/customer:stage-09
     ports:
       - "8081:8081"
       - "7081:7081"
     links:
-        - demodb
+        - customerdb
         - registry
         - config
 
@@ -108,7 +108,7 @@ As the docker documentation tells us, the better way is to make our application 
 
 So, how do we achieve this? Yes, you guessed it: By adding some more (rather difficult to find) configuration entries to our startup bootstrap and application configuration files.
 
-For the spring cloud configuration client you can [define retries](https://cloud.spring.io/spring-cloud-config/multi/multi__spring_cloud_config_client.html#config-client-retry), so the application will try to retry contacting the config server upon startup if it is not available yet. You have to at least activate the ```failFast``` option in your demo's and the accounting's ```bootstrap.yml```; furthermore you can refine the options by specifying specific ```retry``` options:
+For the spring cloud configuration client you can [define retries](https://cloud.spring.io/spring-cloud-config/multi/multi__spring_cloud_config_client.html#config-client-retry), so the application will try to retry contacting the config server upon startup if it is not available yet. You have to at least activate the ```failFast``` option in your customer's and the accounting's ```bootstrap.yml```; furthermore you can refine the options by specifying specific ```retry``` options:
 
 ```YAML
 (...)
@@ -167,13 +167,13 @@ spring:
 
 Make sure that you build your projects newly so they include the new configuration settings. Once the project builds are up to date you should rebuild your container-images and push them to docker-hub so they are available in the cloud.
 
-Note: Since we use the stages for tagging the containers in the tutorial, the tags will change to "stage-10" for the demo and the accounting container in the docker-compose configuration, as those containers were newly built and pushed for stage-10:
+Note: Since we use the stages for tagging the containers in the tutorial, the tags will change to "stage-10" for the customer and the accounting container in the docker-compose configuration, as those containers were newly built and pushed for stage-10:
 
 ```YAML
 (...)
 
-  demo:
-    image: senacortutorials/demo:stage-10
+  customer:
+    image: senacortutorials/customer:stage-10
     (...)
 
   accounting:
@@ -200,7 +200,7 @@ Note: The ecs-cli might give you some warnings like "Skipping unsupported YAML o
 
 Once you successfully generated the task definition your can have a look at it in your ECS console (you already know it from stage 08).
 
-Create a cluster with a relatively strong machine - remember the services need quite a lot of resources to startup on your local machine as well. The instance "m4.large" proposed as default for the cluster will definitely do, you can also go for something a little smaller if you want. Make sure you configure the right ports (or port range) so you can access your services. At least port 8081 (demo) and 8082 (accounting) should be open on your instance.
+Create a cluster with a relatively strong machine - remember the services need quite a lot of resources to startup on your local machine as well. The instance "m4.large" proposed as default for the cluster will definitely do, you can also go for something a little smaller if you want. Make sure you configure the right ports (or port range) so you can access your services. At least port 8081 (customer) and 8082 (accounting) should be open on your instance.
 
 Note: At this point you might run into costs, since instance stronger then t2.micro are not part of the free tier. If you only run them for a short time the costs will be a few cents, but don't forget to delete the cluster in the end...
 
@@ -217,11 +217,11 @@ The more sustainable way is to add the memory settings to the docker-compose fil
 version: '2'
 
 services:
-  demodb:
+  customerdb:
     image: mysql
     environment:
       - MYSQL_ROOT_PASSWORD=mysql
-      - MYSQL_DATABASE=demodb
+      - MYSQL_DATABASE=customerdb
     ports:
       - "3306:3306"
 
@@ -246,13 +246,13 @@ services:
     mem_limit: 1073741824
 
 
-  demo:
-    image: senacortutorials/demo:stage-10
+  customer:
+    image: senacortutorials/customer:stage-10
     ports:
       - "8081:8081"
       - "7081:7081"
     links:
-        - demodb
+        - customerdb
         - registry
         - config
     mem_limit: 1073741824
@@ -287,7 +287,7 @@ Note that you can also use the "Public DNS" instead of the IP address.
 
 At the end of the day the "cluster" created for you by ECS is just an instance that runs docker containers. There is a lot of configuration around it, but in the end it is just a virtual machine running on an AWS server. You can have a look at this instance in your EC2 console online - and of course you can also inspect and alter the security group that was created for that instance. 
 
-If you navigate to the security groups in your EC2 console and select the right (generated) security group you will be able to inspect and alter its port settings. This can be interesting if you want to e.g. take a look at your Eureka container's front-page offered at port 8761 - if you allow access to that port in the security group you will be able to see the registration of the demo and accounting services at Eureka. Inbound-rule changes will apply instantly.
+If you navigate to the security groups in your EC2 console and select the right (generated) security group you will be able to inspect and alter its port settings. This can be interesting if you want to e.g. take a look at your Eureka container's front-page offered at port 8761 - if you allow access to that port in the security group you will be able to see the registration of the customer and accounting services at Eureka. Inbound-rule changes will apply instantly.
 
 Of course you can go even further and allow to [SSH into the instance](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/instance-connect.html). Make sure your SSH port (22) is open in the security group of the instance. Once you are connected to the instance you can run commands like [docker ps](https://docs.docker.com/engine/reference/commandline/ps/) to see the status of your containers: 
 ```

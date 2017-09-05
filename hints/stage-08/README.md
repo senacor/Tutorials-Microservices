@@ -41,7 +41,7 @@ Your task definition for the two mysql databases might look something like this:
     "family": "demoapp",
     "containerDefinitions": [
         {
-             "name": "demodb",
+             "name": "customerdb",
              "image": "mysql",
              "memory": 250,
              "cpu": 10,
@@ -56,7 +56,7 @@ Your task definition for the two mysql databases might look something like this:
                 },
                 {
                     "name": "MYSQL_DATABASE",
-                    "value": "demodb"
+                    "value": "customerdb"
                 }
             ]
         },
@@ -99,15 +99,15 @@ Important: Make sure to open the right ports on your instance (cluster). As said
 
 Once you have the cluster up and running (check if your task is running correctly in the ECS console) you can retrieve the IP address of your instance by navigating to the cluster's tab "ECS instances". 
 
-Once you retrieved th IP address of your instance you can configure the database-connection string within your configuration files (on the config-server or in the application.yml) of both the demo and the accounting project. Add the IP of the instance and the respective port for the database to the projects.
+Once you retrieved th IP address of your instance you can configure the database-connection string within your configuration files (on the config-server or in the application.yml) of both the customer and the accounting project. Add the IP of the instance and the respective port for the database to the projects.
 
-Note that you will have to remove the databases' service-entries from docker compose (demodb and accountingdb). Docker compose cannot manage the database containers in this setup, as they are managed by the ECS task definition.
+Note that you will have to remove the databases' service-entries from docker compose (customerdb and accountingdb). Docker compose cannot manage the database containers in this setup, as they are managed by the ECS task definition.
 
 Run and Test the environment:
 
 1. Make sure your ECS instance with the two mysql containers is running. 
 2. Start the registry and config services through docker-compose and wait until they are up. 
-3. Start the demo and accounting services through docker-compose.
+3. Start the customer and accounting services through docker-compose.
 4. You can access your mysql databases in the cloud like this to check if the initial migrations were applied: ```mysql -uroot -pmysql -h [INSTANCE_IP_ADDR] -P [INSTANCE_PORT_THAT_MAPS_TO_DB_CONTAINER]```
 5. You should be able to access and create customer/account data like in stage 07.
 

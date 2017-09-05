@@ -20,9 +20,9 @@ com.senacor.bitc
                      +- AccountService.java
 ```
 
-Note: If you want to be lazy you can create a copy of the demo project and apply refactoring to create the accounting project:
+Note: If you want to be lazy you can create a copy of the customer project and apply refactoring to create the accounting project:
 
-1. Create a copy of the demo project folder, rename the base-folder to ```accounting```
+1. Create a copy of the customer project folder, rename the base-folder to ```accounting```
 2. Import the "accounting" project into IntelliJ IDEA through ```File >> New >> Module from Existing Sources...```, select the accounting folder
 3. Refactoring... 
 
@@ -93,7 +93,7 @@ public interface AccountService {
 }
 ```
 
-For the saving an account the customer ID is provided. Note that you should not verify if the customer exists (using the customer endpoint of the demo project) yet. This will be done in the next stage. In the reference solution we defined a TODO for this:
+For the saving an account the customer ID is provided. Note that you should not verify if the customer exists (using the customer endpoint of the customer project) yet. This will be done in the next stage. In the reference solution we defined a TODO for this:
 
 ```Java
 @Override

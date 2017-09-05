@@ -31,14 +31,14 @@ Participants are supposed to solve each tutorial stage by themselfes. A recerenc
 You have your first spring boot application up and running.
 
 #### Setup
-The basic project setup is based on the demo-project one can generate using the [SpringBoot Initializr](https://start.spring.io/). Use the following settings:
+The basic project setup is based on the customer project one can generate using the [SpringBoot Initializr](https://start.spring.io/). Use the following settings:
 
 * Generate a ```Gradle Project``` with ```Java``` and Spring Boot ```1.5.x``` (latest stable version)
-* Group: ```com.senacor.bitc```
-* Artifact: ```demo```
+* Group: ```com.senacor.bitc.demo```
+* Artifact: ```customer```
 * Dependencies: ```Web```
 
-Open the ```demo``` project using IntelliJ IDEA: ```File``` >> ``` Open...``` >> `select the ```demo``` folder
+Open the ```customer``` project using IntelliJ IDEA: ```File``` >> ``` Open...``` >> `select the ```customer``` folder
 
 #### Tasks
 
@@ -63,9 +63,9 @@ Add the ```config``` project as module in IntelliJ IDEA: ```File``` >> ``` New``
 #### Tasks
 
 1. Configure the **config** project as [cloud-config-server](https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html)
-2. Configure the spring cloud **config** server to use a git-repsoitory where you put the configuration for your demo service.
-2. Configure the **demo** service so it uses the cloud config server for configuration.
-3. Configure the port where the **demo** application is served through the **config** server configuration file. The port should not be hard-wired in the **demo** application any more, but is defined by the configuration file served by the **config** server.
+2. Configure the spring cloud **config** server to use a git-repsoitory where you put the configuration for your customer service.
+2. Configure the **customer** service so it uses the cloud config server for configuration.
+3. Configure the port where the **customer** service is served through the **config** server configuration file. The port should not be hard-wired in the **customer** service any more, but is defined by the configuration file served by the **config** server.
 
 We recommend that you use yaml (```.yml```) instead of properties files because the Mifos I/O application we will use later is based on a yaml configuration as well. 
 
@@ -82,7 +82,7 @@ Create a database with a customer table that contains dummy-data for your servic
 
 #### Tasks
 
-1. Configure the demo project for mysql and flyway (dependencies).
+1. Configure the customer project for mysql and flyway (dependencies).
 2. Write flyway migration scripts to create a table ```customer``` with fields ```id```, ```first_name```, ```last_name``` and ```birth_date```.
 3. Fill some data into your ```customer``` table by writing and executing more flyway migration script(s).
 
@@ -93,7 +93,7 @@ Be able to access customer data from the database through a new REST endpoint (w
 
 #### Setup
 
-Since we are working with entities now and we want to avoid unnecessary boiler-code-writing we recommend to add *Lombok* to the demo project.
+Since we are working with entities now and we want to avoid unnecessary boiler-code-writing we recommend to add *Lombok* to the customer project.
 You can follow the instructions on how to [add Lombok to IntelliJ IDEA as plugin](https://projectlombok.org/setup/intellij) and how to [integrate Lombok into your project with gradle](https://projectlombok.org/setup/gradle). Note that you will also have to [turn on annotation processing in IntelliJ IDEA](https://stackoverflow.com/questions/41161076/adding-lombok-plugin-to-intellij-project) for Lombok to work.
 
 #### Tasks
@@ -105,7 +105,8 @@ You can follow the instructions on how to [add Lombok to IntelliJ IDEA as plugin
 ### Stage 04 - Create a second service
 
 #### Goal
-You recap step 00 till 03 again. You create a second service (accounting-service) that will communicate with the first service (demo-service) in the next step. The service should offer an "account" endpoint that that depends on the customer endpoint of the first service.
+You recap step 00 till 03 again. You create a second service (accounting-service) that will communicate with the first service (customer 
+service) in the next step. The service should offer an "account" endpoint that that depends on the customer endpoint of the first service.
 
 #### Tasks
 
@@ -132,7 +133,7 @@ Add the ```registry``` project as module in IntelliJ IDEA: ```File``` >> ``` New
 #### Tasks
 
 1. Configure the registry project as Eureka server.
-2. Configure the demo project as Eureka client so it register with the Eureka server.
+2. Configure the customer project as Eureka client so it register with the Eureka server.
 3. Configure the accounting project as Eureka client so it registers with the Eureka server.
 4. Configure a feign client for the customer endpoint in the accounting project and verify the customer ID upon account creation.
 
@@ -147,7 +148,7 @@ The complete application (databases, config server, registry and functional serv
 1. Configure containers for the two MySQL databases by using MySQL images from Docker-Hub
 2. Configure container for the registry (through image from Docker-Hub or by adding a Dockerfile to the registry project)
 3. Configure container for the config server (through image from Docker-Hub or by adding a Dockerfile to the registry project)
-4. Configure container for the demo service by adding a Dockerfile to the demo project
+4. Configure container for the customer service by adding a Dockerfile to the customer project
 5. Configure container for the accounting service by adding a Dockerfile to the accounting project
 
 In is recommended that you test the new containers after each task by starting the newly created container as well as the other parts (locally, outside of container).
@@ -164,7 +165,7 @@ You configure the docker containers of stage 06 through docker-compose so you do
 1. Add a docker-compose configuration file to the top folder of the repository.
 2. Configure all the services in the docker-compose configuration (add entry for all the different components and define the linkage).
 3. Startup the "backbone containers" (database, config server, registry) through docker-compose.
-4. Startup the "functional containers" (demo, accounting) through docker-compose.
+4. Startup the "functional containers" (customer, accounting) through docker-compose.
 5. Test customer and account retrieval and account creation.
 
 ### Stage 07.A (optional) - Move all the configuration to the Config Server
@@ -174,9 +175,9 @@ Move all configurations that are applied at runtime (```application.yml```) but 
 
 #### Tasks
 
-1. Move all the configuration entries from the demo and accounting projects' ```application.yml``` files to the respective configuration on the config server.
+1. Move all the configuration entries from the customer and accounting projects' ```application.yml``` files to the respective configuration on the config server.
 2. Commit the configuration files and let the config server configuration (in ```bootstrap.yml```) point to the correct repo/branch. 
-3. Build the accounting and demo projects and containers new.
+3. Build the accounting and customer projects and containers new.
 4. Run and test the setup by creating a new account through Postman.
 
 ### Stage 07.B (optional) - Messaging and Event Sourcing
@@ -191,7 +192,7 @@ You add endpoints that emit events, so your two services don't directly communic
 ### Stage 08 - First steps with amazon ECS
 
 #### Goal
-Instead of running the mysql databases (demodb and accountingdb) in local docker-containers you run docker containers in the AWS cloud using amazon ECS (EC2 Container Service).
+Instead of running the mysql databases (customerdb and accountingdb) in local docker-containers you run docker containers in the AWS cloud using amazon ECS (EC2 Container Service).
 
 #### Setup
 
@@ -293,7 +294,7 @@ Instead of providing your own database container you manage your database throug
 3. Make sure that your databases are not publicly accessible.
 4. Remove the databases from the ECS task definition (by altering the docker-compose configuration and generating a new task definition).
 5. Configure the database connection for your services through the config server.
-6. Create an ECS cluster and service - make sure to configure them for the VPC you created.
+6. Create an ECS cluster and service and configure it to use the databases.
 
 ### Stage 12 - Load Balancing on amazon AWS
 
@@ -301,13 +302,14 @@ Instead of providing your own database container you manage your database throug
 You add an elastic load balancer to the project setup on AWS. You understand application level load balancing.
 
 #### Tasks
+ 
+1. Read into [Elastic Load Balancing](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-load-balancing.html) on amazon AWS.
+2. Create and configure an [Application Load Balancer](http://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html) in your EC2 console (for the VPC from stage 11).
+3. Create an ECS cluster based on the setup from stage 11 (RDS managed DBs, VPC).
+4. Add a service and configure the Application Load Balancer for the service.
 
-1. Define a load balancing strategy for the project. You will most likely have to adapt the database setup.
-2. Create a new task definition that that defines a container deployment that makes it possible to apply your load balancing strategy. 
-3. Create an ECS cluster and Service and add a load balancer.
 
-
-### Stage 13 - Cloud Storage
+### Stage 13 - Cloud Storage with amazon SimpleDB
 
 #### Goal
 Instead of running a database in a docker container you should utilize the simple storage service (S3) of amazon AWS.

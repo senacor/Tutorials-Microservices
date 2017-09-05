@@ -22,29 +22,29 @@ Steps:
         config:
           server:
             git:
-              uri: file:///${user.home}/Desktop/demo
+              uri: file:///${user.home}/Desktop/customer
     server:
       port: 8888
     ```
 
 **Config Repository**
 
-5. Create a folder that matches the pattern of the uri you provided above (```file:///${user.home}/Desktop/demo``` >> just create a folder ```demo``` on your Desktop)
+5. Create a folder that matches the pattern of the uri you provided above (```file:///${user.home}/Desktop/customer``` >> just create a folder ```customer``` on your Desktop)
 6. run ```git init``` in the folder you created
-7. Add the file ```demo-dev.yml``` to the folder. This will be the configuration file that the client application (the demo application) pulls upon startup.
-8. Add the configuration for the new port to the ```demo-dev.yml``` file (instead of running the demo application on default port 8080 we run it on port 8081):
+7. Add the file ```customer-dev.yml``` to the folder. This will be the configuration file that the client application (the customer application) pulls upon startup.
+8. Add the configuration for the new port to the ```customer-dev.yml``` file (instead of running the customer application on default port 8080 we run it on port 8081):
 
     ```YAML
     server:
       port: 8081
     ```
 
-9. Commit the file ```demo-dev.yml``` using ```git commit```
-10. Test the configuration by starting the config-server and navigating to ```http://localhost:8888/demo/dev```
+9. Commit the file ```customer-dev.yml``` using ```git commit```
+10. Test the configuration by starting the config-server and navigating to ```http://localhost:8888/customer/dev```
 
 **Client Configuration**
 
-11. Add yaml and bootstrap dependencies to the client project (the demo project)
+11. Add yaml and bootstrap dependencies to the client project (the customer project)
 
     ```
     dependencies {
@@ -67,7 +67,7 @@ Steps:
     ```YAML
     spring:
       application:
-        name: demo
+        name: customer
       profiles:
         active: dev
       cloud:
@@ -75,7 +75,7 @@ Steps:
           uri: http://localhost:8888
     ```
 
-14. Test the setup by starting the demo-service. If everything works correct it will start up on port ```8081``` now.
+14. Test the setup by starting the customer-service. If everything works correct it will start up on port ```8081``` now.
 
 ## Configure the config-server to use a remote config-repository
 
@@ -109,14 +109,14 @@ server:
   port: 8888
 ```
 
-Since the ```config-repo``` folder is on a specific branch within the BankingInTheCloud-Tutorials repository you have to specify the branch as ```label``` in the ```bootstrap.yml``` of the demo application to make the setup work:
+Since the ```config-repo``` folder is on a specific branch within the BankingInTheCloud-Tutorials repository you have to specify the branch as ```label``` in the ```bootstrap.yml``` of the customer application to make the setup work:
 
-**bootstrap.yml** (demo project)
+**bootstrap.yml** (customer project)
 
 ```YAML
 spring:
   application:
-    name: demo
+    name: customer
   profiles:
     active: dev
   cloud:

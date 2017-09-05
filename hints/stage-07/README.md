@@ -25,12 +25,12 @@ You have to define:
 version: '3.2'
 
 services:
-  demodb: 
+  customerdb: 
     image: mysql
-    container_name: demodb
+    container_name: customerdb
     environment:
       - MYSQL_ROOT_PASSWORD=mysql
-      - MYSQL_DATABASE=demodb
+      - MYSQL_DATABASE=customerdb
     ports:
       - "3306:3306"
     networks:
@@ -69,17 +69,17 @@ services:
     networks:
         - demonet
 
-  demo:
+  customer:
     build:
-      context: ./demo
-    image: demo
-    container_name: demo
+      context: ./customer
+    image: customer
+    container_name: customer
     working_dir: /
     ports:
       - "8081:8081"
       - "7081:7081"
     depends_on:
-        - demodb
+        - customerdb
         - registry
         - config
     networks:
@@ -98,7 +98,7 @@ services:
         - accountingdb
         - registry
         - config
-        - demo
+        - customer
     networks:
         - demonet
 
@@ -106,14 +106,14 @@ networks:
   demonet:
 ```
 
-Note: The port configuration within the docker compose configuration file depicts the ports that will be allocated on the machine it runs on! Thus you can access the demo and accounting service through ```localhost:[PORT]``` again. For the container linkage (using names) this port configuration does not matter, because the containers communicate with each other on a docker-IP+port level.
+Note: The port configuration within the docker compose configuration file depicts the ports that will be allocated on the machine it runs on! Thus you can access the customer and accounting service through ```localhost:[PORT]``` again. For the container linkage (using names) this port configuration does not matter, because the containers communicate with each other on a docker-IP+port level.
 This is relevant for consideration once we use the amazon ECS (EC2 Container Service) in stage 08. Similar to docker compose we have to define task definitions that define the containers and how they are linked together.
 
 ## Adapt the configuration within the functional services
 
 Instead of using IP addresses to detect other containers we now use the names of those containers as defined in the docker-compose configuration.
 
-For the demo and the accounting project the ```application.yml``` and ```bootstrap.yml``` file will be adapted. Example blow shows for demo project, the accounting project is to be configured accordingly.
+For the customer and the accounting project the ```application.yml``` and ```bootstrap.yml``` file will be adapted. Example blow shows for customer project, the accounting project is to be configured accordingly.
 
 application.yml:
 
@@ -143,7 +143,7 @@ spring:
 
 ## Starting the application
 
-Note that the demo and the accounting service depend on:
+Note that the customer and the accounting service depend on:
 
 1. Their respective databases.
 2. The config server (otherwise they will not be configured correctly upon startup).
@@ -153,10 +153,10 @@ Docker compose does not "wait" until the other services are available by itself 
 
 Thus it is recommended to start the containers like this:
 
-1. Open a terminal and run: ```docker-compose up demodb accountingdb```
-2. Wait until demodb and accountingdb started successfully.
+1. Open a terminal and run: ```docker-compose up customerdb accountingdb```
+2. Wait until customerdb and accountingdb started successfully.
 3. Open another terminal and run: ```docker-compose up config registry```
 4. Wait until config and registry started successfully.
-5. Open another terminal and run: ```docker-compose up demo accounting```
+5. Open another terminal and run: ```docker-compose up customer accounting```
 
 By running these tasks in separate windows its also easier to read the log information. If you start all containers at once in one terminal there will be six containers logging to the same terminal which is quite tough to read.

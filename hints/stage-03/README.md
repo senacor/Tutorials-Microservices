@@ -4,12 +4,12 @@
 
 To make things clear from the beginning we first take a look at the spring-project structure at this point. We basically stick to the [folder structure as described in the spring documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-structuring-your-code.html) but adapt the names a little.
 
-Folder structure of the demo project for stage 03:
+Folder structure of the customer project for stage 03:
 
 ```
 com.senacor.bitc
              +- demo
-                 +- DemoApplication.java
+                 +- CustomerApplication.java
                  |
                  +- domain
                  |   +- Customer.java
@@ -89,7 +89,7 @@ For stage 03 our ```application.yml``` file looks pretty much the same as in sta
 ```YAML
 spring:
   datasource:
-    url: 'jdbc:mysql://localhost:3306/demodb'
+    url: 'jdbc:mysql://localhost:3306/customerdb'
     username: 'root'
     password: 'mysql'
     driver-class-name: 'com.mysql.jdbc.Driver'
@@ -99,7 +99,7 @@ spring:
     default-property-inclusion: non_null
 ```
 
-Note that you could also put this configuration into the service's ```demo-dev.yml``` configuration file on the config server. For this tutorial we put it in the project for now, but it is of course valid to let the config server hold this information.
+Note that you could also put this configuration into the service's ```customer-dev.yml``` configuration file on the config server. For this tutorial we put it in the project for now, but it is of course valid to let the config server hold this information.
 
 ## Add customer Entity and Repository
 
@@ -323,4 +323,4 @@ The response should contain the created customer with an ID:
 }
 ```
 
-Note: Don't forget to run the config server as well, otherwise your demo service will be available at port 8080 not port 8081!
+Note: Don't forget to run the config server as well, otherwise your customer service will be available at port 8080 not port 8081!

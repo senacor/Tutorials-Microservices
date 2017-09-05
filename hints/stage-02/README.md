@@ -82,18 +82,18 @@ Success.
 All done!
 ```
 
-### Create the demodb database
+### Create the customerdb database
 
 In the mysql console run:
 ```SQL
-CREATE SCHEMA demodb;
+CREATE SCHEMA customerdb;
 ```
 
 ## Flyway configuration and scripting
 
-### Configure the demo project for Flyway
+### Configure the customer project for Flyway
 
-Add the following dependencies to your gradle build file in the demo project:
+Add the following dependencies to your gradle build file in the customer project:
 
 1. dependency for mysql
 2. dependencies for flyway
@@ -154,18 +154,18 @@ Don't forget to run a "refresh" in your gradle view (in IntelliJ IDEA).
 
 ### Configure the database
 
-For stage 02 we add an ```application.yml``` file to the ```resources``` folder of the demo project, to define the connection to the database: 
+For stage 02 we add an ```application.yml``` file to the ```resources``` folder of the customer project, to define the connection to the database: 
 
 ```YAML
 spring:
   datasource:
-    url: 'jdbc:mysql://localhost:3306/demodb'
+    url: 'jdbc:mysql://localhost:3306/customerdb'
     username: 'root'
     password: 'mysql'
     driver-class-name: 'com.mysql.jdbc.Driver'
 ```
 
-Note that you could also put this configuration into the service's ```demo-dev.yml``` configuration file on the config server. For this tutorial we put it in the project for now, but it is of course valid to let the config server hold this information.
+Note that you could also put this configuration into the service's ```customer-dev.yml``` configuration file on the config server. For this tutorial we put it in the project for now, but it is of course valid to let the config server hold this information.
 
 ### Create your first migration
 
@@ -176,12 +176,12 @@ For more information on migrations refer to the [Flyway migration documentation]
 The first migration should create a customer table. The migration file is to be created like this:
 
 ```
-[demo-project-root]/src/main/resources/db/migration/V1__Create_customer_table.sql
+[customer-project-root]/src/main/resources/db/migration/V1__Create_customer_table.sql
 ```
 
 SQL statement:
 ```SQL
-CREATE TABLE demodb.customer (
+CREATE TABLE customerdb.customer (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
@@ -195,14 +195,14 @@ To run the migration you can just startup the project. Flyway will automatically
 
 #### Running a migration with the flyway plugin (optional)
 
-If you configure flyway using the flyway-plugin you can run migrations through gradle tasks without starting the project itself. Navigate to the demo project's base folder and run:
+If you configure flyway using the flyway-plugin you can run migrations through gradle tasks without starting the project itself. Navigate to the customer project's base folder and run:
 ```
 ./gradlew flywayMigrate -i
 ```
 
 You should retrieve a ```BUILD SUCCESSFULL``` message at the end of the migration.
 
-Note: The mysql schema "demodb" (as specified in the flyway configuration in the build.gradle) can be automatically created for you upon the first migration. Usually you would use an already existing database/schema that you create *before* you run the first migration though. If you let flyway create the schema for you the first migration entry in the ```schema_version``` table that flyway automatically creates in the database for you will be a migration without a version number.
+Note: The mysql schema "customerdb" (as specified in the flyway configuration in the build.gradle) can be automatically created for you upon the first migration. Usually you would use an already existing database/schema that you create *before* you run the first migration though. If you let flyway create the schema for you the first migration entry in the ```schema_version``` table that flyway automatically creates in the database for you will be a migration without a version number.
 
 #### If something goes wrong...
 
@@ -217,7 +217,7 @@ You will have to enter the root password.
 
 Statement to drop the database:
 ```SQL
-DROP DATABASE demodb;
+DROP DATABASE customerdb;
 ```
 
 More information on mysql (SQL) commands can be found in the [mysql documentation](https://dev.mysql.com/doc/refman/5.7/en/drop-database.html).
@@ -239,18 +239,18 @@ select * from schema_version;
 The second migration should add some data to the customer table. Add the migration file:
 
 ```
-[demo-project-root]/src/main/resources/db/migration/V2__InsertInto_customer_table_BudAndTerence.sql
+[customer-project-root]/src/main/resources/db/migration/V2__InsertInto_customer_table_BudAndTerence.sql
 ```
 
 SQL statements:
 
 ```SQL
-INSERT INTO demodb.customer
+INSERT INTO customerdb.customer
   (id, first_name, last_name, birth_date)
   VALUES (1, "Bud", "Spencer", STR_TO_DATE('31-10-1929', '%d-%m-%Y')
 );
 
-INSERT INTO demodb.customer
+INSERT INTO customerdb.customer
   (id, first_name, last_name, birth_date)
   VALUES (2, "Terence", "Hill", STR_TO_DATE('29-03-1939', '%d-%m-%Y')
 );
