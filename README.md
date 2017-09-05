@@ -1,4 +1,4 @@
-# BankingInTheCloud-Tutorials
+# Microservices & Cloud - Tutorials
 This repo provides tutorials for the BankingInTheCloud workshop. The workshop is divided in stages that build on each other. Depending on the time constraints certain stages can be skipped. 
 
 Each stages has a two-digit number. There are optional stages which are not integrated into the build-on-each-other pattern, but are side branches of a certain stage. Optional stages are marked with the stage's number they build on and a letter (e.g. 06.A).
@@ -311,11 +311,11 @@ You add an elastic load balancer to the project setup on AWS. You understand app
 4. Add a service and configure the Application Load Balancer for the service.
 
 
-### Stage 13 - Cloud Storage with amazon SimpleDB
+<!---### Stage 13 - Cloud Storage with amazon SimpleDB
 
 #### Goal
 Instead of running a database in a docker container you should utilize the simple storage service (S3) of amazon AWS.
 
 #### Tasks
 
-For utilizing SimpleDB: https://aws.amazon.com/articles/Amazon-S3/7417221025670024
+For utilizing SimpleDB: https://aws.amazon.com/articles/Amazon-S3/7417221025670024--->
