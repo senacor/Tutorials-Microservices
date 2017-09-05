@@ -1,10 +1,9 @@
-package com.senacor.bitc.customer.rest;
+package com.senacor.bitc.demo.rest;
 
-import com.senacor.bitc.customer.util.TestUtil;
+import com.senacor.bitc.demo.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;

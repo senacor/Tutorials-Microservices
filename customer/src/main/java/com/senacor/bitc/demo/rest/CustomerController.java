@@ -1,10 +1,9 @@
-package com.senacor.bitc.customer.rest;
+package com.senacor.bitc.demo.rest;
 
-import com.senacor.bitc.customer.domain.Customer;
-import com.senacor.bitc.customer.service.CustomerService;
+import com.senacor.bitc.demo.domain.Customer;
+import com.senacor.bitc.demo.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

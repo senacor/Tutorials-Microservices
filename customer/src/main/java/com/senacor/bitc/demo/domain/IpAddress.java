@@ -1,4 +1,4 @@
-package com.senacor.bitc.customer.domain;
+package com.senacor.bitc.demo.domain;
 
 public class IpAddress {
 
