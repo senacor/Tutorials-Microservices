@@ -1,7 +1,7 @@
-package com.senacor.bitc.demo.service;
+package com.senacor.bitc.customer.service;
 
-import com.senacor.bitc.demo.domain.Customer;
-import com.senacor.bitc.demo.domain.CustomerRepository;
+import com.senacor.bitc.customer.domain.Customer;
+import com.senacor.bitc.customer.domain.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
