@@ -1,7 +1,7 @@
 # Microservices & Cloud - Tutorials
 This repo provides tutorials for the Microservices & Cloud workshop. The workshop is divided in stages that build on each other. Depending on the time constraints certain stages can be skipped. 
 
-Each stages has a two-digit number. There are optional stages which are not integrated into the build-on-each-other pattern, but are side branches of a certain stage. Optional stages are marked with the stage's number they build on and a letter (e.g. 06.A).
+Each stages has a two-digit number. There are optional stages which are not integrated into the build-on-each-other pattern, but are side branches of a certain stage. Optional stages are marked with the stage's number they are built on and a letter (e.g. 07.A) if they are independent, or the stage's number they are built on and a number if several stages form a branch (e.g. 03.1 and 03.2).
 
 Detailed hints for each stage can be found in the [hints folder](https://github.com/senacor/MicroservicesAndCloud-Tutorials/tree/master/hints). 
 
@@ -104,6 +104,30 @@ You can follow the instructions on how to [add Lombok to IntelliJ IDEA as plugin
 2. Offer a new REST endpoint that provides customer data (at least: customer by id and customer by last name).
 3. Test the new REST endpoint (with MockMVC and MockBean).
 
+### Stage 03.1 (optional) - HATEOAS (REST application architecture constraint)
+
+*Disclaimer: This stage is not implemented in code yet (you will not find a branch for this but you can do it on your own).*
+
+#### Goal 
+You understand the concept of HATEOAS (Hypermedia as the Engine of Application State) and adapt your service accordingly.
+
+#### Tasks
+
+1. Follow the [spring tutorial on HATEOAS](https://spring.io/guides/gs/rest-hateoas/) to adapt your rest endpoint according to the pattern.
+2. Think about the design of your endpoints with respect to the HATEOAS pattern.
+
+### Stage 03.2 (optional) - Hystrix (Fault Tolerance)
+
+*Disclaimer: This stage is not implemented in code yet (you will not find a branch for this but you can do it on your own).*
+
+#### Goal
+You understand the concept of Netflix's Hystrix library and what you can do with it. You use the Circuit Breaker implementation of the Hystrix library to add a Circuit Breaker to your service.
+
+#### Tasks
+
+1. Follow the [spring tutorial on Circuit Breakers with Hystrix](https://spring.io/guides/gs/circuit-breaker/) to get an overview. Build in a circuit breaker into your customer service.
+2. Think about the design of your endpoints with respect to the Circuit Breaker pattern and other fault tolerance concepts.
+
 ### Stage 04 - Create a second service
 
 #### Goal
@@ -184,12 +208,15 @@ Move all configurations that are applied at runtime (```application.yml```) but 
 
 ### Stage 07.B (optional) - Messaging and Event Sourcing
 
-*Disclaimer: This stage is not implemented yet. It will be added at a later point once the AWS stages are complete.*
+*Disclaimer: This stage is not implemented in code yet (you will not find a branch for this but you can do it on your own).*
 
 #### Goal
 You add endpoints that emit events, so your two services don't directly communicate with each other but one service emits an event that the other service consumes.
 
 #### Tasks
+
+1. Follow the [spring tutorial on the Java Messaging Service using ActiveMQ](https://spring.io/guides/gs/messaging-jms/).
+2. Add messaging functionality to your services.
 
 ### Stage 08 - First steps with amazon ECS
 
@@ -298,18 +325,25 @@ Instead of providing your own database container you manage your database throug
 5. Configure the database connection for your services through the config server.
 6. Create an ECS cluster and service and configure it to use the databases.
 
-### Stage 12 - Load Balancing on amazon AWS
+### Stage 12 - Load Balancing on amazon AWS - Single-Service per Host
 
 #### Goal
-You add an elastic load balancer to the project setup on AWS. You understand application level load balancing.
+You adapt your setup to a ["single service instance per host"](http://microservices.io/patterns/deployment/single-service-per-host.html) setup. You add an elastic load balancer to that on AWS. You understand application level load balancing and discuss the advantages and disadvantages of this setup.
 
 #### Tasks
  
 1. Read into [Elastic Load Balancing](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-load-balancing.html) on amazon AWS.
-2. Create and configure an [Application Load Balancer](http://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html) in your EC2 console (for the VPC from stage 11).
-3. Create an ECS cluster based on the setup from stage 11 (RDS managed DBs, VPC).
-4. Add a service and configure the Application Load Balancer for the service.
+2. Change your deployment to a ["single service instance per host"](http://microservices.io/patterns/deployment/single-service-per-host.html) setup. The databases should still be managed by RDS.
+3. Create and configure an [Application Load Balancer](http://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html) in your EC2 console (using the default VPC).
+4. Startup the config and registry service only once (without load balancing). The customer and accounting service should be load-balanced.
 
+
+### Stage 13 - Load Balancing and Route 53
+
+#### Goal
+
+
+#### Tasks
 
 <!---### Stage 13 - Cloud Storage with amazon SimpleDB
 
