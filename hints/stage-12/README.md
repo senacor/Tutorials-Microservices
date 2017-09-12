@@ -254,7 +254,7 @@ Note that you have to at least start the config service in the cluster already s
 
 ```YAML
 {
-	"family": "config",
+    "family": "config",
     "networkMode": "bridge",
     "containerDefinitions": [
         {
@@ -278,7 +278,7 @@ Note that you have to at least start the config service in the cluster already s
 
 ```YAML
 {
-	"family": "registry",
+    "family": "registry",
     "networkMode": "bridge",
     "containerDefinitions": [
         {
@@ -457,13 +457,13 @@ Note: The steps below depict the customer service; for the accounting service yo
 
 ### Step 1: Configure service 
 
-![Step 1: Configure service](ScreenShot_AWS_ECS-customer-service-load-balanced_1.PNG)
+![Step 1: Configure service](images/ScreenShot_AWS_ECS-customer-service-load-balanced_1.PNG)
 
 ### Step 2: Network configuration 
 
-![Step 2: Network configuration](ScreenShot_AWS_ECS-customer-service-load-balanced_2.PNG)
+![Step 2: Network configuration](images/ScreenShot_AWS_ECS-customer-service-load-balanced_2.PNG)
 
-![Step 2: Network configuration, ELB](ScreenShot_AWS_ECS-customer-service-load-balanced_3.PNG)
+![Step 2: Network configuration, ELB](images/ScreenShot_AWS_ECS-customer-service-load-balanced_3.PNG)
 
 Important: Make sure that the "Path pattern" you define matches your endpoint specifications! The ELB will just pass the complete path defined in the pattern to the instance - so if the pattern in the ELB does not match the endpoint's pattern of the microservice then the path will not be resolved and you will see the "Whitelabel" spring-standard-error page.
 
@@ -473,7 +473,7 @@ Do not adjust the service’s desired count. Next.
 
 ### Step 4: Review service 
 
-![Step 4: Review service](ScreenShot_AWS_ECS-customer-service-load-balanced_4.PNG)
+![Step 4: Review service](images/ScreenShot_AWS_ECS-customer-service-load-balanced_4.PNG)
 
 ## Test your setup
 
