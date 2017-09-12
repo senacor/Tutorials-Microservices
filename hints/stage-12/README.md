@@ -114,16 +114,6 @@ In the end it comes down to:
 
 Note that the load balancer is defined by the service.
 
-Note that the number of instances that you assign to your cluster when you create it depends on your setup - you will have to calcualte the number of instances needed to fulfill your design. If we stick to the setup as shown above we would need a cluster with 6 instances (or 8 if you run the databases in the cluster as well), calculated like this:
-
-- 1 instance for registry
-- 1 instance for config
-- 2 instances for customer (load balanced)
-- 2 instances for accounting (load balanced)
-- (2 instances for the databases)
-
-Since all of the services require a maximum of around 700MB+ of RAM, [t2.micro type instances](https://aws.amazon.com/de/ec2/instance-types/) should be good enough for our cluster. Depending on the instance type you choose for your cluster you will have to define the memory settings for your containers. Note that for t2.micro instances you can only assign around 990MB of memory to each service; if you assign more you will run into out-of-memory problems upon service startup (you can check that in the "Events" section of your ECS service)!
-
 For the purpose of comparison, here you have the setup overview of multiple clusters and config and registry running on the same instance (the number for instances per cluster would be quite different for this setup):
 
 ```
@@ -204,6 +194,52 @@ For the purpose of comparison, here you have the setup overview of multiple clus
 ---------------------------------------------
 ```
 
+## Creating the Load Balancer in the EC2 console
+
+Create an **Application Load Balancer** through the wizard in the Load Balancer section of your EC2 console.
+
+### 1. Configure Load Balancer 
+
+![Configure Load Balancer](images/ScreenShot_AWS_LoadBalancer_1.PNG)
+
+Note that you have to select at least two availability zones. In detail: two public subnets in different availability zones. Since you only have public subnets in the default VPC you don't can just select the availability zone with corresponding subnet.
+
+### 2. Configure Security Settings
+
+Just skip that step and press Next.
+
+### 3. Configure Security Groups
+
+![Configure Security Groups](images/ScreenShot_AWS_LoadBalancer_2.PNG)
+
+Note: For a first, quick setup you can just open all the ports needed to all IP-addresses. This is of course not secure - in the end you only want to be able to access the customer and accounting service through the load balancer - accessing the instances directly is not needed.
+
+### 4. Configure Routing
+
+Just fill in the name - the rest of the settings will be configured once we attach the load balancer to a an ECS-service.
+
+Note that you can also fill the health-check path already (set it to ```/address```), but you don't have to. This can also be done later when we attach the load balancer to the ECS-service.
+
+### 5. Register Targets
+
+Don't register targets, just review and create the load balancer.
+
+
+## ECS cluster
+
+Create an ECS cluster that uses the default VPC (add the subnets) and the security group of the load balancer!
+
+The number of instances that you assign to your cluster when you create it depends on your setup - you will have to calcualte the number of instances needed to fulfill your design. If we stick to the setup as shown above we would need a cluster with 6 instances (or 8 if you run the databases in the cluster as well), calculated like this:
+
+- 1 instance for registry
+- 1 instance for config
+- 2 instances for customer (load balanced)
+- 2 instances for accounting (load balanced)
+- (2 instances for the databases)
+
+Since all of the services require a maximum of around 700MB+ of RAM, [t2.micro type instances](https://aws.amazon.com/de/ec2/instance-types/) should be good enough for our cluster. Depending on the instance type you choose for your cluster you will have to define the memory settings for your containers. Note that for t2.micro instances you can only assign around 990MB of memory to each service; if you assign more you will run into out-of-memory problems upon service startup (you can check that in the "Events" section of your ECS service)!
+
+
 ## Service task definition setup
 
 We will go for the single-cluster setup with all services in a separate task definition (and thus instance).
@@ -255,76 +291,6 @@ Note that you have to at least start the config service in the cluster already s
                     "hostPort": "8761",
                     "containerPort": "8761",
                     "protocol": "tcp"
-                }
-            ]
-        }
-    ]
-}
-```
-
-### customer and accounting
-
-Now we reached a point where it would be nice to configure the IP-address and branch for the config server when starting up the customer and accounting containers rather than creating a new deployment with these settings defined in the bootstrap configuration. 
-
-Fortunately there are several ways to [externalize your configuration in spring](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html). One easy way to pass configuration settings to the container on startup is to use the ```SPRING_APPLICATION_JSON``` environment variable.
-
-Once the instance that hosts your config server has stated up within your cluster you can retrieve the IP-address of it and configure it upon startup. Additionally you can also pass in the branch to be used in the config-repo, because you will have to create a new configuration version since the IP-address of Eureka has to be configure.
-
-Note that you will also have to configure the load balancer before you add the services for customer and accounting since the load balancer is configured through the service creation wizard.
-
-#### customer
-
-```YAML
-{
-    "family": "customer",
-    "networkMode": "bridge",
-    "containerDefinitions": [
-        {
-            "name": "customer",
-            "image": "senacortutorials/customer:stage-12",
-            "memory": "900",
-            "essential": true,
-            "portMappings": [
-                {
-                    "hostPort": "8081",
-                    "containerPort": "8081",
-                    "protocol": "tcp"
-                }
-            ],
-            "environment": [
-                {
-                  "name": "SPRING_APPLICATION_JSON",
-                  "value": "{\"spring\":{\"cloud\":{\"config\":{\"uri\":\"http://[CONFIG_SERVER_IP_ADDRESS]:8888\",\"label\":\"Stage-12-LoadBalancer\"}}}}"
-                }
-            ]
-        }
-    ]
-}
-```
-
-#### accounting
-
-```YAML
-{
-    "family": "accounting",
-    "networkMode": "bridge",
-    "containerDefinitions": [
-        {
-            "name": "accounting",
-            "image": "senacortutorials/accounting:stage-12",
-            "memory": "900",
-            "essential": true,
-            "portMappings": [
-                {
-                    "hostPort": "8082",
-                    "containerPort": "8082",
-                    "protocol": "tcp"
-                }
-            ],
-            "environment": [
-                {
-                  "name": "SPRING_APPLICATION_JSON",
-                  "value": "{\"spring\":{\"cloud\":{\"config\":{\"uri\":\"http://[CONFIG_SERVER_IP_ADDRESS]\",\"label\":\"Stage-12-LoadBalancer\"}}}}"
                 }
             ]
         }
@@ -400,6 +366,78 @@ In our setup we use our own mysql containers since they are more simple to start
 }
 ```
 
+### customer and accounting
+
+Now we reached a point where it would be nice to configure the IP-address and branch for the config server when starting up the customer and accounting containers rather than creating a new deployment with these settings defined in the bootstrap configuration. 
+
+Fortunately there are several ways to [externalize your configuration in spring](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html). One easy way to pass configuration settings to the container on startup is to use the ```SPRING_APPLICATION_JSON``` environment variable.
+
+Once the instance that hosts your config server has stated up within your cluster you can retrieve the IP-address of it and configure it upon startup. Additionally you can also pass in the branch to be used in the config-repo, because you will have to create a new configuration version since the IP-address of Eureka has to be configure.
+
+Important: Set the network mode of your customer and accounting service to "host" - otherwise it will use the docker-container IP-address for registration to the registry (Eureka) server. Setting the network mode to "host" solves this problem by telling the docker container to use host ports directly. Another solution to this problem will be shown in the next stage.
+
+Note that you will also have to configure the load balancer before you add the services for customer and accounting since the load balancer is configured through the service creation wizard.
+
+#### customer
+
+```YAML
+{
+    "family": "customer",
+    "networkMode": "host",
+    "containerDefinitions": [
+        {
+            "name": "customer",
+            "image": "senacortutorials/customer:stage-12",
+            "memory": "900",
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": "8081",
+                    "containerPort": "8081",
+                    "protocol": "tcp"
+                }
+            ],
+            "environment": [
+                {
+                  "name": "SPRING_APPLICATION_JSON",
+                  "value": "{\"spring\":{\"cloud\":{\"config\":{\"uri\":\"http://[CONFIG_SERVER_IP_ADDRESS]:8888\",\"label\":\"Stage-12-LoadBalancer\"}}}}"
+                }
+            ]
+        }
+    ]
+}
+```
+
+#### accounting
+
+```YAML
+{
+    "family": "accounting",
+    "networkMode": "host",
+    "containerDefinitions": [
+        {
+            "name": "accounting",
+            "image": "senacortutorials/accounting:stage-12",
+            "memory": "900",
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": "8082",
+                    "containerPort": "8082",
+                    "protocol": "tcp"
+                }
+            ],
+            "environment": [
+                {
+                  "name": "SPRING_APPLICATION_JSON",
+                  "value": "{\"spring\":{\"cloud\":{\"config\":{\"uri\":\"http://[CONFIG_SERVER_IP_ADDRESS]\",\"label\":\"Stage-12-LoadBalancer\"}}}}"
+                }
+            ]
+        }
+    ]
+}
+```
+
 ## Configuration
 
 Before you actually create the customer and accounting ECS services you will have to configure the following in the configuration files of the customer and accounting service on the config-server repo:
@@ -408,17 +446,50 @@ Before you actually create the customer and accounting ECS services you will hav
 - The registry (Eureka) IP-address (you have to start the registry instance and retrieve the IP-address).
 - The database IP-addresses (you will have to start the database instances and retrieve the IP-addresses)
 
-## Load Balancer
+## Linking the Load Balancer to customer and accounting ECS-service
 
-Create an application load balancer through the wizard in the Load Balancer section of your EC2 console. Don't attach the load balancer to instances - you do that when creating the services for the customer and accounting task definition within your ECS cluster.
+Prerequisites: 
 
-Configure the load balancer according to your instance count in the cluster.
+1. databases, registry, config instances are already configured through ECS-services and started in the cluster.
+2. customer and accounting task definition and configuration were configured according to the *Configuration* section above, but no customer or accounting ECS-service was added to the cluster yet.
+
+Note: The steps below depict the customer service; for the accounting service you have to do the same.
+
+### Step 1: Configure service 
+
+![Step 1: Configure service](ScreenShot_AWS_ECS-customer-service-load-balanced_1.PNG)
+
+### Step 2: Network configuration 
+
+![Step 2: Network configuration](ScreenShot_AWS_ECS-customer-service-load-balanced_2.PNG)
+
+![Step 2: Network configuration, ELB](ScreenShot_AWS_ECS-customer-service-load-balanced_3.PNG)
+
+Important: Make sure that the "Path pattern" you define matches your endpoint specifications! The ELB will just pass the complete path defined in the pattern to the instance - so if the pattern in the ELB does not match the endpoint's pattern of the microservice then the path will not be resolved and you will see the "Whitelabel" spring-standard-error page.
+
+### Step 3: Auto Scaling (optional) 
+
+Do not adjust the service’s desired count. Next.
+
+### Step 4: Review service 
+
+![Step 4: Review service](ScreenShot_AWS_ECS-customer-service-load-balanced_4.PNG)
+
+## Test your setup
+
+You will be able to access the through the ELB like this:
+```
+[ELB_DNS_NAME]/customer/1
+```
+
+Also try to post against the account endpoint through the ELB using Postman. If you get an error there you most likely have a problem with the service registration at the registry (Eureka) server. Make sure the task definition for customer and accounting set ```"networkMode": "host"```.
 
 ## Security and Availability Considerations
 
-In order to make your setup more robust you can for example run several Eureka instances (registry instances) in different availability zones. You can then configure multiple Eureka URIs in the configuration like this:
+To add security to your load-balancer security group setup you can for example create a VPC with a private subnet, launch the container instances in the private subnet part and link the security group of the load balancer in the public part of the VPC to the security group of the private part. 
+Another way to add security is to restrict the IP-addresses within the security group of the load balancer by hand rather than through linking another security group - this is, however, more static.
 
-Think about other security aspects - how would you for example configure a customer VPC in your setup?
+In order to make your setup more robust you can for example run several Eureka instances (registry instances) in different availability zones. You can then configure multiple Eureka URIs in the configuration like this:
 
 ## Cleanup
 
