@@ -14,9 +14,10 @@ This is what you will have to do (overview; details in the chapters below):
 3. Create a cluster with instances that fit the services.
 4. Add the config and registry service and startup a config and a registry instance.
 5. Add the databases' services and startup the databases. (Optionally you can also use RDS to manage the databases.)
-6. Retrieve the IP address from the config and the registry instance.
-7. Configure the config IP-address in the customer and the accounting task definition; configure the registry and databases IP-addresses in the configuration file of the config-repo served by the config server.
-8. Add the customer and accounting service to your ECS cluster and attach the load balancer to it (in the wizard).
+6. Retrieve the IP address from the config and the registry and database instances.
+7. Configure the config IP-address in the customer and the accounting task definition. 
+8. Configure the registry and databases IP-addresses in the configuration file of the config-repo served by the config server.
+9. Add the customer and accounting service to your ECS cluster and attach the load balancer to it (in the wizard).
 
 Your setup should look something like this:
 
