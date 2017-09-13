@@ -69,6 +69,11 @@ After finishing stage 07 you have the container management setup with docker-com
 
 The linkabe between the containers is not managed through names by docker-compose, no fixed IP addresses are required.
 
-## Stage 07A - Config on Config Server
+## Stage 09 - Resilient Startup
 
-After finishing stage 07A the configuration for the demo and the accounting service are completely managed by the config server. The ```bootstrap.yml``` of the services only contains the reference to the config server, the ```application.yml``` was completely moved to the config server and removed from the services.
+After finishing stage 09 the configuration for the demo and the accounting service are completely managed by the config server. The ```bootstrap.yml``` of the services only contains the reference to the config server, the ```application.yml``` was completely moved to the config server and removed from the services.
+
+Additionally resilient features were included into the configuration so:
+
+1. the application retries to contact the config-server when it starts.
+2. the application retries to connect to the database if it is not avilable (the application does not just crash).
