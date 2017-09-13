@@ -8,4 +8,11 @@ spring:
       uri: http://config:8888
       # the label defines the branch within the config-server repo
       # (for local setup you don't need a label because you are not on a specific branch)
-      label: Stage-07A-ConfigOnConfigServer
+      label: Stage-09-ResilientStartup
+      # make the config-server lookup more resilient - if the server is not up yet there
+      # is a retry defined!
+      failFast: true
+      retry:
+        initialInterval: 10000
+        maxInterval: 10000
+        maxAttempts: 12
