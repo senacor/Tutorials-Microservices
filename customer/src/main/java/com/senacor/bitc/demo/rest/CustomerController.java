@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/customer", produces = "application/json")
+@RequestMapping(produces = "application/json")
 public class CustomerController {
 
     private final CustomerService customerService;
