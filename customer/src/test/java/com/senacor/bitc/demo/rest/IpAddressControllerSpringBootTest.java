@@ -23,8 +23,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class IpAddressControllerSpringBootTest {
 
-    private final String BASE_URL = "http://localhost:8080/";
-
     @Autowired
     private IpAddressController sut;
 
