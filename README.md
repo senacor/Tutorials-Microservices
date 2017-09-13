@@ -29,7 +29,7 @@ The customer project is configured to use this database. It uses Flyway migratio
 
 After finishing stage 03 you have a service that accesses the customer data created in stage 02 through spring data. You can quey for customers by id and last name and you can create customers through post requests in postman.
 
-## Stage 04 - A second service
+## Stage 05 - A second service
 
 After finishing stage 04 you have a second service called "accounting"; you now have three projects:
 
