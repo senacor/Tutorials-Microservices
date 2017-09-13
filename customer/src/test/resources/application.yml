@@ -2,8 +2,11 @@ server:
   contextPath: /customer
 
 spring:
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration, org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+  datasource:
+    driver-class-name: 'org.h2.Driver'
+    url: 'jdbc:h2:mem:customerdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
+    username: 'root'
+    password: 'mysql'
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
