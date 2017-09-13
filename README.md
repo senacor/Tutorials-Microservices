@@ -44,7 +44,7 @@ A configuration file (```accounting-dev.yml```) was added that defines port ```8
 
 The verification of the customer ID through the customer service upon creation of an account is not implemented in this stage yet. There is a TODO defined in the ```AccountService```. The communication with the customer REST endpoint (customer project) is to be added in the next stage.
 
-## Stage 05 - Eureka
+## Stage 06 - Eureka
 
 After finishing stage 05 you have have Eureka as service registry so services can find each other. You now have four projects:
 
