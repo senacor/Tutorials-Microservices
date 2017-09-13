@@ -11,6 +11,8 @@ spring:
 
 server:
   port: 0
+  contextPath: /account
+
 eureka:
   client:
     serviceUrl:
@@ -26,6 +28,3 @@ hystrix:
         isolation:
           thread:
             timeoutInMilliseconds: 10000
-
-server:
-  contextPath: /account

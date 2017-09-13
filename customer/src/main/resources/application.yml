@@ -11,10 +11,9 @@ spring:
 
 server:
   port: 0
+  contextPath: /customer
+
 eureka:
   client:
     serviceUrl:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
-
-server:
-  contextPath: /customer
