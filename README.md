@@ -57,7 +57,7 @@ Both the customer and the accounting project are configured as Eureka clients, m
 
 Additionally the accounting project includes a feign client, so the account service (accounting project) can communicate with the customer endpoint (customer project) to verify if a customer exists upon account creation.
 
-## Stage 06 - Docker
+## Stage 07 - Docker
 
 After finishing stage 06 all the components of your application can run in docker containers. The databases (accountingdb, customerdb), the config server, the registry as well as the functional services (customer, accounting) are containerized. 
 
