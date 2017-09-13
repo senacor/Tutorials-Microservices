@@ -1,11 +1,11 @@
 # BankingInTheCloud-Tutorials
 This repo provides tutorials for the BankingInTheCloud workshop. 
 
-## Stage 00 - Basic Setup
+## Stage 01 - Basic Setup
 
 After finishing stage 00 you should have one Spring Boot Project called ```customer``` that currently contains one Rest-Controller that offers a GET service method to receive the IP addresee of the server.
 
-## Stage 01 - Spring Cloud Config
+## Stage 02 - Spring Cloud Config
 
 After finishing stage 01 you have two projects:
 
@@ -19,17 +19,17 @@ The config server is configured through ```application.yml``` in the config proj
 The customer application is configured through ```bootstrap.yml``` in the customer project. It loads the configuration according to application-name, profile and label. The application-name (```customer```) and profile (```dev```) define which configuration file to fetch from the config server (```customer-dev.yml```). The label specifies the branch (```Stage-01-SpringCloudConfig```) within the config server repository.
 The configuration (```customer-dev.yml```) defines the startup port of the customer application. It is set to 8081, so the customer service is now available at port 8081 instead of 8080 (stage 00).
 
-## Stage 02 - Flyway
+## Stage 03 - Flyway
 
 After finishing stage 02 you have a MySQL database that contains a ```customer``` table and dummy data.
 
 The customer project is configured to use this database. It uses Flyway migration to create the ```customer``` table and the dummy data.
 
-## Stage 03 - Spring Data
+## Stage 04 - Spring Data
 
 After finishing stage 03 you have a service that accesses the customer data created in stage 02 through spring data. You can quey for customers by id and last name and you can create customers through post requests in postman.
 
-## Stage 04 - A second service
+## Stage 05 - A second service
 
 After finishing stage 04 you have a second service called "accounting"; you now have three projects:
 
@@ -44,7 +44,7 @@ A configuration file (```accounting-dev.yml```) was added that defines port ```8
 
 The verification of the customer ID through the customer service upon creation of an account is not implemented in this stage yet. There is a TODO defined in the ```AccountService```. The communication with the customer REST endpoint (customer project) is to be added in the next stage.
 
-## Stage 05 - Eureka
+## Stage 06 - Eureka
 
 After finishing stage 05 you have have Eureka as service registry so services can find each other. You now have four projects:
 
@@ -57,7 +57,7 @@ Both the customer and the accounting project are configured as Eureka clients, m
 
 Additionally the accounting project includes a feign client, so the account service (accounting project) can communicate with the customer endpoint (customer project) to verify if a customer exists upon account creation.
 
-## Stage 06 - Docker
+## Stage 07 - Docker
 
 After finishing stage 06 all the components of your application can run in docker containers. The databases (accountingdb, customerdb), the config server, the registry as well as the functional services (customer, accounting) are containerized. 
 

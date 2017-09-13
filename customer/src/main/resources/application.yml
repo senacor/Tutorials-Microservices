@@ -11,6 +11,8 @@ spring:
 
 server:
   port: 0
+  contextPath: /customer
+
 eureka:
   client:
     serviceUrl:

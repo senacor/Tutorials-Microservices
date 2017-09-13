@@ -1,16 +1,15 @@
-eureka:
-  client:
-    enabled: false
+server:
+  contextPath: /customer
 
 spring:
   cloud:
     discovery:
       enabled: false
   datasource:
-    url: 'jdbc:mysql://localhost:3306/customerdb'
+    driver-class-name: 'org.h2.Driver'
+    url: 'jdbc:h2:mem:customerdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
     username: 'root'
     password: 'mysql'
-    driver-class-name: 'com.mysql.jdbc.Driver'
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
@@ -18,3 +17,7 @@ spring:
 
 flyway:
   enabled: false
+
+eureka:
+  client:
+    enabled: false
