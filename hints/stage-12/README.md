@@ -99,7 +99,7 @@ Note: For this stage it is recommended to stick to the default-VPC. It is of cou
 
 ## Towards a single-service per host setup
 
-Single-service per host is pretty straight-forward setup. Every service runs on its own instance. You can achieve that within one cluster or using a multi-cluster setup. Both have advantages and disadvantages. 
+Single-service per host is a pretty straight-forward setup. Every service runs on its own instance. You can achieve that within one cluster or using a multi-cluster setup. Both have advantages and disadvantages. 
 
 A single cluster setup is less work to setup, but all of your instances will be of the same type (e.g. t2.small). If all of your services require the same amount of resources (e.g. RAM) that is OK. The main advantage of a multi-cluster setup is, that you are more flexible in choosing the instance type since the instance type is defined by the cluster and not the service (at least if you create your cluster using the online interface and not the CLI).
 
@@ -203,7 +203,7 @@ Create an **Application Load Balancer** through the wizard in the Load Balancer 
 
 ![Configure Load Balancer](images/ScreenShot_AWS_LoadBalancer_1.PNG)
 
-Note that you have to select at least two availability zones. In detail: two public subnets in different availability zones. Since you only have public subnets in the default VPC you don't can just select the availability zone with corresponding subnet.
+Note that you have to select at least two availability zones. In detail: two public subnets in different availability zones. Since you only have public subnets in the default VPC you just select the availability zone with corresponding subnet.
 
 ### 2. Configure Security Settings
 

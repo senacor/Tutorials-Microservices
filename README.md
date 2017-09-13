@@ -1,5 +1,5 @@
-# Microservices & Cloud - Tutorials
-This repo provides tutorials for the Microservices & Cloud workshop. The workshop is divided in stages that build on each other. Depending on the time constraints certain stages can be skipped. 
+# Microservices Tutorial
+This repo provides tutorials for our MicroServicer training workshop. The workshop is divided in stages that build on each other. Depending on the time constraints certain stages can be skipped. 
 
 Each stages has a two-digit number. There are optional stages which are not integrated into the build-on-each-other pattern, but are side branches of a certain stage. Optional stages are marked with the stage's number they are built on and a letter (e.g. 07.A) if they are independent, or the stage's number they are built on and a number if several stages form a branch (e.g. 03.1 and 03.2).
 
@@ -25,7 +25,7 @@ Note: The VM setup for the Microservices & Cloud workshop is described in the [B
 The tutorials are done in steps that are based on each other. 
 Participants are supposed to solve each tutorial stage by themselves. A reference solution can be found in branches.
 
-### Stage 00 - Basic Setup
+### Stage 01 - Your first service
 
 #### Goal
 You have your first spring boot application up and running.
@@ -46,7 +46,7 @@ Open the ```customer``` project using IntelliJ IDEA: ```File``` >> ``` Open...``
 
 1. Implement a REST controller that offers one GET method that returns the IP address of the server. 
 
-### Stage 01 - Cloud Config Server
+### Stage 02 - Cloud Config Server
 
 #### Goal
 Your spring boot application can be configured via a configuration server. 
@@ -72,7 +72,7 @@ Add the ```config``` project as module in IntelliJ IDEA: ```File``` >> ``` New``
 We recommend that you use yaml (```.yml```) instead of properties files because the Mifos I/O application we will use later is based on a yaml configuration as well. 
 
 
-### Stage 02 - Flyway (database migration)
+### Stage 03 - Flyway (database migration)
 
 #### Goal
 Create a database with a customer table that contains dummy-data for your service using flyway migration scripts.
@@ -88,7 +88,7 @@ Create a database with a customer table that contains dummy-data for your servic
 2. Write flyway migration scripts to create a table ```customer``` with fields ```id```, ```first_name```, ```last_name``` and ```birth_date```.
 3. Fill some data into your ```customer``` table by writing and executing more flyway migration script(s).
 
-### Stage 03 - Spring Data
+### Stage 04 - Spring Data
 
 #### Goal
 Be able to access customer data from the database through a new REST endpoint (without writing boilerplate code).
@@ -104,7 +104,7 @@ You can follow the instructions on how to [add Lombok to IntelliJ IDEA as plugin
 2. Offer a new REST endpoint that provides customer data (at least: customer by id and customer by last name).
 3. Test the new REST endpoint (with MockMVC and MockBean).
 
-### Stage 03.1 (optional) - HATEOAS (REST application architecture constraint)
+### Stage 04.1 (optional) - HATEOAS (REST application architecture constraint)
 
 *Disclaimer: This stage is not implemented in code yet (you will not find a branch for this but you can do it on your own).*
 
@@ -116,7 +116,7 @@ You understand the concept of HATEOAS (Hypermedia as the Engine of Application S
 1. Follow the [spring tutorial on HATEOAS](https://spring.io/guides/gs/rest-hateoas/) to adapt your rest endpoint according to the pattern.
 2. Think about the design of your endpoints with respect to the HATEOAS pattern.
 
-### Stage 03.2 (optional) - Hystrix (Fault Tolerance)
+### Stage 04.2 (optional) - Hystrix (Fault Tolerance)
 
 *Disclaimer: This stage is not implemented in code yet (you will not find a branch for this but you can do it on your own).*
 
@@ -128,7 +128,7 @@ You understand the concept of Netflix's Hystrix library and what you can do with
 1. Follow the [spring tutorial on Circuit Breakers with Hystrix](https://spring.io/guides/gs/circuit-breaker/) to get an overview. Build in a circuit breaker into your customer service.
 2. Think about the design of your endpoints with respect to the Circuit Breaker pattern and other fault tolerance concepts.
 
-### Stage 04 - Create a second service
+### Stage 05 - Create a second service
 
 #### Goal
 You recap step 00 till 03 again. You create a second service (accounting-service) that will communicate with the first service (customer 
@@ -140,7 +140,7 @@ service) in the next step. The service should offer an "account" endpoint that t
 2. *Don't* implement the part where the accounting service validates if a customer exists through the customer service! We will do this in the next stage when we add the service discovery.
 
 
-### Stage 05 - Eureka (service discovery)
+### Stage 06 - Eureka (service discovery)
 
 #### Goal
 You add a service discovery so the services can find each other through the discovery server. The account endpoint retrieves information from the customer endpoint through a Feign client.
@@ -164,7 +164,7 @@ Add the ```registry``` project as module in IntelliJ IDEA: ```File``` >> ``` New
 4. Configure a feign client for the customer endpoint in the accounting project and verify the customer ID upon account creation.
 
 
-### Stage 06 - Docker (containerize)
+### Stage 07 - Docker (containerize)
 
 #### Goal
 The complete application (databases, config server, registry and functional services) works as before but runs in docker containers. 
@@ -181,7 +181,7 @@ In is recommended that you test the new containers after each task by starting t
 
 Note: In this stage it is enough to link the containers on IP address level. In the docker-compose stage we will create a more generic setup.
 
-### Stage 07 - Docker Compose
+### Stage 08 - Docker Compose
 
 #### Goal
 You configure the docker containers of stage 06 through docker-compose so you don't have to link the containers using the specific IP addresses of the containers, but use a configuration by name through docker-compose.
@@ -194,19 +194,21 @@ You configure the docker containers of stage 06 through docker-compose so you do
 4. Startup the "functional containers" (customer, accounting) through docker-compose.
 5. Test customer and account retrieval and account creation.
 
-### Stage 07.A (optional) - Move all the configuration to the Config Server
+### Stage 09 - Resilient Startup
 
 #### Goal
-Move all configurations that are applied at runtime (```application.yml```) but not at startup (```bootstrap.yml```) to the config server's configuration so all the configuration is at one place. The startup configuration should only contain the information how to reach the config server. 
+You understand the purpose of the config-server and the config-repo better in the context of the microservice deployment. You understand how to make the customer and accounting service more resilient, so you can just run ```docker-compose up``` without waiting by hand for services to start.
 
 #### Tasks
 
 1. Move all the configuration entries from the customer and accounting projects' ```application.yml``` files to the respective configuration on the config server.
 2. Commit the configuration files and let the config server configuration (in ```bootstrap.yml```) point to the correct repo/branch. 
+3. Configure for the config-server connection at startup to customer and accounting service. It should not matter if the config-server is immediately available at startup or later.
+4. Configure the database connection, so it does not matter if the database is always available. The application should be able to deal with it without crashing.
 3. Build the accounting and customer projects and containers new.
 4. Run and test the setup by creating a new account through Postman.
 
-### Stage 07.B (optional) - Messaging and Event Sourcing
+### Stage 09.A (optional) - Messaging and Event Sourcing
 
 *Disclaimer: This stage is not implemented in code yet (you will not find a branch for this but you can do it on your own).*
 
@@ -217,139 +219,3 @@ You add endpoints that emit events, so your two services don't directly communic
 
 1. Follow the [spring tutorial on the Java Messaging Service using ActiveMQ](https://spring.io/guides/gs/messaging-jms/).
 2. Add messaging functionality to your services.
-
-### Stage 08 - First steps with amazon ECS
-
-#### Goal
-Instead of running the mysql databases (customerdb and accountingdb) in local docker-containers you run docker containers in the AWS cloud using amazon ECS (EC2 Container Service).
-
-#### Setup
-
-1. Amazon AWS account is required.
-
-#### Tasks
-
-1. Create a Task Definition within the amazon ECS environment that defines the mysql containers.
-2. Define a cluster and service that use the task definition.
-3. Get the IP address of the instance where your containers run.
-4. Configure your local setup to use the containerized mysql databases from the cloud instance.
-
-Note: ECS already uses the Docker-Hub registry, so you don't need to upload any containers to the AWS container registry in this step! The "mysql" container you pull locally from Docker-Hub also works within the Task-Definition of ECS.
-
-Note: This setup goes against the idea of docker-compose because the mysql containers are not managed by docker-compose. You will have to configure the databases on the config-server rather then through docker-compose. You can remove the database container entries from docker-compose for this stage because you don't need them.
-
-
-### Stage 09 - Docker-Hub (container repository)
-
-#### Goal
-Instead of creating the containers locally you push them to Docker-Hub so that they are publicly available. For the local setup the containers are then pulled from the Docker-Hub repository.
-
-#### Setup
-
-1. Docker-Hub account is required.
-
-#### Tasks
-
-1. Decide which containers you can just reuse from Docker-Hub because they are standard containers and which containers are "self built" so you have to push to repositories in your Docker-Hub account. 
-2. Create a repository for each self-built container that will be pushed.
-3. Push the self build containers to their respective repositories on docker-hub.
-4. Adapt the docker-compose configuration so you use the docker-hub containers and not the local Dockerfiles.
-
-Note: The self built containers are those containers that have a "context" defined in docker-compose. They are built and run using Dockerfiles.
-
-### Stage 09.A - Using the amazon ECR (EC2 Container Registry)
-
-#### Goal
-You understand how the AWS container registry works as an alternative to Docker-Hub. Your are able to upload docker containers to an AWS container repository.  
-
-#### Setup
-
-1. Amazon AWS account is required.
-2. The [AWS CLI](http://docs.aws.amazon.com/cli/latest/userguide/installing.html) is required on your local machine.
-3. Optionally you can [create an IAM user](http://docs.aws.amazon.com/AmazonECR/latest/userguide/get-set-up-for-amazon-ecr.html), if you operate within your own AWS account. If you create an IAM user you will have to [configure the CLI for that IAM user](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
-
-#### Tasks
-
-The ECR is an alternative to Docker-Hub. You can upload your container-images there so they are available in the AWS cloud.
-
-1. Follow the instructions from the [ECR documentation on how to upload docker container images](http://docs.aws.amazon.com/AmazonECR/latest/userguide/ECR_GetStarted.html) and upload one of your container-images to the ECR.
-2. Alter the task definition and use the container you uploaded to the amazon ECR instead of the Docker-Hub container-image.
-
-
-### Stage 10 - Amazon ECS-CLI compose
-
-#### Goal
-You automatically generate a task-definition on amazon ECS out of your local docker-compose setup using the CLI. You use this task-definition to run containers in a new ECS cluster and service without any further adaption.
-
-#### Setup
-
-1. It is required that all the containers that the application consist of are available in the cloud (Docker-Hub or ECR).
-2. The [ECS CLI](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_installation.html) is required on your local machine.
-3. You will have to [configure the ECS CLI](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_Configuration.html) similar as to configuring the AWS CLI; for that purpose you might want to [create an IAM user](http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) if you are operating within your private AWS account.
-
-#### Tasks
-
-1. Adapt the docker-compose file so it is compatible to the [ecl-cli compose features](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html) (only certain options are available).
-2. Generate a task definition through [ecl-cli compose](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html).
-3. Add the generated task-definition (in your AWS account) to a new service within a new cluster and run the cluster.
-4. Hope that the magic works :)
-
-Note: Most likely it will not work just like that: Think about what could be the problem - if you can't solve it you can take a look at the [hints for stage 10](https://github.com/senacor/MicroservicesAndCloud-Tutorials/tree/master/hints/stage-10).
-
-### Stage 10.A - Architecture Considerations
-
-#### Goal
-You reach a stage where you can discuss the architecture of your application running in the cloud. You understand the basic principles of load balancing at an application level, database clusters/replication techniques and deployment strategies for microservices.  
-
-#### Tasks
-
-1. Read the [AWS introduction to elastic load balancing](http://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html) and [service load balancing](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-load-balancing.html) and reflect on it.
-2. Think about instances and containers - Which services will have to scale-up? Which services don't have to scale-up? What would be a good setup when it comes to scalability and fault-tolerance?
-3. Read the [mysql introduction to data replication](https://dev.mysql.com/doc/refman/5.7/en/replication.html) and reflect on it.
-4. Think about your data - How can you keep the data persistent between service instances when doing load balancing at application level?
-5. Read about [microservices architectures](http://microservices.io/patterns/microservices.html) and dive into deployment patterns like [Single Service Instance per Host](http://microservices.io/patterns/deployment/single-service-per-host.html) and [Multiple Service Instances per Host](http://microservices.io/patterns/deployment/multiple-services-per-host.html) - reflect on them. 
-6. Think about our current microservices architecture and out deployment setup - What could be done different and what would be the advantages and disadvantages? How would you apply load balancing?
-
-
-### Stage 11 - MySQL database with amazon RDS
-
-#### Goal
-Instead of providing your own database container you manage your database through amazon RDS (Relational Database Service). 
-
-#### Tasks
-
-1. Think about the security of your application - what should be accessible and how? Read into amazon [VPC (Virtual Private Cloud)](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-vpc.html).
-2. Launch MySQL instances managed by RDS for the databases of your services.
-3. Make sure that your databases are not publicly accessible.
-4. Remove the databases from the ECS task definition (by altering the docker-compose configuration and generating a new task definition).
-5. Configure the database connection for your services through the config server.
-6. Create an ECS cluster and service and configure it to use the databases.
-
-### Stage 12 - Load Balancing on amazon AWS - Single-Service per Host
-
-#### Goal
-You adapt your setup to a ["single service instance per host"](http://microservices.io/patterns/deployment/single-service-per-host.html) setup. You add an elastic load balancer to that on AWS. You understand application level load balancing and discuss the advantages and disadvantages of this setup.
-
-#### Tasks
- 
-1. Read into [Elastic Load Balancing](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-load-balancing.html) on amazon AWS.
-2. Change your deployment to a ["single service instance per host"](http://microservices.io/patterns/deployment/single-service-per-host.html) setup. The databases should still be managed by RDS.
-3. Create and configure an [Application Load Balancer](http://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html) in your EC2 console (using the default VPC).
-4. Startup the config and registry service only once (without load balancing). The customer and accounting service should be load-balanced.
-
-
-### Stage 13 - Load Balancing and Route 53
-
-#### Goal
-
-
-#### Tasks
-
-<!---### Stage 13 - Cloud Storage with amazon SimpleDB
-
-#### Goal
-Instead of running a database in a docker container you should utilize the simple storage service (S3) of amazon AWS.
-
-#### Tasks
-
-For utilizing SimpleDB: https://aws.amazon.com/articles/Amazon-S3/7417221025670024--->
