@@ -1,5 +1,5 @@
 # Microservices Tutorial
-This repo provides tutorials for our MicroServicer training workshop. The workshop is divided in stages that build on each other. Depending on the time constraints certain stages can be skipped. 
+This repo provides tutorials for our Microservices training workshop. The workshop is divided in stages that build on each other. Depending on the time constraints certain stages can be skipped. 
 
 Each stages has a two-digit number. There are optional stages which are not integrated into the build-on-each-other pattern, but are side branches of a certain stage. Optional stages are marked with the stage's number they are built on and a letter (e.g. 07.A) if they are independent, or the stage's number they are built on and a number if several stages form a branch (e.g. 03.1 and 03.2).
 
@@ -7,7 +7,7 @@ Detailed hints for each stage can be found in the [hints folder](https://github.
 
 ## Setup
 
-For the Microservices & Cloud Tutorials you need the following tools:
+For the Microservices Tutorials you need the following tools:
 * Java 1.8.x
 * IntelliJ IDEA (community or ultimate edition)
 * MySQL Server
