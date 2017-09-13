@@ -2,15 +2,15 @@
 	"variables": [],
 	"info": {
 		"name": "tutorial-stage-04",
-		"_postman_id": "0c9f4a75-5135-7a6d-1079-959b5138e50a",
+		"_postman_id": "61a73678-ea48-1191-d28c-c20c38ef633c",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "http://localhost:8082/account",
+			"name": "POST customer",
 			"request": {
-				"url": "http://localhost:8082/account",
+				"url": "http://localhost:8081/customer/",
 				"method": "POST",
 				"header": [
 					{
@@ -21,9 +21,9 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"accountType\": \"CREDIT_CARD\",\n\t\"customerId\": \"1\"\n}"
+					"raw": "{\n\t\"firstName\": \"Other\",\n\t\"lastName\": \"Guy\",\n\t\"birthDate\": \"2000-01-01\",\n\t\"comment\": \"nothing\"\n}"
 				},
-				"description": ""
+				"description": "create a customer"
 			},
 			"response": []
 		}
