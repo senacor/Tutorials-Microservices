@@ -1,13 +1,16 @@
+server:
+  contextPath: /account
+
 spring:
   datasource:
-    url: 'jdbc:mysql://localhost:3306/accountingdb'
+    driver-class-name: 'org.h2.Driver'
+    url: 'jdbc:h2:mem:accountingdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
     username: 'root'
     password: 'mysql'
-    driver-class-name: 'com.mysql.jdbc.Driver'
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
     default-property-inclusion: non_null
 
-server:
-  contextPath: /account
+flyway:
+  enabled: false

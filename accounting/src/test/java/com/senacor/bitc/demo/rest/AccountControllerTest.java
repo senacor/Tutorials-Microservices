@@ -53,7 +53,7 @@ public class AccountControllerTest {
         given(this.accountService.loadAccountById(1))
                 .willReturn(getAccountWithId());
 
-        mockMvc.perform(get("/account/1"))
+        mockMvc.perform(get("/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(content().json(accountJsonTester.write(getAccountWithId()).getJson()));
@@ -64,7 +64,7 @@ public class AccountControllerTest {
         given(this.accountService.findAccountsByCustomerId(1))
                 .willReturn(Collections.singletonList(getAccountWithId()));
 
-        mockMvc.perform(get("/account?customerId=1"))
+        mockMvc.perform(get("?customerId=1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -80,7 +80,7 @@ public class AccountControllerTest {
         given(this.accountService.saveAccount(getAccountWithoutId()))
                 .willReturn(getAccountWithId());
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/account");
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("");
         request.contentType(TestUtil.APPLICATION_JSON_UTF8);
 
         request.content(mapper.writeValueAsString(getAccountWithoutId()));
