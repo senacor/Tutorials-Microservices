@@ -63,7 +63,7 @@ After finishing stage 06 all the components of your application can run in docke
 
 In this stage the linkage of the containers through the configuration files is done by fixed IP addresses. In the next stage docker-compose will be used to apply names instead of IP addresses to achieve a more robust setup.
 
-## Stage 07 - Docker Compose
+## Stage 08 - Docker Compose
 
 After finishing stage 07 you have the container management setup with docker-compose. You new control the build, start and stop of the containers through docker compose. 
 
