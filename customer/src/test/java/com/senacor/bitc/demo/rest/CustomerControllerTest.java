@@ -57,7 +57,7 @@ public class CustomerControllerTest {
         given(this.customerService.loadCustomerById(1))
                 .willReturn(getCustomerWithId());
 
-        mockMvc.perform(get("/customer/1"))
+        mockMvc.perform(get("/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(content().json(customerJsonTester.write(getCustomerWithId()).getJson()));
@@ -69,7 +69,7 @@ public class CustomerControllerTest {
         given(this.customerService.findCustomersByLastName("Last"))
                 .willReturn(Collections.singletonList(getCustomerWithId()));
 
-        mockMvc.perform(get("/customer?lastName=Last"))
+        mockMvc.perform(get("?lastName=Last"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -87,7 +87,7 @@ public class CustomerControllerTest {
         given(this.customerService.saveCustomer(getCustomerWithoutId()))
                 .willReturn(getCustomerWithId());
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/customer");
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("");
         request.contentType(TestUtil.APPLICATION_JSON_UTF8);
 
         request.content(mapper.writeValueAsString(getCustomerWithoutId()));

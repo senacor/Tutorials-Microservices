@@ -26,3 +26,6 @@ hystrix:
         isolation:
           thread:
             timeoutInMilliseconds: 10000
+
+server:
+  contextPath: /account
