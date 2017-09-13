@@ -4,3 +4,6 @@ spring:
     username: 'root'
     password: 'mysql'
     driver-class-name: 'com.mysql.jdbc.Driver'
+
+server:
+  contextPath: /customer
