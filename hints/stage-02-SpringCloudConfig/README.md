@@ -16,7 +16,8 @@ You have two sides that you need to configure:
 1. The config-server. (will be added as a new project)
 2. The microservice (customer project) that wants to retrieve its configuration from the config-server.
 
-On the config-server you have to specify the repository to be used (typically the URL of your git repository).
+On the config-server you have to specify the repository to be used (typically the URL of your git repository). Additionally you can specify the ```searchPaths``` pattern that is used to navigate to a specific folder within the repository.
+
 Once the project ask the config-server for the project's configuration, the config-server has to identify the correct configuration within the repository. To add flexibility you can configure four parts to identify the configuration within the customer-project:
 
 1. **uri** (```spring.cloud.config.uri```): defines the config-server URL
@@ -150,3 +151,5 @@ spring:
       uri: http://localhost:8888
       label: Stage-01-SpringCloudConfig
 ```
+
+In the end this means: The configuration file with the name ```customer-dev.yml``` will be fetched from the folder ```config-repo``` on the branch ```Stage-01-SpringCloudConfig``` of the repository ```https://github.com/senacor/Tutorials-Microservices```.
