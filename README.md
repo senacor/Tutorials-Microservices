@@ -1,5 +1,4 @@
 # Microservices Tutorial
-This repo provides tutorials for the BankingInTheCloud workshop. 
 
 ## Stage 01 - Your first service
 
