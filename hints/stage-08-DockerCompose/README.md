@@ -1,4 +1,4 @@
-# Hints for Tutorial stage 07
+# Hints for Tutorial stage 08
 
 ## Overview
 
@@ -107,7 +107,7 @@ networks:
 ```
 
 Note: The port configuration within the docker compose configuration file depicts the ports that will be allocated on the machine it runs on! Thus you can access the customer and accounting service through ```localhost:[PORT]``` again. For the container linkage (using names) this port configuration does not matter, because the containers communicate with each other on a docker-IP+port level.
-This is relevant for consideration once we use the amazon ECS (EC2 Container Service) in stage 08. Similar to docker compose we have to define task definitions that define the containers and how they are linked together.
+This is relevant for consideration once you for example deploy your containers on amazon ECS (EC2 Container Service). Similar to docker compose you have "task definitions" there that define the containers and how they are linked together.
 
 ## Adapt the configuration within the functional services
 
