@@ -1,10 +1,10 @@
-# Hints for Tutorial stage 06
+# Hints for Tutorial stage 07
 
 ## Overview
 
-In stage 06 we create/use docker containers for all the projects we have instead of running the projects locally. Note that the images are not linked together yet, but we just use the IP addresses of the containers to reference them (e.g. reference the config server in the customer and accounting service configuration).
+In stage 07 we create/use docker containers for all the projects we have instead of running the projects locally. Note that the images are not linked together yet, but we just use the IP addresses of the containers to reference them (e.g. reference the config server in the customer and accounting service configuration).
 
-In stage 07 we will use docker-compose to make the setup more robust and easy to use.
+In stage 08 we will use docker-compose to make the setup more robust and easy to use.
 
 ## Containers for MySQL databases
 
