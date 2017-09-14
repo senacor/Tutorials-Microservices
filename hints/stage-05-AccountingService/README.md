@@ -1,8 +1,8 @@
-# Hints for Tutorial stage 04
+# Hints for Tutorial stage 05
 
 ## Overview
 
-Basically you just do all stage 00 till stage 03 again. In the end you should have another project that looks something like this:
+Basically you just do all the stuff from stage 01 till stage 04 again, but for a new service named "accounting" that depicts simple accounts of customers. In the end you should have another project that looks something like this:
 
 ```
 com.senacor.bitc
@@ -24,13 +24,13 @@ Note: If you want to be lazy you can create a copy of the customer project and a
 
 1. Create a copy of the customer project folder, rename the base-folder to ```accounting```
 2. Import the "accounting" project into IntelliJ IDEA through ```File >> New >> Module from Existing Sources...```, select the accounting folder
-3. Refactoring... 
+3. Refactor... 
 
 ## Account database table and entity
 
 The accounting service will use a separate database:
 
-1. Create another database through the mysql console (see stage 02).
+1. Create another database through the mysql console (see stage 03).
 3. Configure the database connection for flyway in the accounting project.
 2. Provide migration scripts that create the account table.
 
@@ -70,7 +70,7 @@ public class Account {
 
 ## Account controller and service
 
-The account service and controller are to be implemented like the account controller and service in stage 03. 
+The account service and controller are to be implemented like the customer controller and service in stage 04. 
 
 The account controller should offer the following request mappings:
 
@@ -93,7 +93,7 @@ public interface AccountService {
 }
 ```
 
-For the saving an account the customer ID is provided. Note that you should not verify if the customer exists (using the customer endpoint of the customer project) yet. This will be done in the next stage. In the reference solution we defined a TODO for this:
+For the saving an account the customer ID is provided. Note that you should not verify if the customer exists (using the customer endpoint of the customer project) yet. This will be done by using a feign client in the next stage. In the reference solution we defined a TODO for this:
 
 ```Java
 @Override

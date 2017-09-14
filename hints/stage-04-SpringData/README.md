@@ -1,10 +1,10 @@
-# Hints for Tutorial stage 03
+# Hints for Tutorial stage 04
 
 ## Overview
 
 To make things clear from the beginning we first take a look at the spring-project structure at this point. We basically stick to the [folder structure as described in the spring documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-structuring-your-code.html) but adapt the names a little.
 
-Folder structure of the customer project for stage 03:
+Folder structure of the customer project for stage 04:
 
 ```
 com.senacor.bitc
@@ -32,7 +32,7 @@ You have to add dependencies for:
 * Newest version of hibernate (Java 8)
 * Jackson (for clean mapping)
 
-The complete ```build.gradle``` file for stage 03:
+The complete ```build.gradle``` file for stage 04:
 ```
 buildscript {
 	ext {
@@ -84,7 +84,7 @@ dependencyManagement {
 
 ## Configure the database
 
-For stage 03 our ```application.yml``` file looks pretty much the same as in stage 02; we just added some jackson configuration (for the mapping in the tests): 
+For stage 04 our ```application.yml``` file looks pretty much the same as in stage 03; we just added some jackson configuration (for the mapping in the tests): 
 
 ```YAML
 spring:
@@ -180,7 +180,7 @@ Note that it is important to mark the Service as Spring component so Spring can 
 
 ## Add customer endpoint
 
-Similarly to stage 00 we have to provide a REST endpoint (controller) to be able to communicate with the customer service.
+Similarly to stage 01 we have to provide a REST endpoint (controller) to be able to communicate with the customer service.
 
 The customer endpoint can look something like this:
 ```Java
