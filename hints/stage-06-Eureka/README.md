@@ -1,4 +1,4 @@
-# Hints for Tutorial stage 05
+# Hints for Tutorial stage 06
 
 ## Overview
 
@@ -135,7 +135,7 @@ Then you can add the part where we check if the customer exists upon account cre
     }
 ```
 
-Now you are ready to check if your account creation with customer ID check works. you can use the postman POST request against the account endpoint (from stage 04) to test the the account creation with customer ID check. In the reference solution we throw a custom exception if the customer cannot be found.
+Now you are ready to check if your account creation with customer ID check works. you can use the postman POST request against the account endpoint (from stage 05) to test the the account creation with customer ID check. In the reference solution we throw a custom exception if the customer cannot be found.
 
 Note: Don't forget to start the config server as well, otherwise the customer and the accounting application will register with a random free port at Eureka.
 

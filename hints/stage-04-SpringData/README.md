@@ -185,7 +185,7 @@ Similarly to stage 01 we have to provide a REST endpoint (controller) to be able
 The customer endpoint can look something like this:
 ```Java
 @RestController
-@RequestMapping(value = "/customer", produces = "application/json")
+@RequestMapping(produces = "application/json")
 public class CustomerController {
 
     private final CustomerService customerService;
