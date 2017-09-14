@@ -45,12 +45,12 @@ The verification of the customer ID through the customer service upon creation o
 
 ## Stage 06 - Eureka
 
-After finishing stage 05 you have have Eureka as service registry so services can find each other. You now have four projects:
+After finishing stage 06 you have have Eureka as service registry so services can find each other. You now have four projects:
 
-1. **customer**: the customer project created in stage 00
-2. **config**: the spring cloud config server created in stage 01
-3. **accounting**: the accounting project created in stage 04
-4. **registry**: the Eureka service registry server
+1. **customer**: the customer project created in stage 01
+2. **config**: the spring cloud config server created in stage 02
+3. **accounting**: the accounting project created in stage 05
+4. **registry**: the Eureka service registry server in stage 06
 
 Both the customer and the accounting project are configured as Eureka clients, meaning they register at the Eureka service upon startup. 
 
