@@ -1,4 +1,10 @@
-# Hints for Tutorial stage 02
+# Hints for Tutorial stage 03
+
+## Overview
+
+In this stage you will add a database to your project and configure flyway to run database migrations.
+
+Note: You can also use a docker container for your mysql database instead of installing mysql server locally. You should be familiar with docker already to do so. If you use a docker container make sure you configure the root-password to ```mysql``` and the database name to ```customerdb``` when starting the container.
 
 ## MySQL configuration and database creation
 
