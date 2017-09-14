@@ -58,6 +58,6 @@ Additionally the accounting project includes a feign client, so the account serv
 
 ## Stage 07 - Docker
 
-After finishing stage 06 all the components of your application can run in docker containers. The databases (accountingdb, customerdb), the config server, the registry as well as the functional services (customer, accounting) are containerized. 
+After finishing stage 07 all the components of your application can run in docker containers. The databases (accountingdb, customerdb), the config server, the registry as well as the functional services (customer, accounting) are containerized. 
 
 In this stage the linkage of the containers through the configuration files is done by fixed IP addresses. In the next stage docker-compose will be used to apply names instead of IP addresses to achieve a more robust setup.
