@@ -64,6 +64,6 @@ In this stage the linkage of the containers through the configuration files is d
 
 ## Stage 08 - Docker Compose
 
-After finishing stage 07 you have the container management setup with docker-compose. You new control the build, start and stop of the containers through docker compose. 
+After finishing stage 08 you have the container management setup with docker-compose. You new control the build, start and stop of the containers through docker compose. 
 
 The linkabe between the containers is not managed through names by docker-compose, no fixed IP addresses are required.
