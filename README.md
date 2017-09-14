@@ -40,7 +40,7 @@ The basic project setup is based on the customer project one can generate using 
 * Package Name: ```com.senacor.bitc.demo```
 * Dependencies: ```Web```
 
-Open the ```customer``` project using IntelliJ IDEA: ```File``` >> ``` Open...``` >> `select the ```customer``` folder
+Open the ```customer``` project using IntelliJ IDEA: ```File``` >> ``` Open...``` >> select the ```customer``` folder
 
 #### Tasks
 
@@ -81,6 +81,8 @@ Create a database with a customer table that contains dummy-data for your servic
 
 1. [Install MySQL](https://dev.mysql.com/downloads/mysql/) (you can also [install it through apt-get](https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-16-04)).
 2. Create a MySQL database through the mysql command line.
+
+Note: If you are already familiar with docker you can of course use a docker container instead of the local installation of mysql (as in stage 07).
 
 #### Tasks
 
@@ -197,16 +199,16 @@ You configure the docker containers of stage 06 through docker-compose so you do
 ### Stage 09 - Resilient Startup
 
 #### Goal
-You understand the purpose of the config-server and the config-repo better in the context of the microservice deployment. You understand how to make the customer and accounting service more resilient, so you can just run ```docker-compose up``` without waiting by hand for services to start.
+You understand the purpose of the config-server and the config-repo better in the context of a microservices deployment. You understand how to make the customer and accounting service more resilient, so you can just run ```docker-compose up``` without starting specific services in a dedicated order by hand.
 
 #### Tasks
 
-1. Move all the configuration entries from the customer and accounting projects' ```application.yml``` files to the respective configuration on the config server.
-2. Commit the configuration files and let the config server configuration (in ```bootstrap.yml```) point to the correct repo/branch. 
-3. Configure for the config-server connection at startup to customer and accounting service. It should not matter if the config-server is immediately available at startup or later.
-4. Configure the database connection, so it does not matter if the database is always available. The application should be able to deal with it without crashing.
-3. Build the accounting and customer projects and containers new.
-4. Run and test the setup by creating a new account through Postman.
+1. Move all the configuration entries from the customer and accounting projects' ```application.yml``` files to the respective configuration on the config server. 
+2. Configure for the config-server connection at startup to customer and accounting service. It should not matter if the config-server is immediately available at startup or later.
+3. Configure the database connection, so it does not matter if the database is always available. The application should be able to deal with it without crashing.
+4. Commit the configuration files and let the config server configuration (in ```bootstrap.yml```) point to the correct repo/branch.
+5. Build the accounting and customer projects and containers new.
+6. Run and test the setup by creating a new account through Postman.
 
 ### Stage 09.A (optional) - Messaging and Event Sourcing
 
