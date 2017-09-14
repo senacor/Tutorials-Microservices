@@ -6,7 +6,7 @@ spring:
           # -- local setup --
           # uri: file:///${user.home}/Desktop/demo
           # -- remote setup --
-          uri: https://github.com/senacor/BankingInTheCloud-Tutorials
+          uri: https://github.com/senacor/Tutorials-Microservices
           # define the folder where the config files are placed within the repo
           searchPaths: config-repo
 server:
