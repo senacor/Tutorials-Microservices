@@ -1,7 +1,8 @@
 # Microservices Tutorial
+
 This repo provides tutorials for our Microservices training workshop. The workshop is divided in stages that build on each other. Depending on the time constraints certain stages can be skipped. 
 
-Each stages has a two-digit number. There are optional stages which are not integrated into the build-on-each-other pattern, but are side branches of a certain stage. Optional stages are marked with the stage's number they are built on and a letter (e.g. 07.A) if they are independent, or the stage's number they are built on and a number if several stages form a branch (e.g. 03.1 and 03.2).
+Each stage has a two-digit number. There are optional stages which are not integrated into the build-on-each-other pattern, but are side branches of a certain stage. Optional stages are marked with the stage's number they are built on and a letter (e.g. 09A) if they are independent, or the stage's number they are built on and a number if several stages form a branch (e.g. 03.1 and 03.2).
 
 Detailed hints for each stage can be found in the [hints folder](https://github.com/senacor/MicroservicesAndCloud-Tutorials/tree/master/hints). 
 
@@ -14,16 +15,14 @@ For the Microservices Tutorials you need the following tools:
 * Chrome
 * Postman (Chrome extension)
 * docker
+* docker-compose
 
-For alternative stages you additionally need
-* docker-compose (for alternative stage 06.A)
-
-Note: The VM setup for the Microservices & Cloud workshop is described in the [BankingInTheCloud-WorkshopSetup repo](https://github.com/senacor/BankingInTheCloud-WorkshopSetup), a list of tools that we use in the workshop can be found [here](https://github.com/senacor/BankingInTheCloud-WorkshopSetup/tree/master/alternative-setup). 
+Note: You can use a VM with all tools setup to get started. The VM setup is described in a separate [repo](https://github.com/senacor/BankingInTheCloud-WorkshopSetup), a list of tools that we use in the workshop can be found [here](https://github.com/senacor/BankingInTheCloud-WorkshopSetup/tree/master/alternative-setup). 
 
 ## Tutorial stages
 
-The tutorials are done in steps that are based on each other. 
 Participants are supposed to solve each tutorial stage by themselves. A reference solution can be found in branches.
+Furthermore we provide detailed hints for each stage in the hints folder (master branch). 
 
 ### Stage 01 - Your first service
 
@@ -31,7 +30,8 @@ Participants are supposed to solve each tutorial stage by themselves. A referenc
 You have your first spring boot application up and running.
 
 #### Setup
-The basic project setup is based on the customer project one can generate using the [SpringBoot Initializr](https://start.spring.io/). Use the following settings:
+Your first service will depict a service that can return simple customer information.
+The stub of the first service is generated using the [SpringBoot Initializr](https://start.spring.io/). Use the following settings:
 
 * Generate a ```Gradle Project``` with ```Java``` and Spring Boot ```1.5.x``` (latest stable version)
 * Group: ```com.senacor.bitc```
@@ -45,6 +45,8 @@ Open the ```customer``` project using IntelliJ IDEA: ```File``` >> ``` Open...``
 #### Tasks
 
 1. Implement a REST controller that offers one GET method that returns the IP address of the server. 
+
+Note: The REST endpoint to return customer information is added at a later stage.
 
 ### Stage 02 - Cloud Config Server
 
@@ -65,24 +67,24 @@ Add the ```config``` project as module in IntelliJ IDEA: ```File``` >> ``` New``
 #### Tasks
 
 1. Configure the **config** project as [cloud-config-server](https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html)
-2. Configure the spring cloud **config** server to use a git-repsoitory where you put the configuration for your customer service.
+2. Configure the spring cloud **config** server to use a git-repository where you put the configuration for your customer service.
 2. Configure the **customer** service so it uses the cloud config server for configuration.
 3. Configure the port where the **customer** service is served through the **config** server configuration file. The port should not be hard-wired in the **customer** service any more, but is defined by the configuration file served by the **config** server.
 
-We recommend that you use yaml (```.yml```) instead of properties files because the Mifos I/O application we will use later is based on a yaml configuration as well. 
+Note: We are using yaml (```.yml```) for our configuration files in the reference solution. We recommend you do the same. 
 
 
 ### Stage 03 - Flyway (database migration)
 
 #### Goal
-Create a database with a customer table that contains dummy-data for your service using flyway migration scripts.
+Create a database with a customer table and dummy-data using flyway migration scripts. This data will serve as a basis for the customer endpoint.
 
 #### Setup
 
 1. [Install MySQL](https://dev.mysql.com/downloads/mysql/) (you can also [install it through apt-get](https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-16-04)).
 2. Create a MySQL database through the mysql command line.
 
-Note: If you are already familiar with docker you can of course use a docker container instead of the local installation of mysql (as in stage 07).
+Note: If you are already familiar with docker you can of course use a mysql docker container instead of the local installation of mysql server.
 
 #### Tasks
 
@@ -133,19 +135,19 @@ You understand the concept of Netflix's Hystrix library and what you can do with
 ### Stage 05 - Create a second service
 
 #### Goal
-You recap step 00 till 03 again. You create a second service (accounting-service) that will communicate with the first service (customer 
-service) in the next step. The service should offer an "account" endpoint that that depends on the customer endpoint of the first service.
+You recap step 01 till 04 again. You have a second service that provides an account endpoint.
 
 #### Tasks
 
-1. Do stages 00 till stages 03 again by yourself, but create an accounting service instead of a customer service. When creating an account one has to provide a customer ID. 
-2. *Don't* implement the part where the accounting service validates if a customer exists through the customer service! We will do this in the next stage when we add the service discovery.
+1. Do stages 01 till stages 04 again by yourself, but create an accounting service instead of a customer service. When creating an account one has to provide a customer ID. You should be able to create and retrieve simple accounts through the service (AccountID, AccountType and CustomerID are enough to represent the account).
+
+Note: In the next stage the account service will utilize the customer service to check if a customer exists before adding an account. *Don't* implement the part where the accounting service validates if a customer exists through the customer service yet! We will do this in the next stage when we add the service discovery.
 
 
 ### Stage 06 - Eureka (service discovery)
 
 #### Goal
-You add a service discovery so the services can find each other through the discovery server. The account endpoint retrieves information from the customer endpoint through a Feign client.
+You add a service discovery so the services can find each other through the discovery server. The account endpoint retrieves information from the customer endpoint through a Feign Client.
 
 #### Setup
 
@@ -179,14 +181,14 @@ The complete application (databases, config server, registry and functional serv
 4. Configure container for the customer service by adding a Dockerfile to the customer project
 5. Configure container for the accounting service by adding a Dockerfile to the accounting project
 
-In is recommended that you test the new containers after each task by starting the newly created container as well as the other parts (locally, outside of container).
+It is recommended that you test the new containers after each task by starting the newly created container as well as the other parts (locally, outside of container).
 
-Note: In this stage it is enough to link the containers on IP address level. In the docker-compose stage we will create a more generic setup.
+Note: In this stage it is enough to link the containers on IP address level. In the docker-compose stage we will create a more generic setup. You can also pass IP-addresses to the spring application running inside a container by defining the ```SPRING_APPLICATION_JSON``` environment variable on container startup. Checkout the [spring documentation on externalized configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html) for details.
 
 ### Stage 08 - Docker Compose
 
 #### Goal
-You configure the docker containers of stage 06 through docker-compose so you don't have to link the containers using the specific IP addresses of the containers, but use a configuration by name through docker-compose.
+You configure the docker containers of stage 07 through docker-compose so you don't have to link the containers using the specific IP addresses of the containers, but use a configuration by name through docker-compose.
 
 #### Tasks
 
