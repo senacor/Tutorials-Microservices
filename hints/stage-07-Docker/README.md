@@ -210,7 +210,12 @@ After a while your machine might be full of docker images that require quite a l
 docker rmi $(docker images -aq)
 ```
 
-More advanced options for remove commands [can be found on stackoverflow](https://stackoverflow.com/questions/17665283/how-does-one-remove-an-image-in-docker) ;)
+Additionally you can cleanup all volumes:
+```
+docker volume ls -qf dangling=true | xargs -r docker volume rm
+```
+
+More advanced options for remove commands can be found in [this tutorial](https://lebkowski.name/docker-volumes/) or [stackoverflow](https://stackoverflow.com/questions/17665283/how-does-one-remove-an-image-in-docker).
 
 ### Remote debugging
 
