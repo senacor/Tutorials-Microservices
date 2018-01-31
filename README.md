@@ -76,3 +76,8 @@ Additionally resilient features were included into the configuration so:
 
 1. the application retries to contact the config-server when it starts.
 2. the application retries to connect to the database if it is not avilable (the application does not just crash).
+
+## Stage 10 - Profiles
+
+After finishing stage 10 you have a ```dev``` and a ```prod``` profile. The ```dev``` profile is used to start the application locally in IDEA (without docker and docker-compose). The ```dev``` profile includes the configuration for an in memory H2 database, so you don't have to care about starting/stopping databases during development.
+The ```prod``` profile pretty much contains the configuration from the previous stages. The Dockerfiles of accounting and customer service were extended to set the right profile (```prod```) when starting the application through docker-compose.
