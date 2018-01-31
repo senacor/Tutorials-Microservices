@@ -32,6 +32,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.hibernate:hibernate-java8:5.1.0.Final')
 	compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
+	compile('com.h2database:h2')
 	compileOnly('org.projectlombok:lombok:1.16.18')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('com.h2database:h2')
