@@ -141,6 +141,20 @@ spring:
 (...)
 ```
 
+## Building the application
+
+With the support of docker-compose building gets easier as well. You will still have to build you application jar by running a gradle build, but instead of using docker to build your containers you can use docker-compse. The command goes like this:
+
+```
+docker-compose build [SERVICE_NAME]
+```
+
+This will build the customer service:
+```
+docker-compose build customer
+```
+
+
 ## Starting the application
 
 Note that the customer and the accounting service depend on:
