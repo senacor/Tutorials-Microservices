@@ -1,14 +1,14 @@
 spring:
   application:
     name: customer
-  profiles:
-    active: dev
+  profiles: dev
   cloud:
     config:
+      # uri: http://config:8888
       uri: http://config:8888
       # the label defines the branch within the config-server repo
       # (for local setup you don't need a label because you are not on a specific branch)
-      label: Stage-09-ResilientStartup
+      label: Stage-10-HATEOAS
       # make the config-server lookup more resilient - if the server is not up yet there
       # is a retry defined!
       failFast: true
@@ -16,3 +16,11 @@ spring:
         initialInterval: 10000
         maxInterval: 10000
         maxAttempts: 12
+
+---
+spring:
+  profiles: local
+  cloud:
+    config:
+      uri: http://localhost:8888
+      label: Stage-10-HATEOAS

@@ -1,13 +1,19 @@
 server:
-  port: 8082
-  contextPath: /account
+  port: 8081
+  contextPath: /customer
 
 spring:
   datasource:
-    driver-class-name: 'org.h2.Driver'
-    url: 'jdbc:h2:mem:accountingdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
+    url: 'jdbc:mysql://customerdb:3306/customerdb'
     username: 'root'
     password: 'mysql'
+    driver-class-name: 'com.mysql.jdbc.Driver'
+    continueOnError: true
+    initialize: false
+    initialSize: 0
+    timeBetweenEvictionRunsMillis: 5000
+    minEvictableIdleTimeMillis: 5000
+    minIdle: 0
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
@@ -31,14 +37,3 @@ eureka:
       defaultZone: ${EUREKA_URI:http://registry:8761/eureka}
   instance:
     preferIpAddress: true
-
-# note: this configuration is needed to avoid timeout upon initial request
-#   somehow the initial request needs more time and runs in a timeout with the default settings
-# https://github.com/Netflix/Hystrix/wiki/configuration#execution.isolation.thread.timeoutInMilliseconds
-hystrix:
-  command:
-    default:
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 10000
