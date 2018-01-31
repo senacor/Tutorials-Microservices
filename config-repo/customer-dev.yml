@@ -19,7 +19,7 @@ spring:
       naming_strategy: org.hibernate.cfg.DefaultNamingStrategy
     properties:
       hibernate:   
-        dialect: org.hibernate.dialect.MySQL5Dialect
+        dialect: org.hibernate.dialect.H2Dialect
         hbm2ddl:
           auto: none
         temp:
@@ -28,6 +28,6 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:http://registry:8761/eureka}
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
   instance:
     preferIpAddress: true
