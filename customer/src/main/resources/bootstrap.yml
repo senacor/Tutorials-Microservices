@@ -1,7 +1,7 @@
 spring:
+  profiles: prod
   application:
     name: customer
-  profiles: prod
   cloud:
     config:
       uri: http://config:8888
@@ -19,6 +19,8 @@ spring:
 ---
 spring:
   profiles: dev
+  application:
+      name: customer
   cloud:
     config:
       uri: http://localhost:8888

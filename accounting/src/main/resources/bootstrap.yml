@@ -1,7 +1,7 @@
 spring:
-  application:
-    name: accounting
   profiles: prod
+  application:
+      name: accounting
   cloud:
     config:
       uri: http://config:8888
@@ -19,6 +19,8 @@ spring:
 ---
 spring:
   profiles: dev
+  application:
+      name: accounting
   cloud:
     config:
       uri: http://localhost:8888
