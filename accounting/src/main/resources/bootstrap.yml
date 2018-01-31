@@ -4,7 +4,7 @@ spring:
   profiles: prod
   cloud:
     config:
-      uri: http://localhost:8888
+      uri: http://config:8888
       # the label defines the branch within the config-server repo
       # (for local setup you don't need a label because you are not on a specific branch)
       label: Stage-10-HATEOAS
