@@ -19,7 +19,7 @@ services:
       - MYSQL_ROOT_PASSWORD=mysql
       - MYSQL_DATABASE=accountingdb
     ports:
-      - "3306:3306"
+      - "3305:3306"
     networks:
         - demonet
 

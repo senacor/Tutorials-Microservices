@@ -1,9 +1,5 @@
-INSERT INTO customerdb.customer
-  (id, first_name, last_name, birth_date)
-  VALUES (1, "Bud", "Spencer", STR_TO_DATE('31-10-1929', '%d-%m-%Y')
-);
+INSERT INTO customer (id, first_name, last_name, birth_date)
+VALUES (1, 'Bud', 'Spencer', '1929-10-31');
 
-INSERT INTO customerdb.customer
-  (id, first_name, last_name, birth_date)
-  VALUES (2, "Terence", "Hill", STR_TO_DATE('29-03-1939', '%d-%m-%Y')
-);
+INSERT INTO customer (id, first_name, last_name, birth_date)
+VALUES (2, 'Terence', 'Hill', '1939-03-29');
