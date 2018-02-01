@@ -108,29 +108,6 @@ You can follow the instructions on how to [add Lombok to IntelliJ IDEA as plugin
 2. Offer a new REST endpoint that provides customer data (at least: customer by id and customer by last name).
 3. Test the new REST endpoint (with MockMVC and MockBean).
 
-### Stage 04.1 (optional) - HATEOAS (REST application architecture constraint)
-
-*Disclaimer: This stage is not implemented in code yet (you will not find a branch for this but you can do it on your own).*
-
-#### Goal 
-You understand the concept of HATEOAS (Hypermedia as the Engine of Application State) and adapt your service accordingly.
-
-#### Tasks
-
-1. Follow the [spring tutorial on HATEOAS](https://spring.io/guides/gs/rest-hateoas/) to adapt your rest endpoint according to the pattern.
-2. Think about the design of your endpoints with respect to the HATEOAS pattern.
-
-### Stage 04.2 (optional) - Hystrix (Fault Tolerance)
-
-*Disclaimer: This stage is not implemented in code yet (you will not find a branch for this but you can do it on your own).*
-
-#### Goal
-You understand the concept of Netflix's Hystrix library and what you can do with it. You use the Circuit Breaker implementation of the Hystrix library to add a Circuit Breaker to your service.
-
-#### Tasks
-
-1. Follow the [spring tutorial on Circuit Breakers with Hystrix](https://spring.io/guides/gs/circuit-breaker/) to get an overview. Build in a circuit breaker into your customer service.
-2. Think about the design of your endpoints with respect to the Circuit Breaker pattern and other fault tolerance concepts.
 
 ### Stage 05 - Create a second service
 
@@ -212,7 +189,34 @@ You understand the purpose of the config-server and the config-repo better in th
 5. Build the accounting and customer projects and containers new.
 6. Run and test the setup by creating a new account through Postman.
 
-### Stage 09.A (optional) - Messaging and Event Sourcing
+
+### Stage 10 - Profiles
+
+#### Goal 
+You understand the concept of configuration profiles in detail and manage your local setup separately through a configuration profile. You can run the project locally in your IDE or through docker-compose without changing anything in the code or configuration.
+
+#### Tasks
+
+1. Create two profiles: ```dev``` and ```prod```. The ```prod``` profiles should contain the docker-compose setup like in stage 09. The ```dev``` profile should contain a local setup so you can start the services through youe IDE without docker-compose.
+2. Configure an in memory H2 database for the ```dev``` setup, so you don't have to start, stop and reset MySQL containers during development.
+2. Configure your IDE and docker to set the correct profile upon startup.
+3. Test your setup by running the services from IDEA and aferwards through docker-compose.
+
+
+### Stage 11 - HATEOAS (REST application architecture constraint)
+
+*Disclaimer: This stage is not implemented in code yet (you will not find a branch for this but you can do it on your own).*
+
+#### Goal 
+You understand the concept of HATEOAS (Hypermedia as the Engine of Application State) and adapt your service accordingly.
+
+#### Tasks
+
+1. Follow the [spring tutorial on HATEOAS](https://spring.io/guides/gs/rest-hateoas/) to adapt your rest endpoint according to the pattern.
+2. Think about the design of your endpoints with respect to the HATEOAS pattern.
+
+<!--
+### Stage XX (optional) - Messaging and Event Sourcing
 
 *Disclaimer: This stage is not implemented in code yet (you will not find a branch for this but you can do it on your own).*
 
@@ -222,4 +226,19 @@ You add endpoints that emit events, so your two services don't directly communic
 #### Tasks
 
 1. Follow the [spring tutorial on the Java Messaging Service using ActiveMQ](https://spring.io/guides/gs/messaging-jms/).
-2. Add messaging functionality to your services.
+2. Add messaging functionality to your services. 
+-->
+
+<!--
+### Stage XX (optional) - Hystrix (Fault Tolerance)
+
+*Disclaimer: This stage is not implemented in code yet (you will not find a branch for this but you can do it on your own).*
+
+#### Goal
+You understand the concept of Netflix's Hystrix library and what you can do with it. You use the Circuit Breaker implementation of the Hystrix library to add a Circuit Breaker to your service.
+
+#### Tasks
+
+1. Follow the [spring tutorial on Circuit Breakers with Hystrix](https://spring.io/guides/gs/circuit-breaker/) to get an overview. Build in a circuit breaker into your customer service.
+2. Think about the design of your endpoints with respect to the Circuit Breaker pattern and other fault tolerance concepts.
+-->
