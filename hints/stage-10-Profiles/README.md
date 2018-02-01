@@ -99,8 +99,8 @@ In order for the project to be able to handle the H2 database, the H2 gradle com
 ```
 dependencies {
     ...
-	compile('com.h2database:h2')
-	...
+    compile('com.h2database:h2')
+    ...
 }
 
 ``` 
