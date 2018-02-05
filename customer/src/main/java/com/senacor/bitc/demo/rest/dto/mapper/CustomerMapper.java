@@ -1,7 +1,9 @@
 package com.senacor.bitc.demo.rest.dto.mapper;
 
 import com.senacor.bitc.demo.domain.Customer;
+import com.senacor.bitc.demo.rest.CustomerAddressController;
 import com.senacor.bitc.demo.rest.CustomerController;
+import com.senacor.bitc.demo.rest.dto.LinkRelations;
 import com.senacor.bitc.demo.rest.dto.request.CustomerRequest;
 import com.senacor.bitc.demo.rest.dto.response.CustomerResponse;
 import org.springframework.stereotype.Component;
@@ -29,14 +31,21 @@ public class CustomerMapper {
                         .birthDate(customer.getBirthDate())
                         .key(customer.getId())
                         .comment(customer.getComment())
-                        .build());
+                        .build(),
+                customer);
     }
 
-    public static CustomerResponse addCustomerResponseLinks(CustomerResponse customerResponse) {
+    public static CustomerResponse addCustomerResponseLinks(CustomerResponse customerResponse, Customer customer) {
         customerResponse.add(
                 linkTo(methodOn(CustomerController.class)
                         .getCustomerById(customerResponse.getKey()))
                         .withSelfRel());
+
+        if (customer.getCustomerAddress() != null) {
+            customerResponse.add(linkTo(methodOn(CustomerAddressController.class)
+                    .getCustomerAddress(customerResponse.getKey()))
+                    .withRel(LinkRelations.ADDRESS.getName()));
+        }
 
         return customerResponse;
     }
