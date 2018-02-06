@@ -3,6 +3,7 @@ package com.senacor.bitc.demo.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.senacor.bitc.demo.domain.Account;
 import com.senacor.bitc.demo.domain.AccountType;
+import com.senacor.bitc.demo.rest.dto.account.AccountMapper;
 import com.senacor.bitc.demo.service.AccountService;
 import com.senacor.bitc.demo.util.TestUtil;
 import org.junit.Before;
@@ -12,8 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.hateoas.Link;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -32,17 +36,28 @@ public class AccountControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private AccountController controllerUnderTest;
+
     @MockBean
     private AccountService accountService;
+
+    @MockBean
+    private AccountMapper accountMapper;
 
     @Autowired
     private ObjectMapper mapper;
 
     private JacksonTester<Account> accountJsonTester;
 
+    private static String BASE_PATH = "http://localhost";
+
     @Before
     public void setUp() throws Exception {
         JacksonTester.initFields(this, mapper);
+
+        // inject actual instance of AccountMapper instead of mock (note: the mock variable is still needed)
+        ReflectionTestUtils.setField(controllerUnderTest, "accountMapper", new AccountMapper());
     }
 
     @Test
@@ -51,10 +66,9 @@ public class AccountControllerTest {
         given(this.accountService.loadAccountById(1))
                 .willReturn(getAccountWithId());
 
-        mockMvc.perform(get("/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(accountJsonTester.write(getAccountWithId()).getJson()));
+        verifyJson(
+                mockMvc.perform(get("/1"))
+                        .andExpect(status().isOk()), false);
     }
 
     @Test
@@ -62,13 +76,10 @@ public class AccountControllerTest {
         given(this.accountService.findAccountsByCustomerId(1))
                 .willReturn(Collections.singletonList(getAccountWithId()));
 
-        mockMvc.perform(get("?customerId=1"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", is(getAccountWithId().getId())))
-                .andExpect(jsonPath("$[0].accountType", is(getAccountWithId().getAccountType().toString())))
-                .andExpect(jsonPath("$[0].customerId", is(getAccountWithId().getCustomerId())));
+        verifyJson(
+                mockMvc.perform(get("?customerId=1"))
+                        .andExpect(status().isOk()),
+                true);
 
     }
 
@@ -83,12 +94,20 @@ public class AccountControllerTest {
 
         request.content(mapper.writeValueAsString(getAccountWithoutId()));
 
-        mockMvc.perform(request)
-                .andExpect(status().isCreated())
+        verifyJson(
+                mockMvc.perform(request)
+                        .andExpect(status().isCreated()), false);
+    }
+
+    private ResultActions verifyJson(final ResultActions actions, boolean isArray) throws Exception {
+        actions
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.id", is(getAccountWithId().getId())))
-                .andExpect(jsonPath("$.accountType", is(getAccountWithId().getAccountType().toString())))
-                .andExpect(jsonPath("$.customerId", is(getAccountWithId().getCustomerId())));
+                .andExpect(jsonPath((isArray ? "$[0]" : "$") + ".accountType", is(getAccountWithId().getAccountType().toString())))
+                .andExpect(jsonPath((isArray ? "$[0]" : "$") + ".customerId", is(getAccountWithId().getCustomerId())))
+                .andExpect(jsonPath((isArray ? "$[0]" : "$") + ".links[0].href", is(BASE_PATH + "/" + getAccountWithId().getId())))
+                .andExpect(jsonPath((isArray ? "$[0]" : "$") + ".links[0].rel", is(Link.REL_SELF)));
+
+        return actions;
     }
 
     private Account getAccountWithId() {
