@@ -2,9 +2,12 @@ package com.senacor.bitc.demo.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.senacor.bitc.demo.domain.Customer;
+import com.senacor.bitc.demo.rest.dto.LinkRelations;
+import com.senacor.bitc.demo.rest.dto.mapper.CustomerMapper;
+import com.senacor.bitc.demo.rest.dto.request.CustomerRequest;
+import com.senacor.bitc.demo.rest.dto.response.CustomerResponse;
 import com.senacor.bitc.demo.service.CustomerService;
 import com.senacor.bitc.demo.util.TestUtil;
-import com.senacor.bitc.demo.rest.CustomerController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.hateoas.Link;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -28,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * References for further info on Spring Testing with MockMvc, MockBean (...):
+ * https://docs.spring.io/spring/docs/current/spring-framework-reference/testing.html
  * http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-testing-spring-boot-applications-mocking-beans
  * https://www.petrikainulainen.net/programming/spring-framework/integration-testing-of-spring-mvc-applications-write-clean-assertions-with-jsonpath/
  */
@@ -38,17 +44,33 @@ public class CustomerControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private CustomerController controllerUnderTest;
+
     @MockBean
     private CustomerService customerService;
+
+    @MockBean
+    private CustomerMapper customerMapper;
 
     @Autowired
     private ObjectMapper mapper;
 
-    private JacksonTester<Customer> customerJsonTester;
+    private JacksonTester<CustomerResponse> customerResponseJsonTester;
+
+    // Note: set without "/customer" here because the controller does not specify this, is globally set
+    private static String BASE_PATH = "http://localhost";
+    private static String ADDRESS_PATH = "/address";
+
+    private static Integer CUSTOMER_ID = 1;
 
     @Before
     public void setUp() throws Exception {
         JacksonTester.initFields(this, mapper);
+
+        // alternative approach to mocking the CustomerResponse:
+        // inject an actual CustomerMapper, dirty but mocking the links is painful and makes the test vulnerable
+        //ReflectionTestUtils.setField(controllerUnderTest, "customerMapper", new CustomerMapper());
     }
 
     @Test
@@ -57,10 +79,27 @@ public class CustomerControllerTest {
         given(this.customerService.loadCustomerById(1))
                 .willReturn(getCustomerWithId());
 
-        mockMvc.perform(get("/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(customerJsonTester.write(getCustomerWithId()).getJson()));
+        // if CustomerMapper is injected then this can be removed
+        given(this.customerMapper.fromCustomerToCustomerResponse(getCustomerWithId()))
+                .willReturn(getCustomerResponse());
+
+        verifyJsonCustomer(mockMvc.perform(get( "/1"))
+                .andExpect(status().isOk()), false);
+
+    }
+
+    @Test
+    public void getCustomerWithAddressById() throws Exception {
+
+        given(this.customerService.loadCustomerById(1))
+                .willReturn(getCustomerWithId());
+
+        // if CustomerMapper is injected then this can be removed
+        given(this.customerMapper.fromCustomerToCustomerResponse(getCustomerWithId()))
+                .willReturn(getCustomerResponse());
+
+        verifyJsonCustomer(mockMvc.perform(get( "/1"))
+                .andExpect(status().isOk()), false);
 
     }
 
@@ -69,15 +108,14 @@ public class CustomerControllerTest {
         given(this.customerService.findCustomersByLastName("Last"))
                 .willReturn(Collections.singletonList(getCustomerWithId()));
 
-        mockMvc.perform(get("?lastName=Last"))
+        // if CustomerMapper is injected then this can be removed
+        given(this.customerMapper.fromCustomerToCustomerResponse(getCustomerWithId()))
+                .willReturn(getCustomerResponse());
+
+        verifyJsonCustomer(mockMvc.perform(get("?lastName=Last"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", is(getCustomerWithId().getId())))
-                .andExpect(jsonPath("$[0].firstName", is(getCustomerWithId().getFirstName())))
-                .andExpect(jsonPath("$[0].lastName", is(getCustomerWithId().getLastName())))
-                .andExpect(jsonPath("$[0].birthDate", is(getCustomerWithId().getBirthDate().toString())))
-                .andExpect(jsonPath("$[0].comment", is(getCustomerWithId().getComment())));
+                .andExpect(jsonPath("$", hasSize(1))), true);
 
     }
 
@@ -87,23 +125,75 @@ public class CustomerControllerTest {
         given(this.customerService.saveCustomer(getCustomerWithoutId()))
                 .willReturn(getCustomerWithId());
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("");
+        // if CustomerMapper is injected then this can be removed
+        given(this.customerMapper.fromCustomerToCustomerResponse(getCustomerWithId()))
+                .willReturn(getCustomerResponse());
+        given(this.customerMapper.fromCustomerRequestToCustomer(getCustomerRequest()))
+                .willReturn(getCustomerWithoutId());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/");
         request.contentType(TestUtil.APPLICATION_JSON_UTF8);
+        request.content(mapper.writeValueAsString(getCustomerRequest()));
 
-        request.content(mapper.writeValueAsString(getCustomerWithoutId()));
+        verifyJsonCustomer(
+                mockMvc.perform(request).andExpect(status().isCreated()), false);
+    }
 
-        mockMvc.perform(request)
-                .andExpect(status().isCreated())
+    private ResultActions verifyJsonCustomer(final ResultActions actions, boolean isArray) throws Exception {
+        actions
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.id", is(getCustomerWithId().getId())))
-                .andExpect(jsonPath("$.firstName", is(getCustomerWithId().getFirstName())))
-                .andExpect(jsonPath("$.lastName", is(getCustomerWithId().getLastName())))
-                .andExpect(jsonPath("$.birthDate", is(getCustomerWithId().getBirthDate().toString())))
-                .andExpect(jsonPath("$.comment", is(getCustomerWithId().getComment())));
+                .andExpect(jsonPath((isArray ? "$[0]" : "$") + ".firstName", is(getCustomerWithId().getFirstName())))
+                .andExpect(jsonPath((isArray ? "$[0]" : "$") + ".lastName", is(getCustomerWithId().getLastName())))
+                .andExpect(jsonPath((isArray ? "$[0]" : "$") + ".birthDate", is(getCustomerWithId().getBirthDate().toString())))
+                .andExpect(jsonPath((isArray ? "$[0]" : "$") + ".comment", is(getCustomerWithId().getComment())))
+                .andExpect(jsonPath((isArray ? "$[0]" : "$") + ".links[0].href", is(BASE_PATH + "/" + getCustomerWithId().getId())))
+                .andExpect(jsonPath((isArray ? "$[0]" : "$") + ".links[0].rel", is(Link.REL_SELF)));
+
+        return actions;
+    }
+
+    private ResultActions verifyJsonAddressLink(final ResultActions actions, boolean isArray) throws Exception {
+        actions
+                .andExpect(jsonPath((isArray ? "$[1]" : "$") + ".links[0].href",
+                        is(BASE_PATH + "/" + getCustomerWithId().getId() + ADDRESS_PATH)))
+                .andExpect(jsonPath((isArray ? "$[1]" : "$") + ".links[0].rel", is(LinkRelations.ADDRESS.getName())));
+
+        return actions;
+    }
+
+    private CustomerResponse getCustomerResponseWithAddressLink() {
+
+        CustomerResponse customerResponse = getCustomerResponse();
+        customerResponse.add(new Link(BASE_PATH + "/" + CUSTOMER_ID + ADDRESS_PATH, LinkRelations.ADDRESS.getName()));
+
+        return customerResponse;
+    }
+
+    private CustomerResponse getCustomerResponse() {
+
+        CustomerResponse customerResponse = CustomerResponse.builder()
+                .firstName("First")
+                .lastName("Last")
+                .birthDate(LocalDate.of(2000, 1, 1))
+                .comment("comment")
+                .build();
+
+        customerResponse.add(new Link(BASE_PATH + "/" + CUSTOMER_ID, Link.REL_SELF));
+
+        return customerResponse;
+    }
+
+    private CustomerRequest getCustomerRequest() {
+        return CustomerRequest.builder()
+                .firstName("First")
+                .lastName("Last")
+                .birthDate(LocalDate.of(2000, 1, 1))
+                .comment("comment")
+                .build();
     }
 
     private Customer getCustomerWithId() {
-        return getCustomer(1);
+        return getCustomer(CUSTOMER_ID);
     }
 
     private Customer getCustomerWithoutId() {
