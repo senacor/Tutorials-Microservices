@@ -3,7 +3,10 @@ package com.senacor.bitc.demo.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.senacor.bitc.demo.domain.Account;
 import com.senacor.bitc.demo.domain.AccountType;
+import com.senacor.bitc.demo.feign.client.demo.domain.CustomerResponse;
 import com.senacor.bitc.demo.rest.dto.account.AccountMapper;
+import com.senacor.bitc.demo.rest.dto.account.AccountRequest;
+import com.senacor.bitc.demo.rest.dto.account.AccountResponse;
 import com.senacor.bitc.demo.service.AccountService;
 import com.senacor.bitc.demo.util.TestUtil;
 import org.junit.Before;
@@ -14,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -36,9 +40,6 @@ public class AccountControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private AccountController controllerUnderTest;
-
     @MockBean
     private AccountService accountService;
 
@@ -51,13 +52,13 @@ public class AccountControllerTest {
     private JacksonTester<Account> accountJsonTester;
 
     private static String BASE_PATH = "http://localhost";
+    private static Integer CUSTOMER_ID = 1;
+    private static Integer ACCOUNT_ID = 1;
+    private static AccountType ACCOUNT_TYPE = AccountType.GIRO;
 
     @Before
     public void setUp() throws Exception {
         JacksonTester.initFields(this, mapper);
-
-        // inject actual instance of AccountMapper instead of mock (note: the mock variable is still needed)
-        ReflectionTestUtils.setField(controllerUnderTest, "accountMapper", new AccountMapper());
     }
 
     @Test
@@ -66,6 +67,9 @@ public class AccountControllerTest {
         given(this.accountService.loadAccountById(1))
                 .willReturn(getAccountWithId());
 
+        given(this.accountMapper.fromAccountToAccountResponse(getAccountWithId()))
+                .willReturn(getAccountResponse());
+
         verifyJson(
                 mockMvc.perform(get("/1"))
                         .andExpect(status().isOk()), false);
@@ -73,11 +77,14 @@ public class AccountControllerTest {
 
     @Test
     public void getAccountsByCustomerId() throws Exception {
-        given(this.accountService.findAccountsByCustomerId(1))
+        given(this.accountService.findAccountsByCustomerId(CUSTOMER_ID))
                 .willReturn(Collections.singletonList(getAccountWithId()));
 
+        given(this.accountMapper.fromAccountToAccountResponse(getAccountWithId()))
+                .willReturn(getAccountResponse());
+
         verifyJson(
-                mockMvc.perform(get("?customerId=1"))
+                mockMvc.perform(get("?customerId=" + CUSTOMER_ID))
                         .andExpect(status().isOk()),
                 true);
 
@@ -86,13 +93,22 @@ public class AccountControllerTest {
     @Test
     public void createAccount() throws Exception {
 
+        given(this.accountMapper.fromAccountRequestToAccount(getAccountRequest()))
+                .willReturn(getAccountWithoutId());
+
         given(this.accountService.saveAccount(getAccountWithoutId()))
                 .willReturn(getAccountWithId());
+
+        given(this.accountMapper.fromAccountToAccountResponse(getAccountWithId()))
+                .willReturn(getAccountResponse());
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("");
         request.contentType(TestUtil.APPLICATION_JSON_UTF8);
 
-        request.content(mapper.writeValueAsString(getAccountWithoutId()));
+        request.content(mapper.writeValueAsString(getAccountRequest()));
+
+        mockMvc.perform(request)
+                .andExpect(status().isCreated());
 
         verifyJson(
                 mockMvc.perform(request)
@@ -110,8 +126,29 @@ public class AccountControllerTest {
         return actions;
     }
 
+    private AccountRequest getAccountRequest() {
+        return AccountRequest.builder()
+                .accountType(ACCOUNT_TYPE)
+                .customerId(CUSTOMER_ID)
+                .build();
+    }
+
+    private Resource<AccountResponse> getAccountResponse() {
+
+        AccountResponse accountResponse = AccountResponse.builder()
+                .accountType(ACCOUNT_TYPE)
+                .customerId(CUSTOMER_ID)
+                .build();
+
+        Resource<AccountResponse> accountResponseResource = new Resource<>(accountResponse);
+
+        accountResponseResource.add(new Link(BASE_PATH + "/" + ACCOUNT_ID, Link.REL_SELF));
+
+        return accountResponseResource;
+    }
+
     private Account getAccountWithId() {
-        return getAccount(1);
+        return getAccount(ACCOUNT_ID);
     }
 
     private Account getAccountWithoutId() {
@@ -126,8 +163,8 @@ public class AccountControllerTest {
             builder.id(id);
         }
 
-        builder.accountType(AccountType.CREDIT_CARD)
-                .customerId(1);
+        builder.accountType(ACCOUNT_TYPE)
+                .customerId(CUSTOMER_ID);
 
         return builder.build();
     }
