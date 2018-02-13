@@ -205,15 +205,31 @@ You understand the concept of configuration profiles in detail and manage your l
 
 ### Stage 11 - HATEOAS (REST application architecture constraint)
 
-*Disclaimer: This stage is not implemented in code yet (you will not find a branch for this but you can do it on your own).*
-
 #### Goal 
-You understand the concept of HATEOAS (Hypermedia as the Engine of Application State) and adapt your service accordingly.
+You understand the concept of HATEOAS (Hypermedia as the Engine of Application State) and adapt your services accordingly.
 
 #### Tasks
 
 1. Follow the [spring tutorial on HATEOAS](https://spring.io/guides/gs/rest-hateoas/) to adapt your rest endpoint according to the pattern.
-2. Think about the design of your endpoints with respect to the HATEOAS pattern.
+2. For data-transfer-objects (DTOs) it is recommended to add a request and a response object for every resource.
+3. Think about the design of your endpoints with respect to the HATEOAS pattern.
+4. Extend the customer service, add another endpoint that should serve the address of the customer. Think about how to depict this in the service path and in the Customer and CustomerAddress response links.
+
+Note: You can turn off the HAL link-representation in this stage, see hints for details. The Hypertext Application Language (HAL) standard will be explained in the next stage.
+
+### Stage 12 - HAL (Hypertext Application Language)
+
+*Disclaimer: This stage is not implemented in code yet (you will not find a branch for this but you can do it on your own).*
+
+####
+You understand how HAL and HATEOAS work together and how HAL can help you to design RESTful APIs in a standardized way.
+
+#### 
+
+1. Take a look at the [HAL overview](http://stateless.co/hal_specification.html), you can also take a look at the [official standard's draft](https://tools.ietf.org/html/draft-kelly-json-hal-08).
+2. Adapt the HATEOAS representation of your services to be HAL (draft-)standard compliant.
+
+Hint: It might help to take a look at the ```Resources<>``` vs. ```Resource<>``` section in the [HATEOAS documentation](https://docs.spring.io/spring-hateoas/docs/current/reference/html/#_code_resource_t_code_vs_code_resources_t_code).
 
 <!--
 ### Stage XX (optional) - Messaging and Event Sourcing
