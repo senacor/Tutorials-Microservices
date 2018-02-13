@@ -141,9 +141,9 @@ Since we want to decouple the entities from the service we need another layer of
 
 For each data-object (resource) that our server should accept (request) or serve (response) we need a DTO now. Furthermore we need a mapping class that converts from request-objects to entity and from entity to response-object. For example, for our customer object we add the following three classes to on the ```rest``` package level of the project:
 
-* ```rest.[some-sub-package].```*CustomerRequest*: Defines what the server accepts when a customer is POSTed to the customer endpoint.
-* ```rest.[some-sub-package].```*CustomerResponse*: Defines how the server returns a customer upon GET to the customer endpoint.
-* ```rest.[some-sub-package].```*CustomerMapper*: Maps between the database entity (```domain.Customer```) and the CustomerRequest and CustomerResponse.
+* ```rest.[some-sub-package].```**CustomerRequest**: Defines what the server accepts when a customer is POSTed to the customer endpoint.
+* ```rest.[some-sub-package].```**CustomerResponse**: Defines how the server returns a customer upon GET to the customer endpoint.
+* ```rest.[some-sub-package].```**CustomerMapper**: Maps between the database entity (```domain.Customer```) and the CustomerRequest and CustomerResponse.
 
 In the ```rest.CustomerController``` we then replace all the entity classes with the respective DTO. 
 
