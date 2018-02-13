@@ -4,7 +4,7 @@
 
 > HATEOAS (Hypermedia as the Engine of Application State) is a constraint of the REST application architecture.
 >
-> -- <cite> [Spring.io on HATEOAS](https://spring.io/understanding/HATEOAS) </cite>
+> -- <cite>[Spring.io on HATEOAS](https://spring.io/understanding/HATEOAS)</cite>
 
 In short this constraint is about adding links to your "resources" (the data-objects returned by your service), so that a consumer of the service does not have to care about the navigation any more, but the server tells the consumer where he can navigate.
 
@@ -65,13 +65,11 @@ Note that many of these concepts are opinionated - and one can discuss a lot wha
 
 In this stage we want to take a look at the HATEOAS concept in general, in the next stage we will show how to extend this concept with the HAL (Hypertext Application Language) standard. 
 
-## Implementation overview
+## Some words on REST service design
 
-There is no "perfect" way to apply the HATEOAS concept on a service. We provide slightly different implementations in the ```customer``` and the ```accounting``` service to show different possibilities within Spring-HATOAS. In short, the ```customer``` service's DTOs use inheritance to make them HATEOAS resources (include the links) whereas the ```accounting``` service uses generics to wrap the DTO responses with the ```Resource<>``` class. 
+There is no "perfect" way to apply the HATEOAS concept on a service. In general there is also no "perfect" way of designing a RESTful service - but there are best practices that one can stick to.
 
-### Some words on REST service design
-
-#### Things to consider and best practice links
+### Things to consider and best practice links
 
 Designing a good REST interface is not easy - it requires experience. There are several things to consider, here is a list of some points:
 
@@ -85,7 +83,7 @@ Note that many of these points are highly opinionated. The general idea is to ge
 Note that in the reference solution for stage 11 the endpoint context path was changed to plural names (i.e. ```customers``` and ```accounts``` in the URLs).
 
 
-#### Some words on readability: Functional vs. Technical Keys
+### Some words on readability: Functional vs. Technical Keys
 
 One goal of REST interfaces is to be human-readable. This principle sometimes goes against the traditional "database-view" we might have in our heads. In traditional, relational database we often use IDs - identifiers that are of technical nature. In the simplest cases this is an Integer value that is automatically incremented by the database-engine every time a new object is added. These IDs usually serve as primary key in the database tables. 
 
@@ -114,7 +112,11 @@ An advantage of using functional keys is, that they are always valid, no matter 
 
 Note that in some cases using functional keys can be a security risk! Account-IDs (e.g. the IBAN of a bank account) should not be used in paths as the path might be visible to others that could then see the Account-ID. For public, data-driven REST APIs it is, however, a good practice to use functional keys. Generally you should think about this when you design your service.
 
-### General implementation overview for customer and accounting service
+## Implementation Details
+
+We provide slightly different implementations in the ```customer``` and the ```accounting``` service to show different possibilities within Spring-HATOAS. In short, the ```customer``` service's DTOs use inheritance to make them HATEOAS resources (include the links) whereas the ```accounting``` service uses generics to wrap the DTO responses with the ```Resource<>``` class. 
+
+### General things that have to be done in both services
 
 First we have have to add the Spring-HATEOAS gradle dependency to both the customer and the accounting build.gradle file:
 ```
@@ -149,7 +151,7 @@ In order to add links to our response DTO we have to turn our response into a Sp
 Note that the links are added the support of the Spring-HATOAS Link-Builder.
 
 
-### DTO Implementation in the customer service
+### Implementation details for customer service
 
 In the customer service the turning the response resources into HATEOAS-resources is implemented by inheriting from the class ```org.springframework.hateoas.ResourceSupport```. This class adds the ```links``` to the response objects. 
 
@@ -226,7 +228,7 @@ GET .../customers/{customerId}/address
 
 Feel free to depict this in a different way in your solution. Think about a good way to implement this. What if a customer is allowed to have many addresses? 
 
-### DTO Implementation in the accounting service
+### Implementation details for accounting service
 
 In the accounting service the resource-link-support is added through the generic ```org.springframework.hateoas.Resource``` class instead of inheriting from ```org.springframework.hateoas.ResourceSupport```.
 
