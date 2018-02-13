@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class MySQLCustomerService implements CustomerService {
+public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
 
     @Autowired
-    public MySQLCustomerService(CustomerRepository customerRepository) {
+    public CustomerServiceImpl(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 

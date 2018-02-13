@@ -34,4 +34,7 @@ public class Customer {
 
     public String comment;
 
+    @OneToOne(mappedBy = "customer", fetch = FetchType.LAZY)
+    public CustomerAddress customerAddress;
+
 }

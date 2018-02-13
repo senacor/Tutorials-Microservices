@@ -33,6 +33,7 @@ dependencies {
 	compile('org.hibernate:hibernate-java8:5.1.0.Final')
 	compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
 	compile('com.h2database:h2')
+	compile('org.springframework.boot:spring-boot-starter-hateoas')
 	compileOnly('org.projectlombok:lombok:1.16.18')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('com.h2database:h2')

@@ -1,0 +1,98 @@
+{
+	"info": {
+		"name": "tutorial-stage-11",
+		"_postman_id": "388803bf-f001-2d15-6163-e94ad2b9908b",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST account",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"accountType\": \"CREDIT_CARD\",\n\t\"customerId\": \"1\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8082/account/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"account",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST customer address",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"street\": \"bla\",\n\t\"zipCode\": \"1234\",\n\t\"houseNr\": \"1\",\n\t\"city\": \"Wondercity\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8081/customer/1/address",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"customer",
+						"1",
+						"address"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET customer",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"accountType\": \"CREDIT_CARD\",\n\t\"customerId\": \"1\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8081/customer/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"customer",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,3 @@
+spring:
+  hateoas:
+    use-hal-as-default-json-media-type: false
