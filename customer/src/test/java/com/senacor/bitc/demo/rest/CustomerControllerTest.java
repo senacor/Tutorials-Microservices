@@ -168,6 +168,7 @@ public class CustomerControllerTest {
                 .lastName("Last")
                 .birthDate(LocalDate.of(2000, 1, 1))
                 .comment("comment")
+                .key(CUSTOMER_ID)
                 .build();
 
         customerResponse.add(new Link(BASE_PATH + "/" + CUSTOMER_ID, Link.REL_SELF));
