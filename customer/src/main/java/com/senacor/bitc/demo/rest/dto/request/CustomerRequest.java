@@ -1,9 +1,6 @@
 package com.senacor.bitc.demo.rest.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.hateoas.ResourceSupport;
 
 import java.time.LocalDate;
@@ -13,7 +10,9 @@ import java.util.Date;
 @Getter
 @Setter
 @Builder
-public class CustomerRequest extends ResourceSupport {
+@ToString
+@EqualsAndHashCode
+public class CustomerRequest {
 
     private String firstName;
     private String lastName;

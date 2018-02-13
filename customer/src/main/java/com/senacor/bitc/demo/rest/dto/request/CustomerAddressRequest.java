@@ -1,14 +1,13 @@
 package com.senacor.bitc.demo.rest.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
+@ToString
+@EqualsAndHashCode
 public class CustomerAddressRequest {
 
     private String street;

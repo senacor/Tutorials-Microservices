@@ -93,19 +93,20 @@ public class AccountControllerTest {
     @Test
     public void createAccount() throws Exception {
 
-        given(this.accountMapper.fromAccountRequestToAccount(getAccountRequest()))
-                .willReturn(getAccountWithoutId());
-
         given(this.accountService.saveAccount(getAccountWithoutId()))
                 .willReturn(getAccountWithId());
 
+        AccountRequest accountRequest = getAccountRequest();
+
         given(this.accountMapper.fromAccountToAccountResponse(getAccountWithId()))
                 .willReturn(getAccountResponse());
+        given(this.accountMapper.fromAccountRequestToAccount(accountRequest))
+                .willReturn(getAccountWithoutId());
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("");
         request.contentType(TestUtil.APPLICATION_JSON_UTF8);
 
-        request.content(mapper.writeValueAsString(getAccountRequest()));
+        request.content(mapper.writeValueAsString(accountRequest));
 
         mockMvc.perform(request)
                 .andExpect(status().isCreated());

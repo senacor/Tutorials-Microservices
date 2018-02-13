@@ -44,9 +44,6 @@ public class CustomerControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private CustomerController controllerUnderTest;
-
     @MockBean
     private CustomerService customerService;
 
