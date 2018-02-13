@@ -67,10 +67,6 @@ public class CustomerControllerTest {
     @Before
     public void setUp() throws Exception {
         JacksonTester.initFields(this, mapper);
-
-        // alternative approach to mocking the CustomerResponse:
-        // inject an actual CustomerMapper, dirty but mocking the links is painful and makes the test vulnerable
-        //ReflectionTestUtils.setField(controllerUnderTest, "customerMapper", new CustomerMapper());
     }
 
     @Test
@@ -79,7 +75,6 @@ public class CustomerControllerTest {
         given(this.customerService.loadCustomerById(1))
                 .willReturn(getCustomerWithId());
 
-        // if CustomerMapper is injected then this can be removed
         given(this.customerMapper.fromCustomerToCustomerResponse(getCustomerWithId()))
                 .willReturn(getCustomerResponse());
 
@@ -94,7 +89,6 @@ public class CustomerControllerTest {
         given(this.customerService.loadCustomerById(1))
                 .willReturn(getCustomerWithId());
 
-        // if CustomerMapper is injected then this can be removed
         given(this.customerMapper.fromCustomerToCustomerResponse(getCustomerWithId()))
                 .willReturn(getCustomerResponse());
 
@@ -108,7 +102,6 @@ public class CustomerControllerTest {
         given(this.customerService.findCustomersByLastName("Last"))
                 .willReturn(Collections.singletonList(getCustomerWithId()));
 
-        // if CustomerMapper is injected then this can be removed
         given(this.customerMapper.fromCustomerToCustomerResponse(getCustomerWithId()))
                 .willReturn(getCustomerResponse());
 
@@ -125,7 +118,6 @@ public class CustomerControllerTest {
         given(this.customerService.saveCustomer(getCustomerWithoutId()))
                 .willReturn(getCustomerWithId());
 
-        // if CustomerMapper is injected then this can be removed
         given(this.customerMapper.fromCustomerToCustomerResponse(getCustomerWithId()))
                 .willReturn(getCustomerResponse());
         given(this.customerMapper.fromCustomerRequestToCustomer(getCustomerRequest()))
