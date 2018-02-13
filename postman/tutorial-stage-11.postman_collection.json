@@ -21,14 +21,14 @@
 					"raw": "{\n\t\"accountType\": \"CREDIT_CARD\",\n\t\"customerId\": \"1\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8082/account/",
+					"raw": "http://localhost:8082/accounts/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8082",
 					"path": [
-						"account",
+						"accounts",
 						""
 					]
 				}
@@ -50,14 +50,14 @@
 					"raw": "{\n\t\"street\": \"bla\",\n\t\"zipCode\": \"1234\",\n\t\"houseNr\": \"1\",\n\t\"city\": \"Wondercity\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8081/customer/1/address",
+					"raw": "http://localhost:8081/customers/1/address",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8081",
 					"path": [
-						"customer",
+						"customers",
 						"1",
 						"address"
 					]
@@ -80,14 +80,14 @@
 					"raw": "{\n\t\"accountType\": \"CREDIT_CARD\",\n\t\"customerId\": \"1\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8081/customer/1",
+					"raw": "http://localhost:8081/customers/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8081",
 					"path": [
-						"customer",
+						"customers",
 						"1"
 					]
 				}

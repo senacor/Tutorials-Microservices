@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @FeignClient("customer")
-@RequestMapping(value = "/customer", produces = "application/json")
+@RequestMapping(value = "/customers", produces = "application/json")
 public interface CustomerClient {
 
     @RequestMapping(value = "/{customerId}", method = RequestMethod.GET)
