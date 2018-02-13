@@ -81,3 +81,11 @@ Additionally resilient features were included into the configuration so:
 
 After finishing stage 10 you have a ```dev``` and a ```prod``` profile. The ```dev``` profile is used to start the application locally in IDEA (without docker and docker-compose). The ```dev``` profile includes the configuration for an in memory H2 database, so you don't have to care about starting/stopping databases during development.
 The ```prod``` profile pretty much contains the configuration from the previous stages. The Dockerfiles of accounting and customer service were extended to set the right profile (```prod```) when starting the application through docker-compose. Additionally IDEA was configured to set the ```dev``` profile when starting the customer and accounting service from IDEA (add VM option ```-Dspring.profiles.active=dev``` to launch configuration).
+
+## Stage 11 - HATEOAS
+
+After finishing stage 11 your resources (the objects returned by your endpoints) will contain links as defined by the HATEOAS (Hypermedia As The Engine Of Application State) REST application architecture style. For this we added Spring-HATEOAS to the customer and the accounting project. The rest (endpoint) layer now contains DTOs (data transfer objects) that specify how resources are accepted by (request) and served by (response) by the server. Links are added to the resource responses. Note that in this stage the links are not returned according to the HAL () "standard" but are just returned as simple links without a deeper structure.
+
+The idea of HATEOAS is, that consumers of the service are able to navigate between resources without having to create about the "paths" (URLs) to the resources by themselves. The server manages the routes to the resources and returns those routes as links when a resource is served. In a "perfect" HATEOAS style service a consumer just has to know one entry point and can then navigate between resources through the links returned from the server when requesting the resource of the entry-point. 
+
+Note that the customer service was extended, another endpoint for customer-addresses was added to show how link relations can be implemented.
