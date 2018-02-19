@@ -90,7 +90,7 @@ public class CustomerControllerTest {
                 .willReturn(getCustomerResponseWithAddressLink());
 
         verifyJsonAddressLink(
-                verifyJsonCustomer(mockMvc.perform(get( "/1"))
+        verifyJsonCustomer(mockMvc.perform(get( "/1"))
                 .andExpect(status().isOk()), false));
 
     }
