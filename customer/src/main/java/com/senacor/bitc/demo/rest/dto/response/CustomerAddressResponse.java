@@ -1,6 +1,5 @@
 package com.senacor.bitc.demo.rest.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
