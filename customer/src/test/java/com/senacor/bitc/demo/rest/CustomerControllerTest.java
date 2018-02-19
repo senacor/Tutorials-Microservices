@@ -87,10 +87,11 @@ public class CustomerControllerTest {
                 .willReturn(getCustomerWithId());
 
         given(this.customerMapper.fromCustomerToCustomerResponse(getCustomerWithId()))
-                .willReturn(getCustomerResponse());
+                .willReturn(getCustomerResponseWithAddressLink());
 
+        verifyJsonAddressLink(
         verifyJsonCustomer(mockMvc.perform(get( "/1"))
-                .andExpect(status().isOk()), false);
+                .andExpect(status().isOk()), false));
 
     }
 
@@ -141,11 +142,11 @@ public class CustomerControllerTest {
         return actions;
     }
 
-    private ResultActions verifyJsonAddressLink(final ResultActions actions, boolean isArray) throws Exception {
+    private ResultActions verifyJsonAddressLink(final ResultActions actions) throws Exception {
         actions
-                .andExpect(jsonPath((isArray ? "$[1]" : "$") + ".links[0].href",
+                .andExpect(jsonPath("$.links[1].href",
                         is(BASE_PATH + "/" + getCustomerWithId().getId() + ADDRESS_PATH)))
-                .andExpect(jsonPath((isArray ? "$[1]" : "$") + ".links[0].rel", is(LinkRelations.ADDRESS.getName())));
+                .andExpect(jsonPath("$.links[1].rel", is(LinkRelations.ADDRESS.getName())));
 
         return actions;
     }
