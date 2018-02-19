@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(produces = "application/json")
+@RequestMapping(produces = "application/hal+json")
 public class AccountController {
 
     private final AccountService accountService;

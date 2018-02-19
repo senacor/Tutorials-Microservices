@@ -103,9 +103,8 @@ public class CustomerControllerTest {
         given(this.customerMapper.fromCustomerToCustomerResponse(getCustomerWithId()))
                 .willReturn(getCustomerResponse());
 
-        verifyJsonCustomer(mockMvc.perform(get("?lastName=Last"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8)), true);
+        verifyJsonCustomer(mockMvc.perform(get("/search?lastName=Last"))
+                .andExpect(status().isOk()), true);
 
     }
 
@@ -130,7 +129,7 @@ public class CustomerControllerTest {
 
     private ResultActions verifyJsonCustomer(final ResultActions actions, boolean isArray) throws Exception {
         actions
-                .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(TestUtil.HAL_JSON_UTF8))
                 .andExpect(jsonPath((isArray ? "$._embedded.customers[0]" : "$") + ".key", is(getCustomerWithId().getId())))
                 .andExpect(jsonPath((isArray ? "$._embedded.customers[0]" : "$") + ".firstName", is(getCustomerWithId().getFirstName())))
                 .andExpect(jsonPath((isArray ? "$._embedded.customers[0]" : "$") + ".lastName", is(getCustomerWithId().getLastName())))
