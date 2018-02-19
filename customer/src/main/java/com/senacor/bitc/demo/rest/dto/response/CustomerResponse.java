@@ -1,10 +1,12 @@
 package com.senacor.bitc.demo.rest.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.ResourceSupport;
+import org.springframework.hateoas.core.Relation;
 
 import java.time.LocalDate;
 
@@ -12,6 +14,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Builder
+@Relation(value = "customer", collectionRelation = "customers")
 public class CustomerResponse extends ResourceSupport {
 
     // Since the customer already exists and is only identified by its

@@ -131,13 +131,12 @@ public class CustomerControllerTest {
     private ResultActions verifyJsonCustomer(final ResultActions actions, boolean isArray) throws Exception {
         actions
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath((isArray ? "$._embedded.customerResponseList[0]" : "$") + ".firstName", is(getCustomerWithId().getFirstName())))
-                .andExpect(jsonPath((isArray ? "$._embedded.customerResponseList[0]" : "$") + ".lastName", is(getCustomerWithId().getLastName())))
-                .andExpect(jsonPath((isArray ? "$._embedded.customerResponseList[0]" : "$") + ".birthDate", is(getCustomerWithId().getBirthDate().toString())))
-                .andExpect(jsonPath((isArray ? "$._embedded.customerResponseList[0]" : "$") + ".comment", is(getCustomerWithId().getComment())))
-                .andExpect(jsonPath((isArray ? "$._embedded.customerResponseList[0]" : "$") + "._links.self.href", is(BASE_PATH + "/" + getCustomerWithId().getId())))
-        ;
-           //     .andExpect(jsonPath("$._links[0].rel", is(Link.REL_SELF)));
+                .andExpect(jsonPath((isArray ? "$._embedded.customers[0]" : "$") + ".key", is(getCustomerWithId().getId())))
+                .andExpect(jsonPath((isArray ? "$._embedded.customers[0]" : "$") + ".firstName", is(getCustomerWithId().getFirstName())))
+                .andExpect(jsonPath((isArray ? "$._embedded.customers[0]" : "$") + ".lastName", is(getCustomerWithId().getLastName())))
+                .andExpect(jsonPath((isArray ? "$._embedded.customers[0]" : "$") + ".birthDate", is(getCustomerWithId().getBirthDate().toString())))
+                .andExpect(jsonPath((isArray ? "$._embedded.customers[0]" : "$") + ".comment", is(getCustomerWithId().getComment())))
+                .andExpect(jsonPath((isArray ? "$._embedded.customers[0]" : "$") + "._links.self.href", is(BASE_PATH + "/" + getCustomerWithId().getId())));
 
         return actions;
     }

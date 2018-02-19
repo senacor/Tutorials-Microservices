@@ -7,7 +7,9 @@ import com.senacor.bitc.demo.rest.dto.account.AccountResponse;
 import com.senacor.bitc.demo.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,12 +37,12 @@ public class AccountController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public List<Resource<AccountResponse>> getAccountsByCustomerId(
+    public Resources<Resource<AccountResponse>> getAccountsByCustomerId(
             @RequestParam(value = "customerId", defaultValue = "0", required = false) Integer customerId) {
-        return accountService.findAccountsByCustomerId(customerId)
+        return new Resources<>(accountService.findAccountsByCustomerId(customerId)
                 .stream()
                 .map(account -> accountMapper.fromAccountToAccountResponse(account))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     @RequestMapping(method = RequestMethod.POST)
