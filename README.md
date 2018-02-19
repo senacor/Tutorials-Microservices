@@ -219,8 +219,6 @@ Note: You can turn off the HAL link-representation in this stage, see hints for 
 
 ### Stage 12 - HAL (Hypertext Application Language)
 
-*Disclaimer: This stage is not implemented in code yet (you will not find a branch for this but you can do it on your own).*
-
 ####
 You understand how HAL and HATEOAS work together and how HAL can help you to design RESTful APIs in a standardized way.
 
@@ -229,7 +227,7 @@ You understand how HAL and HATEOAS work together and how HAL can help you to des
 1. Take a look at the [HAL overview](http://stateless.co/hal_specification.html), you can also take a look at the [official standard's draft](https://tools.ietf.org/html/draft-kelly-json-hal-08).
 2. Adapt the HATEOAS representation of your services to be HAL (draft-)standard compliant.
 
-Hint: It might help to take a look at the ```Resources<>``` vs. ```Resource<>``` section in the [HATEOAS documentation](https://docs.spring.io/spring-hateoas/docs/current/reference/html/#_code_resource_t_code_vs_code_resources_t_code).
+Hint: It might help to take a look at the ```Resources<>``` vs. ```Resource<>``` section in the [Spring HATEOAS documentation](https://docs.spring.io/spring-hateoas/docs/current/reference/html/#_code_resource_t_code_vs_code_resources_t_code).
 
 <!--
 ### Stage XX (optional) - Messaging and Event Sourcing
