@@ -219,10 +219,10 @@ Note: You can turn off the HAL link-representation in this stage, see hints for 
 
 ### Stage 12 - HAL (Hypertext Application Language)
 
-####
+#### Goal
 You understand how HAL and HATEOAS work together and how HAL can help you to design RESTful APIs in a standardized way.
 
-#### 
+#### Tasks
 
 1. Take a look at the [HAL overview](http://stateless.co/hal_specification.html), you can also take a look at the [official standard's draft](https://tools.ietf.org/html/draft-kelly-json-hal-08).
 2. Adapt the HATEOAS representation of your services to be HAL (draft-)standard compliant.
