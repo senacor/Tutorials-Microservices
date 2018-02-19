@@ -87,10 +87,11 @@ public class CustomerControllerTest {
                 .willReturn(getCustomerWithId());
 
         given(this.customerMapper.fromCustomerToCustomerResponse(getCustomerWithId()))
-                .willReturn(getCustomerResponse());
+                .willReturn(getCustomerResponseWithAddressLink());
 
-        verifyJsonCustomer(mockMvc.perform(get( "/1"))
-                .andExpect(status().isOk()), false);
+        verifyJsonAddressLink(
+                verifyJsonCustomer(mockMvc.perform(get( "/1"))
+                .andExpect(status().isOk()), false));
 
     }
 
@@ -104,8 +105,7 @@ public class CustomerControllerTest {
 
         verifyJsonCustomer(mockMvc.perform(get("?lastName=Last"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$", hasSize(1))), true);
+                .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8)), true);
 
     }
 
@@ -131,21 +131,21 @@ public class CustomerControllerTest {
     private ResultActions verifyJsonCustomer(final ResultActions actions, boolean isArray) throws Exception {
         actions
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath((isArray ? "$[0]" : "$") + ".firstName", is(getCustomerWithId().getFirstName())))
-                .andExpect(jsonPath((isArray ? "$[0]" : "$") + ".lastName", is(getCustomerWithId().getLastName())))
-                .andExpect(jsonPath((isArray ? "$[0]" : "$") + ".birthDate", is(getCustomerWithId().getBirthDate().toString())))
-                .andExpect(jsonPath((isArray ? "$[0]" : "$") + ".comment", is(getCustomerWithId().getComment())))
-                .andExpect(jsonPath((isArray ? "$[0]" : "$") + ".links[0].href", is(BASE_PATH + "/" + getCustomerWithId().getId())))
-                .andExpect(jsonPath((isArray ? "$[0]" : "$") + ".links[0].rel", is(Link.REL_SELF)));
+                .andExpect(jsonPath((isArray ? "$._embedded.customerResponseList[0]" : "$") + ".firstName", is(getCustomerWithId().getFirstName())))
+                .andExpect(jsonPath((isArray ? "$._embedded.customerResponseList[0]" : "$") + ".lastName", is(getCustomerWithId().getLastName())))
+                .andExpect(jsonPath((isArray ? "$._embedded.customerResponseList[0]" : "$") + ".birthDate", is(getCustomerWithId().getBirthDate().toString())))
+                .andExpect(jsonPath((isArray ? "$._embedded.customerResponseList[0]" : "$") + ".comment", is(getCustomerWithId().getComment())))
+                .andExpect(jsonPath((isArray ? "$._embedded.customerResponseList[0]" : "$") + "._links.self.href", is(BASE_PATH + "/" + getCustomerWithId().getId())))
+        ;
+           //     .andExpect(jsonPath("$._links[0].rel", is(Link.REL_SELF)));
 
         return actions;
     }
 
-    private ResultActions verifyJsonAddressLink(final ResultActions actions, boolean isArray) throws Exception {
+    private ResultActions verifyJsonAddressLink(final ResultActions actions) throws Exception {
         actions
-                .andExpect(jsonPath((isArray ? "$[1]" : "$") + ".links[0].href",
-                        is(BASE_PATH + "/" + getCustomerWithId().getId() + ADDRESS_PATH)))
-                .andExpect(jsonPath((isArray ? "$[1]" : "$") + ".links[0].rel", is(LinkRelations.ADDRESS.getName())));
+                .andExpect(jsonPath("$._links.address.href",
+                        is(BASE_PATH + "/" + getCustomerWithId().getId() + ADDRESS_PATH)));
 
         return actions;
     }

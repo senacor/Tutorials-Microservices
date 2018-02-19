@@ -6,6 +6,7 @@ import com.senacor.bitc.demo.rest.dto.request.CustomerRequest;
 import com.senacor.bitc.demo.rest.dto.response.CustomerResponse;
 import com.senacor.bitc.demo.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,12 +35,13 @@ public class CustomerController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public List<CustomerResponse> getCustomersByName(
+    public Resources<CustomerResponse> getCustomersByName(
             @RequestParam(value = "lastName", defaultValue = "", required = false) String lastName) {
-        return customerService.findCustomersByLastName(lastName)
+        return new Resources<>(
+                customerService.findCustomersByLastName(lastName)
                 .stream()
                 .map(customer -> customerMapper.fromCustomerToCustomerResponse(customer))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     @RequestMapping(method = RequestMethod.POST)
