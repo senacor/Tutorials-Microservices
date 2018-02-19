@@ -89,3 +89,7 @@ After finishing stage 11 your resources (the objects returned by your endpoints)
 The idea of HATEOAS is, that consumers of the service are able to navigate between resources without having to create about the "paths" (URLs) to the resources by themselves. The server manages the routes to the resources and returns those routes as links when a resource is served. In a "perfect" HATEOAS style service a consumer just has to know one entry point and can then navigate between resources through the links returned from the server when requesting the resource of the entry-point. 
 
 Note that the customer service was extended, another endpoint for customer-addresses was added to show how link relations can be implemented.
+
+## Stage 12 - HAL
+
+After finishing stage 12 your resources (responses) will be compliant with the HAL (Hypertext Application Language) (draft-)standard.
