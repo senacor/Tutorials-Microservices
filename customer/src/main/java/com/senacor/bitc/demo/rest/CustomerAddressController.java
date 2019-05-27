@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/{customerId}/address", produces = "application/json")
+@RequestMapping(value = "/{customerId}/address", produces = "application/hal+json")
 public class CustomerAddressController {
 
     private final CustomerAddressService customerAddressService;

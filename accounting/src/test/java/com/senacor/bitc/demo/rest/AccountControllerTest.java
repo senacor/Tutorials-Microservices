@@ -118,11 +118,10 @@ public class AccountControllerTest {
 
     private ResultActions verifyJson(final ResultActions actions, boolean isArray) throws Exception {
         actions
-                .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath((isArray ? "$[0]" : "$") + ".accountType", is(getAccountWithId().getAccountType().toString())))
-                .andExpect(jsonPath((isArray ? "$[0]" : "$") + ".customerId", is(getAccountWithId().getCustomerId())))
-                .andExpect(jsonPath((isArray ? "$[0]" : "$") + ".links[0].href", is(BASE_PATH + "/" + getAccountWithId().getId())))
-                .andExpect(jsonPath((isArray ? "$[0]" : "$") + ".links[0].rel", is(Link.REL_SELF)));
+                .andExpect(content().contentType(TestUtil.HAL_JSON_UTF8))
+                .andExpect(jsonPath((isArray ? "$._embedded.accounts[0]" : "$") + ".accountType", is(getAccountWithId().getAccountType().toString())))
+                .andExpect(jsonPath((isArray ? "$._embedded.accounts[0]" : "$") + ".customerId", is(getAccountWithId().getCustomerId())))
+                .andExpect(jsonPath((isArray ? "$._embedded.accounts[0]" : "$") + "._links.self.href", is(BASE_PATH + "/" + getAccountWithId().getId())));
 
         return actions;
     }

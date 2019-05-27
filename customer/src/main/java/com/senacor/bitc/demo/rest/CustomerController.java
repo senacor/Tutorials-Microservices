@@ -1,19 +1,21 @@
 package com.senacor.bitc.demo.rest;
 
-import com.senacor.bitc.demo.domain.Customer;
 import com.senacor.bitc.demo.rest.dto.mapper.CustomerMapper;
 import com.senacor.bitc.demo.rest.dto.request.CustomerRequest;
 import com.senacor.bitc.demo.rest.dto.response.CustomerResponse;
 import com.senacor.bitc.demo.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 @RestController
-@RequestMapping(produces = "application/json")
+@RequestMapping(produces = "application/hal+json")
 public class CustomerController {
 
     private final CustomerService customerService;
@@ -32,14 +34,20 @@ public class CustomerController {
                 customerService.loadCustomerById(customerId));
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
     @ResponseBody
-    public List<CustomerResponse> getCustomersByName(
+    public Resources<CustomerResponse> getCustomersByName(
             @RequestParam(value = "lastName", defaultValue = "", required = false) String lastName) {
-        return customerService.findCustomersByLastName(lastName)
-                .stream()
-                .map(customer -> customerMapper.fromCustomerToCustomerResponse(customer))
-                .collect(Collectors.toList());
+
+        Resources<CustomerResponse> resources = new Resources<>(
+                customerService.findCustomersByLastName(lastName)
+                        .stream()
+                        .map(customer -> customerMapper.fromCustomerToCustomerResponse(customer))
+                        .collect(Collectors.toList()));
+
+        resources.add(linkTo(methodOn(CustomerController.class).getCustomersByName(lastName)).withSelfRel());
+
+        return resources;
     }
 
     @RequestMapping(method = RequestMethod.POST)

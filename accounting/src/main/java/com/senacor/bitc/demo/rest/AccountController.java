@@ -7,14 +7,14 @@ import com.senacor.bitc.demo.rest.dto.account.AccountResponse;
 import com.senacor.bitc.demo.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(produces = "application/json")
+@RequestMapping(produces = "application/hal+json")
 public class AccountController {
 
     private final AccountService accountService;
@@ -35,12 +35,12 @@ public class AccountController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public List<Resource<AccountResponse>> getAccountsByCustomerId(
+    public Resources<Resource<AccountResponse>> getAccountsByCustomerId(
             @RequestParam(value = "customerId", defaultValue = "0", required = false) Integer customerId) {
-        return accountService.findAccountsByCustomerId(customerId)
+        return new Resources<>(accountService.findAccountsByCustomerId(customerId)
                 .stream()
                 .map(account -> accountMapper.fromAccountToAccountResponse(account))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     @RequestMapping(method = RequestMethod.POST)
